@@ -162,7 +162,7 @@ AuthoredPatrolDistance = 180.0
 position = Vector2(7820, 250)
 
 [node name="Enemy_09" parent="Gameplay/Enemies" instance=ExtResource("12_shooter")]
-position = Vector2(8350, 300)
+position = Vector2(8210, 300)
 
 [node name="Goal" type="Node2D" parent="Gameplay"]
 script = ExtResource("3")

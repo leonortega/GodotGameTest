@@ -139,10 +139,10 @@ Reward = 2
 [node name="Enemies" type="Node2D" parent="Gameplay"]
 
 [node name="Enemy_01" parent="Gameplay/Enemies" instance=ExtResource("9_ground")]
-position = Vector2(1240, 586)
+position = Vector2(1240, 591)
 
 [node name="Enemy_02" parent="Gameplay/Enemies" instance=ExtResource("10_armored")]
-position = Vector2(2190, 586)
+position = Vector2(2190, 592)
 
 [node name="Enemy_03" parent="Gameplay/Enemies" instance=ExtResource("11_flying")]
 position = Vector2(3070, 360)
@@ -152,30 +152,30 @@ AuthoredPatrolDistance = 200.0
 position = Vector2(4624, 495)
 
 [node name="Enemy_05" parent="Gameplay/Enemies" instance=ExtResource("13_shooter")]
-position = Vector2(3860, 586)
+position = Vector2(3860, 593)
 
 [node name="Enemy_06" parent="Gameplay/Enemies" instance=ExtResource("12_protected")]
-position = Vector2(5280, 586)
+position = Vector2(5392, 589)
 
 [node name="Enemy_07" parent="Gameplay/Enemies" instance=ExtResource("13_shooter")]
-position = Vector2(5830, 586)
+position = Vector2(5760, 593)
 
 [node name="Enemy_08" parent="Gameplay/Enemies" instance=ExtResource("10_armored")]
 position = Vector2(6864, 496)
 
 [node name="Enemy_09" parent="Gameplay/Enemies" instance=ExtResource("12_protected")]
-position = Vector2(7440, 586)
+position = Vector2(7440, 589)
 
 [node name="Enemy_10" parent="Gameplay/Enemies" instance=ExtResource("13_shooter")]
-position = Vector2(8048, 497)
+position = Vector2(7920, 545)
 
 [node name="Hazards" type="Node2D" parent="Gameplay"]
 
 [node name="Cactus_01" parent="Gameplay/Hazards" instance=ExtResource("14_cactus")]
-position = Vector2(920, 560)
+position = Vector2(800, 560)
 
 [node name="Cactus_02" parent="Gameplay/Hazards" instance=ExtResource("14_cactus")]
-position = Vector2(2510, 530)
+position = Vector2(2720, 485)
 
 [node name="Cactus_03" parent="Gameplay/Hazards" instance=ExtResource("14_cactus")]
 position = Vector2(4310, 560)
@@ -187,7 +187,7 @@ position = Vector2(5900, 500)
 position = Vector2(6990, 520)
 
 [node name="Cactus_06" parent="Gameplay/Hazards" instance=ExtResource("14_cactus")]
-position = Vector2(7800, 500)
+position = Vector2(7968, 485)
 
 [node name="Goal" type="Node2D" parent="Gameplay"]
 script = ExtResource("3")

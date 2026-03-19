@@ -45,6 +45,11 @@ public partial class GameSession : Node
         CurrentForm = PlayerForm.Small;
     }
 
+    public void SetCurrentStageIndex(int stageIndex)
+    {
+        CurrentStageIndex = Mathf.Clamp(stageIndex, 0, _stageOrder.Length - 1);
+    }
+
     public void CycleDifficulty()
     {
         CurrentDifficulty = CurrentDifficulty switch

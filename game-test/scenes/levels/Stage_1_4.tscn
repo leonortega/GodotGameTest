@@ -94,7 +94,7 @@ AuthoredPickupType = 0
 
 [node name="Coin_07" type="Node2D" parent="Gameplay/Pickups"]
 script = ExtResource("5")
-position = Vector2(7860, 330)
+position = Vector2(7870, 292)
 AuthoredPickupType = 0
 
 [node name="Blocks" type="Node2D" parent="Gameplay"]
@@ -156,12 +156,12 @@ position = Vector2(6840, 586)
 position = Vector2(7540, 586)
 
 [node name="Enemy_10" parent="Gameplay/Enemies" instance=ExtResource("13_shooter")]
-position = Vector2(8080, 497)
+position = Vector2(7968, 497)
 
 [node name="Hazards" type="Node2D" parent="Gameplay"]
 
 [node name="Cactus_01" parent="Gameplay/Hazards" instance=ExtResource("14_cactus")]
-position = Vector2(880, 560)
+position = Vector2(768, 560)
 
 [node name="Cactus_02" parent="Gameplay/Hazards" instance=ExtResource("14_cactus")]
 position = Vector2(3020, 560)

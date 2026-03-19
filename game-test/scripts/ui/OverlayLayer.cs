@@ -25,6 +25,7 @@ public partial class OverlayLayer : CanvasLayer
     private readonly Button _titleStartButton = new();
     private readonly Button _titleControlsButton = new();
     private readonly Button _titleDifficultyButton = new();
+    private readonly Button _titleLevelButton = new();
 
     private readonly CenterContainer _menuCenter = new();
     private readonly PanelContainer _panel = new();
@@ -44,6 +45,7 @@ public partial class OverlayLayer : CanvasLayer
     private Action? _primaryAction;
     private Action? _secondaryAction;
     private Action? _tertiaryAction;
+    private Action? _quaternaryAction;
     private float _titleAnimationTime;
     private EnemyKind _titleEnemyKind = EnemyKind.ProtectedHead;
 
@@ -77,7 +79,7 @@ public partial class OverlayLayer : CanvasLayer
         UpdateTitleAnimation();
     }
 
-    public void ShowTitleScreen(string body, string difficultyText, Action startAction, Action controlsAction, Action difficultyAction)
+    public void ShowTitleScreen(string body, string difficultyText, string levelText, Action startAction, Action controlsAction, Action difficultyAction, Action levelAction)
     {
         _backdrop.Color = new Color(0.03f, 0.04f, 0.08f, 0.98f);
         _logoPrimary.Text = "SUPER";
@@ -85,10 +87,12 @@ public partial class OverlayLayer : CanvasLayer
         _logoCaption.Text = "RUN. STOMP. SURVIVE.";
         _titleBody.Text = body;
         _titleDifficultyButton.Text = difficultyText;
+        _titleLevelButton.Text = levelText;
 
         _primaryAction = startAction;
         _secondaryAction = controlsAction;
         _tertiaryAction = difficultyAction;
+        _quaternaryAction = levelAction;
         AllowsPauseResume = false;
         _titleAnimationTime = 0f;
         _titleEnemyKind = TitleEnemyChoices[GD.RandRange(0, TitleEnemyChoices.Length - 1)];
@@ -150,6 +154,7 @@ public partial class OverlayLayer : CanvasLayer
         _primaryAction = null;
         _secondaryAction = null;
         _tertiaryAction = null;
+        _quaternaryAction = null;
         _titleCenter.Visible = false;
         _menuCenter.Visible = false;
         _timedCenter.Visible = false;
@@ -194,17 +199,21 @@ public partial class OverlayLayer : CanvasLayer
         GameUi.StyleButton(_titleStartButton);
         GameUi.StyleButton(_titleControlsButton);
         GameUi.StyleButton(_titleDifficultyButton);
+        GameUi.StyleButton(_titleLevelButton);
         _titleDifficultyButton.CustomMinimumSize = new Vector2(220, 46);
+        _titleLevelButton.CustomMinimumSize = new Vector2(180, 46);
         _titleStartButton.Text = "Start Game";
         _titleControlsButton.Text = "Controls";
 
         _titleStartButton.Pressed += () => _primaryAction?.Invoke();
         _titleControlsButton.Pressed += () => _secondaryAction?.Invoke();
         _titleDifficultyButton.Pressed += () => _tertiaryAction?.Invoke();
+        _titleLevelButton.Pressed += () => _quaternaryAction?.Invoke();
 
         actions.AddChild(_titleStartButton);
         actions.AddChild(_titleControlsButton);
         actions.AddChild(_titleDifficultyButton);
+        actions.AddChild(_titleLevelButton);
 
         card.AddChild(_logoPrimary);
         card.AddChild(_logoSecondary);

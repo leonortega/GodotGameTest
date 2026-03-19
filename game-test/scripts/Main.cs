@@ -5,11 +5,13 @@ namespace GameTest;
 public partial class Main : Node
 {
 	private const double TransitionCardDurationSeconds = 3.0;
+	private const int TitleStageCount = 4;
 
 	private WorldRoot _world = null!;
 	private HudLayer _hud = null!;
 	private OverlayLayer _overlay = null!;
 	private ulong _transitionVersion;
+	private int _selectedTitleStageIndex;
 
 	public override void _Ready()
 	{
@@ -60,9 +62,11 @@ public partial class Main : Node
 		_overlay.ShowTitleScreen(
 			"Run, jump, stomp, power up, and survive four short stages built in Godot 4 .NET.\n\n[b]A / D[/b] or arrows move, [b]W / Up / Space[/b] jumps, [b]Shift[/b] attacks when enhanced, [b]Esc[/b] pauses.",
 			$"Difficulty: {GameSession.Instance.CurrentDifficulty}",
+			$"Level: 1-{_selectedTitleStageIndex + 1}",
 			StartNewGame,
 			ShowControlsOverlay,
-			CycleDifficulty);
+			CycleDifficulty,
+			CycleTitleStage);
 	}
 
 	private void CycleDifficulty()
@@ -85,7 +89,15 @@ public partial class Main : Node
 	private void StartNewGame()
 	{
 		GameSession.Instance.StartNewRun();
+		GameSession.Instance.SetCurrentStageIndex(_selectedTitleStageIndex);
 		BeginStageEntryTransition();
+	}
+
+	private void CycleTitleStage()
+	{
+		AudioDirector.Instance.PlayUi("menu_open");
+		_selectedTitleStageIndex = (_selectedTitleStageIndex + 1) % TitleStageCount;
+		ShowTitleOverlay();
 	}
 
 	private void BeginStageEntryTransition()

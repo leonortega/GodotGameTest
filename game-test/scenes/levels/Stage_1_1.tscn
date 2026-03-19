@@ -103,7 +103,7 @@ position = Vector2(6510, 430)
 script = ExtResource("5")
 
 [node name="Coin_11" type="Node2D" parent="Gameplay/Pickups" unique_id=1548542719]
-position = Vector2(7360, 382)
+position = Vector2(7350, 338)
 script = ExtResource("5")
 
 [node name="Blocks" type="Node2D" parent="Gameplay" unique_id=119984367]
@@ -166,7 +166,7 @@ position = Vector2(6640, 586)
 position = Vector2(7320, 586)
 
 [node name="Enemy_10" parent="Gameplay/Enemies" instance=ExtResource("13_shooter") unique_id=354777814]
-position = Vector2(7888, 497)
+position = Vector2(7760, 497)
 
 [node name="Hazards" type="Node2D" parent="Gameplay" unique_id=1195871663]
 
