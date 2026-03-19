@@ -25,7 +25,7 @@ StageId = "1-2"
 Theme = 1
 TimerSeconds = 360
 WorldBounds = Rect2(0, 0, 8320, 720)
-SolidRectTiles = [Rect2i(0, 19, 28, 3), Rect2i(33, 19, 21, 3), Rect2i(58, 19, 16, 3), Rect2i(78, 19, 24, 3), Rect2i(106, 19, 20, 3), Rect2i(131, 19, 32, 3), Rect2i(166, 19, 16, 3), Rect2i(186, 19, 16, 3), Rect2i(206, 19, 18, 3), Rect2i(228, 19, 14, 3), Rect2i(246, 19, 14, 3)]
+SolidRectTiles = [Rect2i(0, 19, 28, 3), Rect2i(33, 19, 21, 3), Rect2i(58, 19, 16, 3), Rect2i(78, 19, 24, 3), Rect2i(106, 19, 20, 3), Rect2i(131, 19, 32, 3), Rect2i(166, 19, 16, 3), Rect2i(186, 19, 16, 3), Rect2i(206, 19, 18, 3), Rect2i(228, 19, 14, 3), Rect2i(246, 19, 14, 3), Rect2i(18, 16, 4, 1), Rect2i(24, 14, 5, 1), Rect2i(45, 15, 4, 1), Rect2i(64, 14, 4, 1), Rect2i(117, 14, 4, 1), Rect2i(141, 12, 4, 1), Rect2i(236, 14, 4, 1)]
 
 [node name="Backdrop" type="Node2D" parent="."]
 script = ExtResource("2")
@@ -66,12 +66,12 @@ AuthoredPickupType = 0
 
 [node name="Coin_02" type="Node2D" parent="Gameplay/Pickups"]
 script = ExtResource("5")
-position = Vector2(805, 384)
+position = Vector2(784, 400)
 AuthoredPickupType = 0
 
 [node name="Coin_03" type="Node2D" parent="Gameplay/Pickups"]
 script = ExtResource("5")
-position = Vector2(1458, 438)
+position = Vector2(1458, 406)
 AuthoredPickupType = 0
 
 [node name="Coin_04" type="Node2D" parent="Gameplay/Pickups"]
@@ -102,6 +102,16 @@ AuthoredPickupType = 0
 [node name="Coin_09" type="Node2D" parent="Gameplay/Pickups"]
 script = ExtResource("5")
 position = Vector2(7540, 382)
+AuthoredPickupType = 0
+
+[node name="Coin_10" type="Node2D" parent="Gameplay/Pickups"]
+script = ExtResource("5")
+position = Vector2(3808, 404)
+AuthoredPickupType = 0
+
+[node name="Coin_11" type="Node2D" parent="Gameplay/Pickups"]
+script = ExtResource("5")
+position = Vector2(4576, 296)
 AuthoredPickupType = 0
 
 [node name="Blocks" type="Node2D" parent="Gameplay"]
@@ -181,7 +191,7 @@ position = Vector2(2720, 485)
 position = Vector2(4310, 560)
 
 [node name="Cactus_04" parent="Gameplay/Hazards" instance=ExtResource("14_cactus")]
-position = Vector2(5900, 500)
+position = Vector2(6080, 560)
 
 [node name="Cactus_05" parent="Gameplay/Hazards" instance=ExtResource("14_cactus")]
 position = Vector2(6990, 520)

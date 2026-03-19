@@ -45,3 +45,9 @@ Feature: Core enemy interactions
     Given the player fires a valid projectile
     When the projectile hits a standard enemy
     Then the enemy is defeated
+
+  Scenario: Armored enemy reflects a player projectile
+    Given the player fires a valid projectile
+    When the projectile hits an armored enemy
+    Then the armored enemy remains active
+    And the projectile returns as a hostile threat

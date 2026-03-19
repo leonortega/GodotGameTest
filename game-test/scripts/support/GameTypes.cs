@@ -49,6 +49,13 @@ public enum DamageResult
     GameOver
 }
 
+public enum ProjectileHitResult
+{
+    Ignored,
+    Defeated,
+    Reflected
+}
+
 public sealed record EnemySpawn(EnemyKind Kind, Vector2 Position, float PatrolDistance = 0f);
 
 public sealed class SaveSlotData

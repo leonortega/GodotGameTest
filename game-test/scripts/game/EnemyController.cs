@@ -163,15 +163,20 @@ public partial class EnemyController : CharacterBody2D
 
     public bool CanBeStomped() => Kind == EnemyKind.Ground;
 
-    public bool TakeProjectileHit()
+    public ProjectileHitResult TakeProjectileHit()
     {
         if (!IsAlive)
         {
-            return false;
+            return ProjectileHitResult.Ignored;
+        }
+
+        if (Kind == EnemyKind.Armored)
+        {
+            return ProjectileHitResult.Reflected;
         }
 
         Defeat();
-        return true;
+        return ProjectileHitResult.Defeated;
     }
 
     public void ReverseDirection()

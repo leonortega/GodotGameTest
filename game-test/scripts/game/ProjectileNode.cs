@@ -13,6 +13,7 @@ public partial class ProjectileNode : Node2D
     public bool IsExpired { get; private set; }
 
     public Rect2 HitBox => new(GlobalPosition - _size * 0.5f, _size);
+    public int Facing => _direction.X >= 0f ? 1 : -1;
 
     public override void _Ready()
     {

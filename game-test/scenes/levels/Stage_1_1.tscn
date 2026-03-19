@@ -25,7 +25,7 @@ script = ExtResource("1")
 StageId = "1-1"
 TimerSeconds = 380
 WorldBounds = Rect2(0, 0, 8192, 720)
-SolidRectTiles = Array[Rect2i]([Rect2i(0, 19, 24, 3), Rect2i(42, 19, 5, 3), Rect2i(51, 19, 13, 3), Rect2i(68, 19, 8, 3), Rect2i(89, 19, 5, 3), Rect2i(99, 19, 18, 3), Rect2i(121, 19, 5, 3), Rect2i(139, 19, 11, 3), Rect2i(154, 19, 14, 3), Rect2i(172, 19, 4, 3), Rect2i(189, 19, 3, 3), Rect2i(197, 19, 18, 3), Rect2i(219, 19, 14, 3), Rect2i(237, 19, 3, 3), Rect2i(253, 19, 3, 3)])
+SolidRectTiles = Array[Rect2i]([Rect2i(0, 19, 24, 3), Rect2i(42, 19, 5, 3), Rect2i(51, 19, 13, 3), Rect2i(68, 19, 8, 3), Rect2i(89, 19, 5, 3), Rect2i(99, 19, 18, 3), Rect2i(121, 19, 5, 3), Rect2i(139, 19, 11, 3), Rect2i(154, 19, 14, 3), Rect2i(172, 19, 4, 3), Rect2i(189, 19, 3, 3), Rect2i(197, 19, 18, 3), Rect2i(219, 19, 14, 3), Rect2i(237, 19, 3, 3), Rect2i(253, 19, 3, 3), Rect2i(15, 16, 4, 1), Rect2i(22, 14, 4, 1), Rect2i(105, 15, 5, 1), Rect2i(224, 14, 4, 1)])
 
 [node name="Backdrop" type="Node2D" parent="." unique_id=1555088596]
 script = ExtResource("2")
@@ -63,7 +63,7 @@ position = Vector2(96, 560)
 [node name="Pickups" type="Node2D" parent="Gameplay" unique_id=781841073]
 
 [node name="Coin_01" type="Node2D" parent="Gameplay/Pickups" unique_id=309552520]
-position = Vector2(558, 460)
+position = Vector2(528, 428)
 script = ExtResource("5")
 
 [node name="Coin_02" type="Node2D" parent="Gameplay/Pickups" unique_id=1966803662]
@@ -106,10 +106,14 @@ script = ExtResource("5")
 position = Vector2(7350, 338)
 script = ExtResource("5")
 
+[node name="Coin_12" type="Node2D" parent="Gameplay/Pickups"]
+position = Vector2(3440, 436)
+script = ExtResource("5")
+
 [node name="Blocks" type="Node2D" parent="Gameplay" unique_id=119984367]
 
 [node name="Block_Growth" type="StaticBody2D" parent="Gameplay/Blocks" unique_id=1386644671]
-position = Vector2(730, 470)
+position = Vector2(752, 424)
 script = ExtResource("4")
 Reward = 1
 

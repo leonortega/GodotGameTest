@@ -116,7 +116,7 @@ public partial class WorldRoot : Node2D
         foreach (var enemy in _enemies)
         {
             enemy.SupportTopProvider = (centerX, halfWidth, objectBottomY) => _stage.GetEnemySupportTop(centerX, halfWidth, objectBottomY, 40f);
-            enemy.ShootRequested += SpawnEnemyProjectile;
+            enemy.ShootRequested += (position, facing) => SpawnEnemyProjectile(position, facing);
         }
 
         foreach (var pickup in _stage.GetPickups())
@@ -310,7 +310,7 @@ public partial class WorldRoot : Node2D
         _projectiles.Add(projectile);
     }
 
-    private void SpawnEnemyProjectile(Vector2 position, int facing)
+    private void SpawnEnemyProjectile(Vector2 position, int facing, bool playSfx = true)
     {
         if (_enemyProjectiles.Count(projectile => IsInstanceValid(projectile) && !projectile.IsExpired) >= 4)
         {
@@ -321,7 +321,10 @@ public partial class WorldRoot : Node2D
         _entityRoot.AddChild(projectile);
         projectile.Configure(position, facing);
         _enemyProjectiles.Add(projectile);
-        AudioDirector.Instance.PlaySfx("fire");
+        if (playSfx)
+        {
+            AudioDirector.Instance.PlaySfx("fire");
+        }
     }
 
     private void AdvanceProjectiles(double delta)
@@ -368,10 +371,17 @@ public partial class WorldRoot : Node2D
                     continue;
                 }
 
-                if (enemy.TakeProjectileHit())
+                var hitResult = enemy.TakeProjectileHit();
+                if (hitResult == ProjectileHitResult.Defeated)
                 {
                     GameSession.Instance.AddScore(250);
                     AudioDirector.Instance.PlaySfx("enemy_down");
+                }
+                else if (hitResult == ProjectileHitResult.Reflected)
+                {
+                    var reflectedFacing = -projectile.Facing;
+                    SpawnEnemyProjectile(enemy.GlobalPosition + new Vector2(reflectedFacing * 20f, -8f), reflectedFacing, false);
+                    AudioDirector.Instance.PlaySfx("block");
                 }
 
                 projectile.Expire();

@@ -3,6 +3,7 @@
 ## Metadata
 - **Title**: Enemy Behaviors and Player Interaction Rules
 - **Version**: `v1.1`
+- **Version**: `v1.2`
 - **Status**: Approved
 - **Context/View**: Core Gameplay
 - **Priority**: High
@@ -29,8 +30,9 @@ Define baseline enemy classes and the rules for defeating or being damaged by th
 - `ENEMIES.CORE.001-R6A`: Protected-head enemies shall reject a stomp when the player contacts the protected top surface, and the collision shall resolve as a non-stomp threat or rebound according to combat rules.
 - `ENEMIES.CORE.001-R7`: An enemy hit by a valid ranged attack shall resolve according to its vulnerability rules.
 - `ENEMIES.CORE.001-R7A`: A standard enemy hit by a valid player projectile shall be defeated.
-- `ENEMIES.CORE.001-R7B`: Shooter enemies shall emit readable hostile projectiles according to a controlled firing cadence or trigger condition.
-- `ENEMIES.CORE.001-R7C`: Hostile enemy projectiles shall damage the player on valid contact unless blocked by an invulnerability state or other explicit rule.
+- `ENEMIES.CORE.001-R7B`: An armored enemy hit by a valid player projectile shall remain active and reflect that projectile back as a hostile threat.
+- `ENEMIES.CORE.001-R7C`: Shooter enemies shall emit readable hostile projectiles according to a controlled firing cadence or trigger condition.
+- `ENEMIES.CORE.001-R7D`: Hostile enemy projectiles shall damage the player on valid contact unless blocked by an invulnerability state or other explicit rule.
 - `ENEMIES.CORE.001-R8`: Defeated enemies shall award score.
 
 ## Acceptance Criteria (BDD)
@@ -80,6 +82,13 @@ Scenario: Player projectile defeats a standard enemy
   When the collision resolves
   Then the enemy shall be defeated
   And score shall be awarded
+
+Scenario: Armored enemy reflects a player projectile
+  Given the player emits a valid ranged attack
+  And the projectile collides with an armored enemy
+  When the collision resolves
+  Then the armored enemy shall remain active
+  And the projectile shall return as a hostile threat
 ```
 
 ## Example Inputs/Outputs
@@ -89,6 +98,8 @@ Scenario: Player projectile defeats a standard enemy
 - Expected output: Player loses a life.
 - Example input: Player lands on a helmeted enemy's head.
 - Expected output: The enemy remains active because the top surface is protected.
+- Example input: Enhanced player fires at an armored enemy.
+- Expected output: The armored enemy remains active and the projectile is reflected back.
 
 ## Edge Cases
 - Simultaneous stomp and hazard overlap shall prioritize the first resolved collision according to engine tick order.

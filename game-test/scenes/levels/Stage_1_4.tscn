@@ -25,7 +25,7 @@ StageId = "1-4"
 Theme = 3
 TimerSeconds = 320
 WorldBounds = Rect2(0, 0, 8384, 720)
-SolidRectTiles = [Rect2i(0, 19, 25, 3), Rect2i(29, 19, 16, 3), Rect2i(49, 19, 15, 3), Rect2i(67, 19, 20, 3), Rect2i(91, 19, 16, 3), Rect2i(111, 19, 16, 3), Rect2i(131, 19, 25, 3), Rect2i(160, 19, 16, 3), Rect2i(180, 19, 20, 3), Rect2i(204, 19, 18, 3), Rect2i(226, 19, 14, 3), Rect2i(244, 19, 18, 3)]
+SolidRectTiles = [Rect2i(0, 19, 18, 3), Rect2i(22, 17, 5, 1), Rect2i(30, 15, 5, 1), Rect2i(38, 14, 6, 1), Rect2i(47, 15, 5, 1), Rect2i(55, 17, 6, 1), Rect2i(64, 19, 7, 3), Rect2i(120, 19, 9, 3), Rect2i(135, 16, 5, 1), Rect2i(143, 14, 6, 1), Rect2i(152, 12, 5, 1), Rect2i(160, 14, 5, 1), Rect2i(168, 16, 5, 1), Rect2i(177, 19, 5, 3), Rect2i(246, 16, 16, 1), Rect2i(15, 16, 4, 1), Rect2i(123, 15, 4, 1), Rect2i(233, 14, 4, 1), Rect2i(241, 16, 4, 1)]
 
 [node name="Backdrop" type="Node2D" parent="."]
 script = ExtResource("2")
@@ -39,19 +39,31 @@ script = ExtResource("2")
 [node name="TerrainHills" type="Node2D" parent="."]
 
 [node name="Hill_01" parent="TerrainHills" instance=ExtResource("8_hill")]
-position = Vector2(320, 608)
-
-[node name="Hill_02" parent="TerrainHills" instance=ExtResource("8_hill")]
 position = Vector2(2240, 608)
 
+[node name="Hill_02" parent="TerrainHills" instance=ExtResource("8_hill")]
+position = Vector2(2624, 608)
+
 [node name="Hill_03" parent="TerrainHills" instance=ExtResource("8_hill")]
-position = Vector2(4288, 608)
+position = Vector2(3008, 608)
 
 [node name="Hill_04" parent="TerrainHills" instance=ExtResource("8_hill")]
-position = Vector2(5824, 608)
+position = Vector2(3392, 608)
 
 [node name="Hill_05" parent="TerrainHills" instance=ExtResource("8_hill")]
-position = Vector2(7872, 608)
+position = Vector2(5824, 608)
+
+[node name="Hill_06" parent="TerrainHills" instance=ExtResource("8_hill")]
+position = Vector2(6208, 608)
+
+[node name="Hill_07" parent="TerrainHills" instance=ExtResource("8_hill")]
+position = Vector2(6592, 608)
+
+[node name="Hill_08" parent="TerrainHills" instance=ExtResource("8_hill")]
+position = Vector2(6976, 608)
+
+[node name="Hill_09" parent="TerrainHills" instance=ExtResource("8_hill")]
+position = Vector2(7360, 608)
 
 [node name="Markers" type="Node2D" parent="."]
 
@@ -64,118 +76,161 @@ position = Vector2(96, 560)
 
 [node name="Coin_01" type="Node2D" parent="Gameplay/Pickups"]
 script = ExtResource("5")
-position = Vector2(560, 462)
+position = Vector2(800, 488)
 AuthoredPickupType = 0
 
 [node name="Coin_02" type="Node2D" parent="Gameplay/Pickups"]
 script = ExtResource("5")
-position = Vector2(1278, 422)
+position = Vector2(1056, 424)
 AuthoredPickupType = 0
 
 [node name="Coin_03" type="Node2D" parent="Gameplay/Pickups"]
 script = ExtResource("5")
-position = Vector2(1798, 372)
+position = Vector2(1312, 360)
 AuthoredPickupType = 0
 
 [node name="Coin_04" type="Node2D" parent="Gameplay/Pickups"]
 script = ExtResource("5")
-position = Vector2(3118, 382)
+position = Vector2(1824, 488)
 AuthoredPickupType = 0
 
 [node name="Coin_05" type="Node2D" parent="Gameplay/Pickups"]
 script = ExtResource("5")
-position = Vector2(4418, 290)
+position = Vector2(2528, 440)
 AuthoredPickupType = 0
 
 [node name="Coin_06" type="Node2D" parent="Gameplay/Pickups"]
 script = ExtResource("5")
-position = Vector2(6910, 430)
+position = Vector2(3136, 328)
 AuthoredPickupType = 0
 
 [node name="Coin_07" type="Node2D" parent="Gameplay/Pickups"]
 script = ExtResource("5")
-position = Vector2(7870, 292)
+position = Vector2(3968, 440)
+AuthoredPickupType = 0
+
+[node name="Coin_08" type="Node2D" parent="Gameplay/Pickups"]
+script = ExtResource("5")
+position = Vector2(4864, 328)
+AuthoredPickupType = 0
+
+[node name="Coin_09" type="Node2D" parent="Gameplay/Pickups"]
+script = ExtResource("5")
+position = Vector2(5936, 440)
+AuthoredPickupType = 0
+
+[node name="Coin_10" type="Node2D" parent="Gameplay/Pickups"]
+script = ExtResource("5")
+position = Vector2(6848, 344)
+AuthoredPickupType = 0
+
+[node name="Coin_11" type="Node2D" parent="Gameplay/Pickups"]
+script = ExtResource("5")
+position = Vector2(7600, 408)
+AuthoredPickupType = 0
+
+[node name="Coin_12" type="Node2D" parent="Gameplay/Pickups"]
+script = ExtResource("5")
+position = Vector2(8160, 456)
+AuthoredPickupType = 0
+
+[node name="Coin_13" type="Node2D" parent="Gameplay/Pickups"]
+script = ExtResource("5")
+position = Vector2(544, 468)
+AuthoredPickupType = 0
+
+[node name="Coin_14" type="Node2D" parent="Gameplay/Pickups"]
+script = ExtResource("5")
+position = Vector2(4000, 436)
+AuthoredPickupType = 0
+
+[node name="Coin_15" type="Node2D" parent="Gameplay/Pickups"]
+script = ExtResource("5")
+position = Vector2(7520, 404)
 AuthoredPickupType = 0
 
 [node name="Blocks" type="Node2D" parent="Gameplay"]
 
 [node name="Block_Growth" type="StaticBody2D" parent="Gameplay/Blocks"]
 script = ExtResource("4")
-position = Vector2(660, 464)
+position = Vector2(864, 472)
 Reward = 1
 
 [node name="Block_Flame" type="StaticBody2D" parent="Gameplay/Blocks"]
 script = ExtResource("4")
-position = Vector2(2440, 420)
+position = Vector2(3184, 440)
 Reward = 2
 
 [node name="Block_Coin" type="StaticBody2D" parent="Gameplay/Blocks"]
 script = ExtResource("4")
-position = Vector2(3820, 336)
+position = Vector2(4928, 312)
 Reward = 0
 
 [node name="Block_Coin_02" type="StaticBody2D" parent="Gameplay/Blocks"]
 script = ExtResource("4")
-position = Vector2(7000, 438)
+position = Vector2(7040, 440)
 Reward = 0
 
 [node name="Block_Flame_02" type="StaticBody2D" parent="Gameplay/Blocks"]
 script = ExtResource("4")
-position = Vector2(7870, 342)
+position = Vector2(7808, 440)
 Reward = 2
 
 [node name="Enemies" type="Node2D" parent="Gameplay"]
 
 [node name="Enemy_01" parent="Gameplay/Enemies" instance=ExtResource("9_ground")]
-position = Vector2(1080, 586)
+position = Vector2(416, 591)
 
 [node name="Enemy_02" parent="Gameplay/Enemies" instance=ExtResource("10_armored")]
-position = Vector2(1900, 586)
+position = Vector2(2144, 592)
 
 [node name="Enemy_03" parent="Gameplay/Enemies" instance=ExtResource("11_flying")]
-position = Vector2(2480, 320)
+position = Vector2(1376, 352)
 AuthoredPatrolDistance = 160.0
 
 [node name="Enemy_04" parent="Gameplay/Enemies" instance=ExtResource("10_armored")]
-position = Vector2(3380, 586)
+position = Vector2(2832, 496)
 
 [node name="Enemy_05" parent="Gameplay/Enemies" instance=ExtResource("11_flying")]
-position = Vector2(4280, 260)
+position = Vector2(4680, 260)
 AuthoredPatrolDistance = 190.0
 
 [node name="Enemy_06" parent="Gameplay/Enemies" instance=ExtResource("12_protected")]
-position = Vector2(5160, 586)
+position = Vector2(3520, 493)
 
 [node name="Enemy_07" parent="Gameplay/Enemies" instance=ExtResource("13_shooter")]
-position = Vector2(5780, 586)
+position = Vector2(5712, 593)
 
 [node name="Enemy_08" parent="Gameplay/Enemies" instance=ExtResource("10_armored")]
-position = Vector2(6840, 586)
+position = Vector2(6336, 496)
 
 [node name="Enemy_09" parent="Gameplay/Enemies" instance=ExtResource("12_protected")]
-position = Vector2(7540, 586)
+position = Vector2(7424, 493)
 
 [node name="Enemy_10" parent="Gameplay/Enemies" instance=ExtResource("13_shooter")]
-position = Vector2(7968, 497)
+position = Vector2(7760, 497)
 
 [node name="Hazards" type="Node2D" parent="Gameplay"]
 
 [node name="Cactus_01" parent="Gameplay/Hazards" instance=ExtResource("14_cactus")]
-position = Vector2(768, 560)
+position = Vector2(512, 560)
 
 [node name="Cactus_02" parent="Gameplay/Hazards" instance=ExtResource("14_cactus")]
-position = Vector2(3020, 560)
+position = Vector2(2464, 500)
 
 [node name="Cactus_03" parent="Gameplay/Hazards" instance=ExtResource("14_cactus")]
-position = Vector2(5460, 520)
+position = Vector2(3648, 500)
 
 [node name="Cactus_04" parent="Gameplay/Hazards" instance=ExtResource("14_cactus")]
-position = Vector2(7080, 520)
+position = Vector2(4016, 560)
 
 [node name="Cactus_05" parent="Gameplay/Hazards" instance=ExtResource("14_cactus")]
-position = Vector2(7860, 500)
+position = Vector2(6048, 500)
+
+[node name="Cactus_06" parent="Gameplay/Hazards" instance=ExtResource("14_cactus")]
+position = Vector2(7216, 500)
 
 [node name="Goal" type="Node2D" parent="Gameplay"]
 script = ExtResource("3")
-position = Vector2(8160, 490)
+position = Vector2(8288, 512)
 
