@@ -7,6 +7,7 @@
 - **Run state**: Player movement mode with higher horizontal speed and longer jump distance.
 - **Stomp**: Defeating an eligible enemy by landing on it from above.
 - **Armored enemy**: Enemy that does not lose its threat state from a standard stomp while the player lacks a special attack state.
+- **Reflected projectile**: A player projectile that is returned by a special enemy interaction and continues as a hostile threat.
 - **Protected-head enemy**: Enemy whose top surface is protected, so a direct stomp on the head does not crush it.
 - **Shooter enemy**: Enemy that periodically or conditionally emits hostile projectiles toward the player or across the stage.
 - **Goal marker**: End-of-level object that completes the current stage when touched.
@@ -15,6 +16,7 @@
 - **Extra life threshold**: Coin total required to award one additional life; baseline threshold is 100 collected coins.
 - **Blocking pause**: Pause state in which player movement, enemy motion, timer countdown, and hazard animation are suspended.
 - **World progression**: Ordered advancement from stage `1-1` to `1-4` in the MVP.
+- **Title-selected stage**: The stage chosen from the title screen as the starting point for a new run in the current MVP build.
 - **Hidden route**: Optional path or room not required for completion but containing bonus rewards.
 - **Environmental obstacle**: Non-enemy stage object that threatens or blocks the player, such as a cactus hazard.
 - **Terrain profile**: The overall height variation of a stage path, including flats, rises, drops, and uneven segments.

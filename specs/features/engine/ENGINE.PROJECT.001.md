@@ -2,7 +2,7 @@
 
 ## Metadata
 - **Title**: Godot Project Architecture, Scene Composition, and Shared Services
-- **Version**: `v1.0`
+- **Version**: `v1.1`
 - **Status**: Approved
 - **Context/View**: Engine Foundation
 - **Priority**: High
@@ -45,8 +45,8 @@ Scenario: Reusable scenes are instanced instead of duplicated
 ```
 
 ## Example Inputs/Outputs
-- Example input: Main scene loads title and then instantiates stage `1-1`.
-- Expected output: Session state persists without duplicating gameplay logic across scenes.
+- Example input: Main scene loads title, applies the selected starting stage, and then instantiates the chosen gameplay stage.
+- Expected output: Session state persists without duplicating gameplay logic across scenes, regardless of which valid title-selected stage starts the run.
 
 ## Edge Cases
 - Reloading a stage after death shall not duplicate Autoload singletons.

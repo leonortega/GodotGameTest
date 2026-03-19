@@ -2,7 +2,7 @@
 
 ## Metadata
 - **Title**: Stage Completion, Lives, Timer, and World Advancement
-- **Version**: `v1.1`
+- **Version**: `v1.2`
 - **Status**: Approved
 - **Context/View**: Level Flow
 - **Priority**: High
@@ -18,6 +18,7 @@ Define how the player clears stages, loses lives, and advances through the MVP w
 
 ## Requirements
 - `LEVEL.PROGRESSION.001-R1`: A new game shall begin with 3 lives.
+- `LEVEL.PROGRESSION.001-R1A`: A new run may begin from a title-selected stage in the current MVP build, but subsequent advancement shall continue through the normal ordered stage list.
 - `LEVEL.PROGRESSION.001-R2`: The MVP shall contain sequential stages `1-1`, `1-2`, `1-3`, and `1-4`.
 - `LEVEL.PROGRESSION.001-R3`: Each stage shall begin with a countdown timer.
 - `LEVEL.PROGRESSION.001-R4`: Reaching zero on the stage timer shall cause a lost life.
@@ -41,6 +42,11 @@ Scenario: Goal marker clears a stage
   And a centered stage summary shall be shown
   And after approximately 3 seconds stage 1-2 shall load next
 
+Scenario: A title-selected stage can start a run
+  Given the title screen starting level is set to stage 1-3
+  When the player starts a new run
+  Then stage 1-3 shall load as the first interactive stage of that run
+
 Scenario: Timer expiration costs a life
   Given the player is in an active stage
   And the stage timer has 1 second remaining
@@ -62,6 +68,8 @@ Scenario: Final stage clear ends the MVP world
 ## Example Inputs/Outputs
 - Example input: Player touches a ground-level goal marker in stage `1-3` with `87` seconds remaining.
 - Expected output: Stage clears, a centered run-summary overlay is shown for about `3` seconds, timer converts to score bonus, and next stage is `1-4`.
+- Example input: Title screen starting level is set to `1-2` before a new run begins.
+- Expected output: The run opens on stage `1-2`, and later stage clear progression continues to `1-3` and `1-4` in order.
 
 ## Edge Cases
 - Coin reward overflow at the extra life threshold shall not skip life grants.
@@ -69,6 +77,7 @@ Scenario: Final stage clear ends the MVP world
 - Goal marker presentation shall remain readable without obscuring nearby terrain at the stage endpoint.
 - The timer shall not continue counting down after stage clear begins.
 - The automatic stage-advance summary shall not wait for player confirmation or leave the run stalled between non-final stages.
+- Starting from a title-selected later stage shall not corrupt the saved highest-cleared-stage tracking for the run.
 
 ## Non-Functional Constraints
 - Restart after death should be fast enough to preserve play rhythm.

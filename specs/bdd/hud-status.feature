@@ -13,10 +13,10 @@ Feature: In-game HUD
     When gameplay begins
     Then the HUD shows 1-3 as the stage identifier
 
-  Scenario: HUD fields remain aligned across mixed icon sizes
-    Given the HUD renders multiple fields with different icon artwork sizes
+  Scenario: HUD fields remain aligned across text-only stats
+    Given the HUD renders score, coins, stage, lives, time, and form fields
     When the header row is displayed
-    Then the icons, labels, and values remain consistently aligned
+    Then the labels and values remain consistently aligned
 
   Scenario: HUD uses a dark backing for readability
     Given the stage background behind the HUD is bright

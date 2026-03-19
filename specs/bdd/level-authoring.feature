@@ -20,6 +20,12 @@ Feature: Godot level authoring
     Then those changes exist through level-scene authoring
     And no stage-specific controller logic is modified
 
+  Scenario: Minor placement offsets can be normalized at load time
+    Given an enemy or hazard is authored slightly off the supporting terrain
+    When the stage loads
+    Then runtime normalization places that content on valid support
+    And no bespoke per-stage correction script is required
+
   Scenario: Stage metadata exposes runtime context
     Given stage 1-3 is loaded
     When the runtime requests stage metadata

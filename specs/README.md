@@ -30,6 +30,6 @@ This repository is Godot-targeted and AI-friendly.
 7. Reference external repositories for patterns only; do not copy Mario IP, copyrighted assets, or third-party code into product requirements.
 
 ## Current Version
-- Baseline: `v1.0`
+- Baseline: `v1.2`
 - Product: `Super Pixel Quest`
 - Target Engine: `Godot 4.x`

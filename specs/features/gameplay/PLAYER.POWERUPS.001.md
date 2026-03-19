@@ -2,7 +2,7 @@
 
 ## Metadata
 - **Title**: Player Form Upgrades and Damage Resolution
-- **Version**: `v1.0`
+- **Version**: `v1.1`
 - **Status**: Approved
 - **Context/View**: Core Gameplay
 - **Priority**: High
@@ -28,7 +28,9 @@ Define how the player gains power-ups, changes form, and resolves damage.
 - `PLAYER.POWERUPS.001-R8`: When the player takes damage in `Small Form`, the player shall lose a life.
 - `PLAYER.POWERUPS.001-R9`: During the invulnerability window, additional damage sources shall not remove another form or life.
 - `PLAYER.POWERUPS.001-R10`: `Enhanced Form` shall allow the player to emit a ranged attack while respecting a bounded on-screen projectile limit.
-- `PLAYER.POWERUPS.001-R11`: A valid player projectile emitted from `Enhanced Form` shall be able to defeat eligible enemies.
+- `PLAYER.POWERUPS.001-R10A`: The current MVP build shall cap active player projectiles at 2 simultaneous shots.
+- `PLAYER.POWERUPS.001-R11`: A valid player projectile emitted from `Enhanced Form` shall resolve against enemies according to enemy vulnerability rules.
+- `PLAYER.POWERUPS.001-R11A`: Eligible standard enemies shall be defeated by a valid player projectile, while non-standard enemies may resist or reflect that projectile according to `ENEMIES.CORE.001`.
 
 ## Acceptance Criteria (BDD)
 ```gherkin
@@ -52,7 +54,13 @@ Scenario: Enhanced form can launch a ranged attack
   Given the player is in Enhanced Form
   When the player presses the attack control
   Then the system shall spawn a ranged attack projectile
-  And the projectile shall be able to defeat eligible enemies
+  And the projectile shall resolve against enemies according to their vulnerability rules
+
+Scenario: Active projectile count is bounded
+  Given the player is in Enhanced Form
+  And 2 player projectiles are already active
+  When the player presses the attack control again
+  Then no additional player projectile shall be spawned
 ```
 
 ## Example Inputs/Outputs
@@ -62,11 +70,14 @@ Scenario: Enhanced form can launch a ranged attack
 - Expected output: Player downgrades to `Powered Form` and remains temporarily invulnerable.
 - Example input: Enhanced player fires a projectile at a standard enemy.
 - Expected output: The enemy is defeated if it is vulnerable to projectiles.
+- Example input: Enhanced player fires a projectile at an armored enemy.
+- Expected output: The projectile resolves using the enemy's special vulnerability rule and may be reflected rather than defeating the enemy.
 
 ## Edge Cases
 - Damage received during the invulnerability window shall have no gameplay effect.
 - Collecting an attack power-up in `Small Form` shall first result in a non-smaller upgraded state as defined by game balance.
 - Projectile limit reached shall prevent additional projectile spawn until an active projectile leaves play.
+- Projectile resolution shall remain consistent whether the projectile defeats, is blocked by, or is reflected from an enemy.
 
 ## Non-Functional Constraints
 - Form transitions should be visually readable and not interrupt control longer than necessary.

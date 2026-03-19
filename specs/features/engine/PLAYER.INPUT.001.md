@@ -1,14 +1,14 @@
 # Spec: `PLAYER.INPUT.001`
 
 ## Metadata
-- **Title**: Godot Input Map for Gameplay, Menus, and Touch Fallback
-- **Version**: `v1.0`
+- **Title**: Godot Input Map for Keyboard-First Gameplay and Menus
+- **Version**: `v1.1`
 - **Status**: Approved
 - **Context/View**: Input
 - **Priority**: High
 
 ## Purpose
-Define a stable Godot Input Map that supports keyboard, gamepad, and optional touch controls without rewriting gameplay logic per device.
+Define the stable Godot Input Map used by the current keyboard-first build without rewriting gameplay logic around raw key checks.
 
 ## Preconditions
 - The project input actions are being configured in Godot.
@@ -19,11 +19,12 @@ Define a stable Godot Input Map that supports keyboard, gamepad, and optional to
 ## Requirements
 - `PLAYER.INPUT.001-R1`: The project shall define named input actions for at least `move_left`, `move_right`, `move_down`, `jump`, `action`, and `pause`.
 - `PLAYER.INPUT.001-R2`: Gameplay logic shall read named actions from Godot Input Map instead of binding to physical keys directly.
-- `PLAYER.INPUT.001-R3`: The default desktop bindings shall support keyboard play using arrow keys and `A`/`D`, plus `Space` or equivalent for jump.
-- `PLAYER.INPUT.001-R4`: The default gameplay bindings shall support gamepad equivalents for movement, jump, action, and pause.
-- `PLAYER.INPUT.001-R5`: If the game is exported to a touch-first platform, the project shall provide on-screen controls mapped to the same named actions.
-- `PLAYER.INPUT.001-R6`: The `pause` action shall be available from active gameplay and ignored during non-gameplay states when pause behavior is not meaningful.
-- `PLAYER.INPUT.001-R7`: Menu interactions shall be controllable with the same input abstraction layer used by gameplay-capable devices.
+- `PLAYER.INPUT.001-R3`: The default desktop bindings shall support keyboard play using `A` or Left Arrow for `move_left`, `D` or Right Arrow for `move_right`, and `S` or Down Arrow for `move_down`.
+- `PLAYER.INPUT.001-R4`: The default jump binding shall support `W`, Up Arrow, `Space`, and the secondary keyboard fallback key used by the current build.
+- `PLAYER.INPUT.001-R5`: The default action binding shall support `Shift` and the secondary keyboard fallback key used by the current build.
+- `PLAYER.INPUT.001-R6`: The default pause binding shall support `Escape` and a keyboard fallback pause key.
+- `PLAYER.INPUT.001-R7`: The `pause` action shall be available from active gameplay and ignored during non-gameplay states when pause behavior is not meaningful.
+- `PLAYER.INPUT.001-R8`: Menu interactions shall remain consistent with the same keyboard-focused input abstraction used by gameplay.
 
 ## Acceptance Criteria (BDD)
 ```gherkin
@@ -32,10 +33,10 @@ Scenario: Gameplay reads named actions
   When gameplay input is evaluated
   Then the player controller shall respond to the `jump` action
 
-Scenario: Gamepad uses the same action model
-  Given a gamepad is connected
-  When the player presses the mapped jump button
-  Then gameplay shall trigger the same `jump` action used by keyboard input
+Scenario: Keyboard fallback keys resolve to the same action
+  Given `Shift` and the fallback attack key are both mapped to the `action` input
+  When the player presses either key during valid gameplay
+  Then gameplay shall trigger the same `action` behavior
 
 Scenario: Pause uses a dedicated action
   Given the player is in an active stage
@@ -44,13 +45,12 @@ Scenario: Pause uses a dedicated action
 ```
 
 ## Example Inputs/Outputs
-- Example input: `Space` mapped to `jump`, `Left Shift` mapped to `action`.
-- Expected output: Player movement code reads actions, not raw key codes.
+- Example input: `Space`, `W`, Up Arrow, and `K` mapped to `jump`, with `Shift` and `J` mapped to `action`.
+- Expected output: Player movement and attack code read named actions, not raw key codes.
 
 ## Edge Cases
 - Multiple physical bindings for one action shall still resolve to one gameplay intent.
-- Disconnecting a gamepad shall not break keyboard fallback input.
-- Touch overlays shall not create device-specific gameplay rules.
+- Keyboard fallback bindings shall remain usable if the player prefers letter keys over arrows.
 
 ## Non-Functional Constraints
 - Input definitions should remain inspectable in Godot Project Settings.

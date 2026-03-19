@@ -23,6 +23,7 @@
 | Top-down stomp on stompable enemy | Defeat enemy, bounce player, play inverted falling death animation | Awards score |
 | Side or below enemy contact | Apply damage resolution | Unless invulnerable |
 | Standard stomp on armored enemy | Enemy remains active | May still threaten player |
+| Projectile hit on armored enemy | Reflect projectile, remain active | Returned shot becomes a hostile threat |
 | Stomp on protected-head enemy top | Enemy remains active | Top protection prevents crush result |
 | Shooter fire condition met | Emit hostile projectile | Cadence must remain readable |
 | Projectile hit on vulnerable enemy | Defeat enemy | Awards score |
@@ -33,8 +34,10 @@
 |---|---|---|
 | Starting lives | `3` | New session baseline |
 | Stage order | `1-1` -> `1-2` -> `1-3` -> `1-4` | MVP world only |
+| Title-selected starting stage | Allowed before run start | Progression continues forward from selected stage |
 | Title branding | Use dedicated game logo in title layout | Must remain readable over animation |
 | Title-screen attract motion | Player runs right to left while fleeing an enemy | Keeps title screen lively without entering gameplay |
+| Title-screen chaser | Choose from readable enemy variants | Current build rotates among a small curated set |
 | Stage entry presentation | Centered black transition card for about `3` seconds | Shows current player appearance and remaining lives |
 | Goal marker touched while alive | Clear current stage | Timer stops immediately |
 | Non-final stage clear presentation | Show centered summary for about `3` seconds, then auto-advance | No `Continue` prompt required |
@@ -75,7 +78,7 @@
 | Shared audio access | Autoload or globally reachable audio service | Avoid duplicate mixer logic in stage scenes |
 | Repeated gameplay objects | `PackedScene` instances or scene tiles | Avoid duplicated scene trees |
 | Input handling | Named Input Map actions | No direct gameplay dependence on raw key codes |
-| Touch support | Same named actions via touch overlay | Export-dependent fallback, not separate logic |
+| Desktop input bindings | Keyboard-first named actions | Current build uses multi-key fallbacks for jump, action, and pause |
 
 ## Godot Level and Camera Authoring Rules (`LEVEL.AUTHORING.001`, `CAMERA.FOLLOW.001`)
 
@@ -90,7 +93,7 @@
 | Camera implementation | `Camera2D` | Uses bounds and readability-focused follow rules |
 | Camera outside bounds | Never allowed | Prevents exposing non-authored space |
 | Vertical jitter policy | Suppressed for small jumps | Favors readability over strict centering |
-| HUD icon alignment | Normalize slot size and text alignment | Prevent one asset from visually dominating the row |
+| HUD presentation | Text-first stat row with retro styling | Avoids sprite-icon readability problems |
 | HUD readability backing | Use dark top-band panel or equivalent contrast treatment | Prevent bright backgrounds from washing out stats |
 
 ## Audio and Save Rules (`AUDIO.SYSTEM.001`, `SAVE.PROGRESSION.001`)

@@ -1,0 +1,22 @@
+{
+  "specId": "ENEMIES.CORE.001",
+  "input": {
+    "encounters": [
+      {
+        "enemyType": "Armored",
+        "contact": "projectile"
+      }
+    ]
+  },
+  "expected": {
+    "results": [
+      {
+        "enemyDefeated": false,
+        "projectileOutcome": "reflect",
+        "hostileThreatGenerated": true,
+        "playerBounce": false,
+        "playerDamageResolution": null
+      }
+    ]
+  }
+}

@@ -11,6 +11,11 @@ Feature: Stage progression and scoring flow
     And a centered stage summary is shown
     And after approximately 3 seconds stage 1-2 loads next
 
+  Scenario: A title-selected stage starts the run
+    Given the title screen starting level is set to stage 1-3
+    When the player starts a new run
+    Then stage 1-3 loads as the first interactive stage of that run
+
   Scenario: Timer expiration causes a lost life
     Given the player is in an active stage
     And the timer has 1 second remaining

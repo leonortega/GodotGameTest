@@ -7,18 +7,26 @@ Feature: Title flow and global game shell
     Given the game is launchable
     When the player starts the game
     Then the title screen is the first visible screen
-    And Start Game and Controls actions are visible
+    And Start Game, Controls, Difficulty, and Level actions are visible
     And a distinct game logo is visible in the title layout
     And the title screen shows the player running from right to left while escaping an enemy
     And the title lettering uses an 8-bit style font
 
-  Scenario: Start Game loads the first stage
+  Scenario: Start Game loads the selected stage
     Given the title screen is visible
+    And the title starting level is set to 1-3
     When the player selects Start Game
     Then a black pre-stage transition screen is shown
     And the current player appearance and remaining lives are centered on screen
-    And after approximately 3 seconds stage 1-1 loads
+    And after approximately 3 seconds stage 1-3 loads
     And the player spawns at the stage start
+
+  Scenario: Title actions cycle difficulty and starting stage
+    Given the title screen is visible
+    When the player activates the Difficulty action
+    Then the visible difficulty changes to the next option
+    When the player activates the Level action
+    Then the visible starting stage changes to the next option
 
   Scenario: Pause suspends stage simulation
     Given the player is in an active stage

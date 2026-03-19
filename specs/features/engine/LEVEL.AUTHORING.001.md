@@ -2,7 +2,7 @@
 
 ## Metadata
 - **Title**: Godot Level Scene Authoring with TileSet, TileMap Layers, and Scene Tiles
-- **Version**: `v1.2`
+- **Version**: `v1.3`
 - **Status**: Approved
 - **Context/View**: Level Authoring
 - **Priority**: High
@@ -18,15 +18,17 @@ Define how stages are authored in Godot so that collision, decoration, hazards, 
 
 ## Requirements
 - `LEVEL.AUTHORING.001-R1`: Each stage shall be represented by its own Godot level scene.
-- `LEVEL.AUTHORING.001-R2`: Stages shall use a shared TileSet for reusable terrain and collision tiles.
+- `LEVEL.AUTHORING.001-R2`: Stages shall use reusable terrain authoring primitives, including shared TileSet-based solids and reusable packed terrain scenes where appropriate.
 - `LEVEL.AUTHORING.001-R3`: Level scenes shall separate at least solid terrain, decoration, and hazard or gameplay layers to keep editing responsibilities clear.
 - `LEVEL.AUTHORING.001-R4`: Coins, power-ups, goal markers, and enemy spawns shall be placeable as scene instances or scene tiles rather than hard-coded coordinates in player scripts.
 - `LEVEL.AUTHORING.001-R4A`: Blocks intended to be struck from below shall preserve a minimum vertical clearance beneath them of at least the standing player height, whether by direct authoring validation or runtime normalization.
 - `LEVEL.AUTHORING.001-R4B`: Environmental obstacles such as cactus hazards shall be authorable as scene instances or hazard tiles without custom one-off code per stage.
+- `LEVEL.AUTHORING.001-R4C`: Repeated gameplay actors and hazards, including the player, enemies, and cactus hazards, shall be authorable as reusable packed scenes rather than duplicated one-off node trees.
+- `LEVEL.AUTHORING.001-R4D`: Stage load logic may normalize authored enemy, hazard, block, and goal placement onto valid terrain support so that minor authoring offsets do not leave content floating or buried.
 - `LEVEL.AUTHORING.001-R5`: Level data shall expose stage identifier, timer baseline, spawn point, and world bounds.
 - `LEVEL.AUTHORING.001-R6`: World bounds authored in the level scene shall be usable by the camera system to prevent scrolling outside the playable area.
 - `LEVEL.AUTHORING.001-R7`: Hidden routes and bonus areas shall remain authorable through scene composition without requiring separate code forks per level.
-- `LEVEL.AUTHORING.001-R7A`: Stages shall support varied terrain profiles, including rises, drops, and uneven ground segments, rather than requiring long flat runs as the dominant layout pattern.
+- `LEVEL.AUTHORING.001-R7A`: Stages shall support varied terrain profiles, including rises, drops, uneven ground segments, floating platforms, and reusable hill clusters, rather than requiring long flat runs as the dominant layout pattern.
 
 ## Acceptance Criteria (BDD)
 ```gherkin
@@ -52,6 +54,12 @@ Scenario: Hazards and uneven terrain are authorable
   Then those hazards and terrain changes shall be authorable through normal level-scene composition
   And no stage-specific gameplay script fork shall be required
 
+Scenario: Authored placements can be normalized at load time
+  Given an enemy or hazard is authored slightly above or below valid terrain support
+  When the level is validated or loaded
+  Then runtime normalization may snap that content to a valid supported position
+  And the stage shall not require a bespoke per-stage correction script
+
 Scenario: Level metadata provides camera and timer context
   Given stage 1-3 is loaded
   When the runtime reads stage metadata
@@ -59,8 +67,8 @@ Scenario: Level metadata provides camera and timer context
 ```
 
 ## Example Inputs/Outputs
-- Example input: A `1-1` level scene containing terrain layers, a player spawn marker, enemy spawn scenes, and a goal scene.
-- Expected output: The runtime can load the stage without stage-specific logic embedded in the player controller.
+- Example input: A `1-1` level scene containing TileMap-based ground, reusable hill scenes, a player spawn marker, enemy packed scenes, cactus hazard scenes, and a goal scene.
+- Expected output: The runtime can load the stage, normalize minor placement offsets, and present reusable authored content without stage-specific logic embedded in the player controller.
 
 ## Edge Cases
 - Decorative tiles shall not accidentally inherit solid collision when authored on non-solid layers.
@@ -68,6 +76,7 @@ Scenario: Level metadata provides camera and timer context
 - A block adjusted to preserve hit clearance shall not be moved into solid terrain above it or outside the authored world bounds.
 - Hidden routes shall still obey camera and collision boundaries.
 - Uneven terrain shall remain readable enough that jumps, hazards, and enemy placement are still telegraphed to the player.
+- Runtime support snapping shall not drag content across large gaps or move hazards into unfair hidden placements.
 
 ## Non-Functional Constraints
 - Level editing should remain fast for designer iteration in the Godot editor.

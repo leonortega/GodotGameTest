@@ -18,7 +18,13 @@ Feature: Player power-up progression and damage handling
     Given the player is in Enhanced Form
     When the player presses the attack control
     Then a ranged attack projectile is spawned
-    And the projectile can defeat eligible enemies
+    And the projectile resolves against enemies according to their vulnerability rules
+
+  Scenario: Projectile count is capped
+    Given the player is in Enhanced Form
+    And 2 player projectiles are already active
+    When the player presses the attack control
+    Then no additional player projectile is spawned
 
   Scenario: Small player loses a life on damage
     Given the player is in Small Form

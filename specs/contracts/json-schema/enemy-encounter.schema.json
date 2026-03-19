@@ -28,6 +28,24 @@
     "enemyDefeated": {
       "type": "boolean"
     },
+    "projectileOutcome": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "enum": [
+        "defeat",
+        "reflect",
+        "none",
+        null
+      ]
+    },
+    "hostileThreatGenerated": {
+      "type": [
+        "boolean",
+        "null"
+      ]
+    },
     "playerBounce": {
       "type": "boolean"
     },
