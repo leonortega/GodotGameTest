@@ -11,8 +11,6 @@
 [ext_resource type="Script" path="res://scripts/game/MysteryBlock.cs" id="4"]
 
 [ext_resource type="Script" path="res://scripts/game/PickupNode.cs" id="5"]
-
-[ext_resource type="PackedScene" path="res://scenes/terrain/TreetopHill.tscn" id="7_hill"]
 [ext_resource type="PackedScene" path="res://scenes/actors/GroundEnemy.tscn" id="8_ground"]
 [ext_resource type="PackedScene" path="res://scenes/actors/ArmoredEnemy.tscn" id="9_armored"]
 [ext_resource type="PackedScene" path="res://scenes/actors/FlyingEnemy.tscn" id="10_flying"]
@@ -25,7 +23,7 @@ StageId = "1-3"
 Theme = 2
 TimerSeconds = 340
 WorldBounds = Rect2(0, 0, 8512, 720)
-SolidRectTiles = [Rect2i(0, 19, 24, 3), Rect2i(28, 19, 18, 3), Rect2i(50, 19, 18, 3), Rect2i(72, 19, 20, 3), Rect2i(96, 19, 20, 3), Rect2i(120, 19, 22, 3), Rect2i(146, 19, 18, 3), Rect2i(168, 19, 20, 3), Rect2i(192, 19, 18, 3), Rect2i(214, 19, 20, 3), Rect2i(238, 19, 28, 3)]
+SolidRectTiles = [Rect2i(0, 18, 10, 1), Rect2i(14, 16, 8, 1), Rect2i(26, 14, 9, 1), Rect2i(39, 12, 9, 1), Rect2i(52, 11, 8, 1), Rect2i(64, 13, 9, 1), Rect2i(77, 11, 9, 1), Rect2i(90, 10, 9, 1), Rect2i(103, 12, 8, 1), Rect2i(116, 11, 10, 1), Rect2i(130, 9, 10, 1), Rect2i(144, 11, 8, 1), Rect2i(157, 13, 9, 1), Rect2i(171, 11, 8, 1), Rect2i(184, 10, 9, 1), Rect2i(198, 12, 8, 1), Rect2i(211, 11, 9, 1), Rect2i(225, 9, 9, 1), Rect2i(239, 11, 8, 1), Rect2i(250, 9, 16, 1)]
 
 [node name="Backdrop" type="Node2D" parent="."]
 script = ExtResource("2")
@@ -38,28 +36,10 @@ script = ExtResource("2")
 
 [node name="TerrainHills" type="Node2D" parent="."]
 
-[node name="Hill_01" parent="TerrainHills" instance=ExtResource("7_hill")]
-position = Vector2(960, 608)
-
-[node name="Hill_02" parent="TerrainHills" instance=ExtResource("7_hill")]
-position = Vector2(2432, 608)
-
-[node name="Hill_03" parent="TerrainHills" instance=ExtResource("7_hill")]
-position = Vector2(3904, 608)
-
-[node name="Hill_04" parent="TerrainHills" instance=ExtResource("7_hill")]
-position = Vector2(5504, 608)
-
-[node name="Hill_05" parent="TerrainHills" instance=ExtResource("7_hill")]
-position = Vector2(6976, 608)
-
-[node name="Hill_06" parent="TerrainHills" instance=ExtResource("7_hill")]
-position = Vector2(7840, 608)
-
 [node name="Markers" type="Node2D" parent="."]
 
 [node name="PlayerSpawn" type="Marker2D" parent="Markers"]
-position = Vector2(96, 520)
+position = Vector2(96, 553)
 
 [node name="Gameplay" type="Node2D" parent="."]
 
@@ -67,104 +47,109 @@ position = Vector2(96, 520)
 
 [node name="Coin_01" type="Node2D" parent="Gameplay/Pickups"]
 script = ExtResource("5")
-position = Vector2(410, 504)
+position = Vector2(576, 448)
 AuthoredPickupType = 0
 
 [node name="Coin_02" type="Node2D" parent="Gameplay/Pickups"]
 script = ExtResource("5")
-position = Vector2(755, 452)
+position = Vector2(944, 392)
 AuthoredPickupType = 0
 
 [node name="Coin_03" type="Node2D" parent="Gameplay/Pickups"]
 script = ExtResource("5")
-position = Vector2(1754, 416)
+position = Vector2(1408, 264)
 AuthoredPickupType = 0
 
 [node name="Coin_04" type="Node2D" parent="Gameplay/Pickups"]
 script = ExtResource("5")
-position = Vector2(2830, 372)
+position = Vector2(1824, 296)
 AuthoredPickupType = 0
 
 [node name="Coin_05" type="Node2D" parent="Gameplay/Pickups"]
 script = ExtResource("5")
-position = Vector2(3150, 314)
+position = Vector2(2608, 296)
 AuthoredPickupType = 0
 
 [node name="Coin_06" type="Node2D" parent="Gameplay/Pickups"]
 script = ExtResource("5")
-position = Vector2(4180, 272)
+position = Vector2(3000, 200)
 AuthoredPickupType = 0
 
 [node name="Coin_07" type="Node2D" parent="Gameplay/Pickups"]
 script = ExtResource("5")
-position = Vector2(6940, 350)
+position = Vector2(4320, 232)
 AuthoredPickupType = 0
 
 [node name="Coin_08" type="Node2D" parent="Gameplay/Pickups"]
 script = ExtResource("5")
-position = Vector2(7870, 250)
+position = Vector2(6880, 232)
+AuthoredPickupType = 0
+
+[node name="Coin_09" type="Node2D" parent="Gameplay/Pickups"]
+script = ExtResource("5")
+position = Vector2(8240, 232)
 AuthoredPickupType = 0
 
 [node name="Blocks" type="Node2D" parent="Gameplay"]
 
 [node name="Block_Flame" type="StaticBody2D" parent="Gameplay/Blocks"]
 script = ExtResource("4")
-position = Vector2(1150, 392)
+position = Vector2(1408, 312)
 Reward = 2
 
 [node name="Block_Coin_01" type="StaticBody2D" parent="Gameplay/Blocks"]
 script = ExtResource("4")
-position = Vector2(3480, 374)
+position = Vector2(2976, 248)
 Reward = 0
 
 [node name="Block_Coin_02" type="StaticBody2D" parent="Gameplay/Blocks"]
 script = ExtResource("4")
-position = Vector2(3528, 374)
+position = Vector2(3024, 248)
 Reward = 0
 
 [node name="Block_Growth_02" type="StaticBody2D" parent="Gameplay/Blocks"]
 script = ExtResource("4")
-position = Vector2(7090, 390)
+position = Vector2(6880, 280)
 Reward = 1
 
 [node name="Block_Coin_03" type="StaticBody2D" parent="Gameplay/Blocks"]
 script = ExtResource("4")
-position = Vector2(7900, 300)
+position = Vector2(8144, 216)
 Reward = 0
 
 [node name="Enemies" type="Node2D" parent="Gameplay"]
 
 [node name="Enemy_01" parent="Gameplay/Enemies" instance=ExtResource("10_flying")]
-position = Vector2(1430, 320)
+position = Vector2(1500, 320)
 AuthoredPatrolDistance = 180.0
 
 [node name="Enemy_02" parent="Gameplay/Enemies" instance=ExtResource("8_ground")]
-position = Vector2(2130, 372)
+position = Vector2(2180, 399)
 
 [node name="Enemy_03" parent="Gameplay/Enemies" instance=ExtResource("9_armored")]
-position = Vector2(3860, 332)
+position = Vector2(3820, 336)
 
 [node name="Enemy_04" parent="Gameplay/Enemies" instance=ExtResource("10_flying")]
-position = Vector2(4620, 260)
+position = Vector2(4740, 260)
 AuthoredPatrolDistance = 180.0
 
 [node name="Enemy_05" parent="Gameplay/Enemies" instance=ExtResource("11_protected")]
-position = Vector2(5500, 380)
+position = Vector2(5504, 333)
 
 [node name="Enemy_06" parent="Gameplay/Enemies" instance=ExtResource("12_shooter")]
-position = Vector2(6160, 340)
+position = Vector2(5936, 305)
 
 [node name="Enemy_07" parent="Gameplay/Enemies" instance=ExtResource("10_flying")]
-position = Vector2(7040, 390)
+position = Vector2(7060, 300)
 AuthoredPatrolDistance = 180.0
 
 [node name="Enemy_08" parent="Gameplay/Enemies" instance=ExtResource("11_protected")]
-position = Vector2(7820, 250)
+position = Vector2(7696, 333)
 
 [node name="Enemy_09" parent="Gameplay/Enemies" instance=ExtResource("12_shooter")]
-position = Vector2(8210, 300)
+position = Vector2(8280, 273)
 
 [node name="Goal" type="Node2D" parent="Gameplay"]
 script = ExtResource("3")
-position = Vector2(8380, 320)
+position = Vector2(8420, 288)
 
