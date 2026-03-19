@@ -1,0 +1,355 @@
+[gd_scene format=3 uid="uid://d1n73uwyh66ys"]
+
+[ext_resource type="Script" uid="uid://dkydcn2e6dj0a" path="res://scripts/game/GrassHill.cs" id="1"]
+[ext_resource type="Texture2D" uid="uid://hdtoufu2wefi" path="res://assets/art/kenney_new_platformer_pack/Sprites/Tiles/Default/terrain_grass_block_top.png" id="2"]
+[ext_resource type="Texture2D" uid="uid://c0h4343ow810t" path="res://assets/art/kenney_new_platformer_pack/Sprites/Tiles/Default/terrain_grass_block_center.png" id="3"]
+[ext_resource type="Texture2D" uid="uid://cohwseht2h0p6" path="res://assets/art/kenney_new_platformer_pack/Sprites/Tiles/Default/terrain_grass_ramp_short_b.png" id="4"]
+[ext_resource type="Texture2D" uid="uid://dbsrc56drjsnj" path="res://assets/art/kenney_new_platformer_pack/Sprites/Tiles/Default/terrain_grass_block_bottom.png" id="5"]
+[ext_resource type="Texture2D" uid="uid://b884m5fcoaa6o" path="res://assets/art/kenney_new_platformer_pack/Sprites/Tiles/Default/terrain_grass_ramp_short_a.png" id="6"]
+
+[node name="TreetopHill" type="Node2D" unique_id=580657283]
+script = ExtResource("1")
+
+[node name="CollisionBody" type="StaticBody2D" parent="." unique_id=706343242]
+collision_mask = 0
+
+[node name="CollisionPolygon" type="CollisionPolygon2D" parent="CollisionBody" unique_id=478000118]
+polygon = PackedVector2Array(0, 0, 32, 0, 64, -32, 96, -64, 128, -96, 288, -96, 320, -64, 352, -32, 384, 0, 416, 0, 416, 96, 0, 96)
+
+[node name="VisualRoot" type="Node2D" parent="." unique_id=1503463199]
+
+[node name="LeftGroundTop" type="Sprite2D" parent="VisualRoot" unique_id=1220958460]
+position = Vector2(16, 16)
+scale = Vector2(0.5, 0.5)
+texture = ExtResource("2")
+
+[node name="PlateauTop01" type="Sprite2D" parent="VisualRoot" unique_id=1611363255]
+position = Vector2(144, -80)
+scale = Vector2(0.5, 0.5)
+texture = ExtResource("2")
+
+[node name="PlateauTop02" type="Sprite2D" parent="VisualRoot" unique_id=780480159]
+position = Vector2(176, -80)
+scale = Vector2(0.5, 0.5)
+texture = ExtResource("2")
+
+[node name="PlateauTop03" type="Sprite2D" parent="VisualRoot" unique_id=1608166789]
+position = Vector2(208, -80)
+scale = Vector2(0.5, 0.5)
+texture = ExtResource("2")
+
+[node name="PlateauTop04" type="Sprite2D" parent="VisualRoot" unique_id=523462717]
+position = Vector2(240, -80)
+scale = Vector2(0.5, 0.5)
+texture = ExtResource("2")
+
+[node name="PlateauTop05" type="Sprite2D" parent="VisualRoot" unique_id=2031842619]
+position = Vector2(272, -80)
+scale = Vector2(0.5, 0.5)
+texture = ExtResource("2")
+
+[node name="RightGroundTop" type="Sprite2D" parent="VisualRoot" unique_id=870069657]
+position = Vector2(400, 16)
+scale = Vector2(0.5, 0.5)
+texture = ExtResource("2")
+
+[node name="LeftGroundFillUpper" type="Sprite2D" parent="VisualRoot" unique_id=1309668726]
+position = Vector2(16, 48)
+scale = Vector2(0.5, 0.5)
+texture = ExtResource("3")
+
+[node name="LeftSlopeBaseFillUpper" type="Sprite2D" parent="VisualRoot" unique_id=1103544547]
+position = Vector2(48, 48)
+scale = Vector2(0.5, 0.5)
+texture = ExtResource("3")
+
+[node name="LeftMidSlopeFillTop" type="Sprite2D" parent="VisualRoot" unique_id=2131066277]
+position = Vector2(80, 16)
+scale = Vector2(0.5, 0.5)
+texture = ExtResource("3")
+
+[node name="LeftMidSlopeFillUpper" type="Sprite2D" parent="VisualRoot" unique_id=1578318154]
+position = Vector2(80, 48)
+scale = Vector2(0.5, 0.5)
+texture = ExtResource("3")
+
+[node name="LeftUpperSlopeFillTop" type="Sprite2D" parent="VisualRoot" unique_id=578389302]
+position = Vector2(112, -16)
+scale = Vector2(0.5, 0.5)
+texture = ExtResource("3")
+
+[node name="LeftUpperSlopeFillMid" type="Sprite2D" parent="VisualRoot" unique_id=1328421311]
+position = Vector2(112, 16)
+scale = Vector2(0.5, 0.5)
+texture = ExtResource("3")
+
+[node name="LeftUpperSlopeFillUpper" type="Sprite2D" parent="VisualRoot" unique_id=1531333714]
+position = Vector2(112, 48)
+scale = Vector2(0.5, 0.5)
+texture = ExtResource("3")
+
+[node name="PlateauLeftFillTop" type="Sprite2D" parent="VisualRoot" unique_id=551275337]
+position = Vector2(144, -48)
+scale = Vector2(0.5, 0.5)
+texture = ExtResource("3")
+
+[node name="PlateauLeftFillMid" type="Sprite2D" parent="VisualRoot" unique_id=485943236]
+position = Vector2(144, -16)
+scale = Vector2(0.5, 0.5)
+texture = ExtResource("3")
+
+[node name="PlateauLeftFillBase" type="Sprite2D" parent="VisualRoot" unique_id=1671951734]
+position = Vector2(144, 16)
+scale = Vector2(0.5, 0.5)
+texture = ExtResource("3")
+
+[node name="PlateauLeftFillLowerMid" type="Sprite2D" parent="VisualRoot" unique_id=2004195174]
+position = Vector2(144, 48)
+scale = Vector2(0.5, 0.5)
+texture = ExtResource("3")
+
+[node name="PlateauCenterLeftFillTop" type="Sprite2D" parent="VisualRoot" unique_id=1538667812]
+position = Vector2(176, -48)
+scale = Vector2(0.5, 0.5)
+texture = ExtResource("3")
+
+[node name="PlateauCenterLeftFillMid" type="Sprite2D" parent="VisualRoot" unique_id=810447002]
+position = Vector2(176, -16)
+scale = Vector2(0.5, 0.5)
+texture = ExtResource("3")
+
+[node name="PlateauCenterLeftFillBase" type="Sprite2D" parent="VisualRoot" unique_id=422486071]
+position = Vector2(176, 16)
+scale = Vector2(0.5, 0.5)
+texture = ExtResource("3")
+
+[node name="PlateauCenterLeftFillLowerMid" type="Sprite2D" parent="VisualRoot" unique_id=2075248595]
+position = Vector2(176, 48)
+scale = Vector2(0.5, 0.5)
+texture = ExtResource("3")
+
+[node name="PlateauCenterFillTop" type="Sprite2D" parent="VisualRoot" unique_id=1795238825]
+position = Vector2(208, -48)
+scale = Vector2(0.5, 0.5)
+texture = ExtResource("3")
+
+[node name="PlateauCenterFillMid" type="Sprite2D" parent="VisualRoot" unique_id=1359649921]
+position = Vector2(208, -16)
+scale = Vector2(0.5, 0.5)
+texture = ExtResource("3")
+
+[node name="PlateauCenterFillBase" type="Sprite2D" parent="VisualRoot" unique_id=2091914322]
+position = Vector2(208, 16)
+scale = Vector2(0.5, 0.5)
+texture = ExtResource("3")
+
+[node name="PlateauCenterFillLowerMid" type="Sprite2D" parent="VisualRoot" unique_id=553965284]
+position = Vector2(208, 48)
+scale = Vector2(0.5, 0.5)
+texture = ExtResource("3")
+
+[node name="PlateauCenterRightFillTop" type="Sprite2D" parent="VisualRoot" unique_id=1791035648]
+position = Vector2(240, -48)
+scale = Vector2(0.5, 0.5)
+texture = ExtResource("3")
+
+[node name="PlateauCenterRightFillMid" type="Sprite2D" parent="VisualRoot" unique_id=466739901]
+position = Vector2(240, -16)
+scale = Vector2(0.5, 0.5)
+texture = ExtResource("3")
+
+[node name="PlateauCenterRightFillBase" type="Sprite2D" parent="VisualRoot" unique_id=262731922]
+position = Vector2(240, 16)
+scale = Vector2(0.5, 0.5)
+texture = ExtResource("3")
+
+[node name="PlateauCenterRightFillLowerMid" type="Sprite2D" parent="VisualRoot" unique_id=474931216]
+position = Vector2(240, 48)
+scale = Vector2(0.5, 0.5)
+texture = ExtResource("3")
+
+[node name="PlateauRightFillTop" type="Sprite2D" parent="VisualRoot" unique_id=1165425802]
+position = Vector2(272, -48)
+scale = Vector2(0.5, 0.5)
+texture = ExtResource("3")
+
+[node name="PlateauRightFillMid" type="Sprite2D" parent="VisualRoot" unique_id=18643988]
+position = Vector2(272, -16)
+scale = Vector2(0.5, 0.5)
+texture = ExtResource("3")
+
+[node name="PlateauRightFillBase" type="Sprite2D" parent="VisualRoot" unique_id=588638994]
+position = Vector2(272, 16)
+scale = Vector2(0.5, 0.5)
+texture = ExtResource("3")
+
+[node name="PlateauRightFillLowerMid" type="Sprite2D" parent="VisualRoot" unique_id=33049567]
+position = Vector2(272, 48)
+scale = Vector2(0.5, 0.5)
+texture = ExtResource("3")
+
+[node name="RightUpperSlopeFillTop" type="Sprite2D" parent="VisualRoot" unique_id=1234835387]
+position = Vector2(304, -16)
+scale = Vector2(0.5, 0.5)
+texture = ExtResource("3")
+
+[node name="RightUpperSlopeFillMid" type="Sprite2D" parent="VisualRoot" unique_id=1773144116]
+position = Vector2(304, 16)
+scale = Vector2(0.5, 0.5)
+texture = ExtResource("3")
+
+[node name="RightUpperSlopeFillUpper" type="Sprite2D" parent="VisualRoot" unique_id=32845117]
+position = Vector2(304, 48)
+scale = Vector2(0.5, 0.5)
+texture = ExtResource("3")
+
+[node name="RightMidSlopeFillUpper" type="Sprite2D" parent="VisualRoot" unique_id=156823095]
+position = Vector2(336, 48)
+scale = Vector2(0.5, 0.5)
+texture = ExtResource("3")
+
+[node name="RightSlopeBaseFillUpper" type="Sprite2D" parent="VisualRoot" unique_id=929241575]
+position = Vector2(368, 48)
+scale = Vector2(0.5, 0.5)
+texture = ExtResource("3")
+
+[node name="RightGroundFillUpper" type="Sprite2D" parent="VisualRoot" unique_id=1952917667]
+position = Vector2(400, 48)
+scale = Vector2(0.5, 0.5)
+texture = ExtResource("3")
+
+[node name="LeftGroundBottom" type="Sprite2D" parent="VisualRoot" unique_id=1159343404]
+position = Vector2(16, 80)
+scale = Vector2(0.5, 0.5)
+texture = ExtResource("5")
+
+[node name="RightPeakRampOuter" type="Sprite2D" parent="." unique_id=596358613]
+position = Vector2(304, -80)
+scale = Vector2(0.5, 0.5)
+texture = ExtResource("4")
+
+[node name="RightPeakRampInner" type="Sprite2D" parent="." unique_id=13019179]
+position = Vector2(304, -48)
+scale = Vector2(0.5, 0.5)
+texture = ExtResource("6")
+
+[node name="RightSlopeCornerFill" type="Sprite2D" parent="." unique_id=1625744612]
+position = Vector2(336, 16)
+scale = Vector2(0.5, 0.5)
+texture = ExtResource("3")
+
+[node name="RightLowerRampInner" type="Sprite2D" parent="." unique_id=145631059]
+position = Vector2(336, -16)
+scale = Vector2(0.5, 0.5)
+texture = ExtResource("6")
+
+[node name="RightLowerRampOuter" type="Sprite2D" parent="." unique_id=829276173]
+position = Vector2(336, -48)
+scale = Vector2(0.5, 0.5)
+texture = ExtResource("4")
+
+[node name="RightGroundRampOuter" type="Sprite2D" parent="." unique_id=1952417283]
+position = Vector2(368, -16)
+scale = Vector2(0.5, 0.5)
+texture = ExtResource("4")
+
+[node name="RightGroundRampInner" type="Sprite2D" parent="." unique_id=1943627676]
+position = Vector2(368, 16)
+scale = Vector2(0.5, 0.5)
+texture = ExtResource("6")
+
+[node name="LeftGroundRampInner" type="Sprite2D" parent="." unique_id=948994873]
+position = Vector2(48, 16)
+scale = Vector2(0.5, 0.5)
+texture = ExtResource("6")
+flip_h = true
+
+[node name="LeftPeakRampOuter" type="Sprite2D" parent="." unique_id=1943145110]
+position = Vector2(112, -80)
+scale = Vector2(0.5, 0.5)
+texture = ExtResource("4")
+flip_h = true
+
+[node name="LeftPeakRampInner" type="Sprite2D" parent="." unique_id=818093382]
+position = Vector2(112, -48)
+scale = Vector2(0.5, 0.5)
+texture = ExtResource("6")
+flip_h = true
+
+[node name="LeftLowerRampOuter" type="Sprite2D" parent="." unique_id=547825413]
+position = Vector2(80, -48)
+scale = Vector2(0.5, 0.5)
+texture = ExtResource("4")
+flip_h = true
+
+[node name="LeftLowerRampInner" type="Sprite2D" parent="." unique_id=534277650]
+position = Vector2(80, -16)
+scale = Vector2(0.5, 0.5)
+texture = ExtResource("6")
+flip_h = true
+
+[node name="LeftGroundRampOuter" type="Sprite2D" parent="." unique_id=326827375]
+position = Vector2(48, -16)
+scale = Vector2(0.5, 0.5)
+texture = ExtResource("4")
+flip_h = true
+
+[node name="PlateauCenterBottom" type="Sprite2D" parent="." unique_id=2085559908]
+position = Vector2(208, 80)
+scale = Vector2(0.5, 0.5)
+texture = ExtResource("5")
+
+[node name="LeftLowerSlopeBottom" type="Sprite2D" parent="." unique_id=561608967]
+position = Vector2(80, 80)
+scale = Vector2(0.5, 0.5)
+texture = ExtResource("5")
+
+[node name="LeftApproachBottom" type="Sprite2D" parent="." unique_id=204391704]
+position = Vector2(48, 80)
+scale = Vector2(0.5, 0.5)
+texture = ExtResource("5")
+
+[node name="PlateauLeftBottom" type="Sprite2D" parent="." unique_id=1602237500]
+position = Vector2(144, 80)
+scale = Vector2(0.5, 0.5)
+texture = ExtResource("5")
+
+[node name="PlateauCenterLeftBottom" type="Sprite2D" parent="." unique_id=690690940]
+position = Vector2(176, 80)
+scale = Vector2(0.5, 0.5)
+texture = ExtResource("5")
+
+[node name="LeftUpperSlopeBottom" type="Sprite2D" parent="." unique_id=100769994]
+position = Vector2(112, 80)
+scale = Vector2(0.5, 0.5)
+texture = ExtResource("5")
+
+[node name="RightLowerSlopeBottom" type="Sprite2D" parent="." unique_id=753010858]
+position = Vector2(336, 80)
+scale = Vector2(0.5, 0.5)
+texture = ExtResource("5")
+
+[node name="RightGroundBottom" type="Sprite2D" parent="." unique_id=398152499]
+position = Vector2(400, 80)
+scale = Vector2(0.5, 0.5)
+texture = ExtResource("5")
+
+[node name="RightUpperSlopeBottom" type="Sprite2D" parent="." unique_id=1788643137]
+position = Vector2(304, 80)
+scale = Vector2(0.5, 0.5)
+texture = ExtResource("5")
+
+[node name="RightApproachBottom" type="Sprite2D" parent="." unique_id=1800086928]
+position = Vector2(368, 80)
+scale = Vector2(0.5, 0.5)
+texture = ExtResource("5")
+
+[node name="PlateauRightBottom" type="Sprite2D" parent="." unique_id=1061731459]
+position = Vector2(272, 80)
+scale = Vector2(0.5, 0.5)
+texture = ExtResource("5")
+
+[node name="PlateauCenterRightBottom" type="Sprite2D" parent="." unique_id=1263967705]
+position = Vector2(240, 80)
+scale = Vector2(0.5, 0.5)
+texture = ExtResource("5")

@@ -1,0 +1,20 @@
+{
+  "specId": "LEVEL.AUTHORING.001",
+  "stageId": "1-1",
+  "scene": "res://scenes/levels/Stage_1_1.tscn",
+  "timerSeconds": 300,
+  "spawnPoint": "Spawn_Player_Start",
+  "cameraBounds": {
+    "left": 0,
+    "top": 0,
+    "right": 6144,
+    "bottom": 1080
+  },
+  "tileLayers": [
+    "TerrainSolid",
+    "TerrainOneWay",
+    "Hazards",
+    "DecorationBack",
+    "DecorationFront"
+  ]
+}

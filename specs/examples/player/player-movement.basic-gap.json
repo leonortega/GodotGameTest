@@ -1,0 +1,18 @@
+{
+  "specId": "PLAYER.MOVEMENT.001",
+  "input": {
+    "stageId": "1-1",
+    "surface": "flat-ground",
+    "actions": [
+      "hold-right",
+      "hold-run",
+      "press-jump"
+    ],
+    "hazard": "one-tile-gap"
+  },
+  "expected": {
+    "result": "gap-cleared",
+    "landingSurface": "next-platform",
+    "lifeLost": false
+  }
+}

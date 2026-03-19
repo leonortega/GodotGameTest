@@ -1,0 +1,170 @@
+[gd_scene load_steps=8]
+
+
+
+[ext_resource type="Script" path="res://scripts/game/StageScene.cs" id="1"]
+
+[ext_resource type="Script" path="res://scripts/game/StageBackdrop.cs" id="2"]
+
+[ext_resource type="Script" path="res://scripts/game/GoalMarker.cs" id="3"]
+
+[ext_resource type="Script" path="res://scripts/game/MysteryBlock.cs" id="4"]
+
+[ext_resource type="Script" path="res://scripts/game/PickupNode.cs" id="5"]
+
+[ext_resource type="PackedScene" path="res://scenes/terrain/TreetopHill.tscn" id="7_hill"]
+[ext_resource type="PackedScene" path="res://scenes/actors/GroundEnemy.tscn" id="8_ground"]
+[ext_resource type="PackedScene" path="res://scenes/actors/ArmoredEnemy.tscn" id="9_armored"]
+[ext_resource type="PackedScene" path="res://scenes/actors/FlyingEnemy.tscn" id="10_flying"]
+[ext_resource type="PackedScene" path="res://scenes/actors/ProtectedHeadEnemy.tscn" id="11_protected"]
+[ext_resource type="PackedScene" path="res://scenes/actors/ShooterEnemy.tscn" id="12_shooter"]
+
+[node name="Stage_1_3" type="Node2D"]
+script = ExtResource("1")
+StageId = "1-3"
+Theme = 2
+TimerSeconds = 340
+WorldBounds = Rect2(0, 0, 8512, 720)
+SolidRectTiles = [Rect2i(0, 19, 24, 3), Rect2i(28, 19, 18, 3), Rect2i(50, 19, 18, 3), Rect2i(72, 19, 20, 3), Rect2i(96, 19, 20, 3), Rect2i(120, 19, 22, 3), Rect2i(146, 19, 18, 3), Rect2i(168, 19, 20, 3), Rect2i(192, 19, 18, 3), Rect2i(214, 19, 20, 3), Rect2i(238, 19, 28, 3)]
+
+[node name="Backdrop" type="Node2D" parent="."]
+script = ExtResource("2")
+
+[node name="TerrainLayer" type="TileMapLayer" parent="."]
+
+[node name="DecorLayer" type="TileMapLayer" parent="."]
+
+[node name="TileVisualRoot" type="Node2D" parent="."]
+
+[node name="TerrainHills" type="Node2D" parent="."]
+
+[node name="Hill_01" parent="TerrainHills" instance=ExtResource("7_hill")]
+position = Vector2(960, 608)
+
+[node name="Hill_02" parent="TerrainHills" instance=ExtResource("7_hill")]
+position = Vector2(2432, 608)
+
+[node name="Hill_03" parent="TerrainHills" instance=ExtResource("7_hill")]
+position = Vector2(3904, 608)
+
+[node name="Hill_04" parent="TerrainHills" instance=ExtResource("7_hill")]
+position = Vector2(5504, 608)
+
+[node name="Hill_05" parent="TerrainHills" instance=ExtResource("7_hill")]
+position = Vector2(6976, 608)
+
+[node name="Hill_06" parent="TerrainHills" instance=ExtResource("7_hill")]
+position = Vector2(7840, 608)
+
+[node name="Markers" type="Node2D" parent="."]
+
+[node name="PlayerSpawn" type="Marker2D" parent="Markers"]
+position = Vector2(96, 520)
+
+[node name="Gameplay" type="Node2D" parent="."]
+
+[node name="Pickups" type="Node2D" parent="Gameplay"]
+
+[node name="Coin_01" type="Node2D" parent="Gameplay/Pickups"]
+script = ExtResource("5")
+position = Vector2(410, 504)
+AuthoredPickupType = 0
+
+[node name="Coin_02" type="Node2D" parent="Gameplay/Pickups"]
+script = ExtResource("5")
+position = Vector2(755, 452)
+AuthoredPickupType = 0
+
+[node name="Coin_03" type="Node2D" parent="Gameplay/Pickups"]
+script = ExtResource("5")
+position = Vector2(1754, 416)
+AuthoredPickupType = 0
+
+[node name="Coin_04" type="Node2D" parent="Gameplay/Pickups"]
+script = ExtResource("5")
+position = Vector2(2830, 372)
+AuthoredPickupType = 0
+
+[node name="Coin_05" type="Node2D" parent="Gameplay/Pickups"]
+script = ExtResource("5")
+position = Vector2(3150, 314)
+AuthoredPickupType = 0
+
+[node name="Coin_06" type="Node2D" parent="Gameplay/Pickups"]
+script = ExtResource("5")
+position = Vector2(4180, 272)
+AuthoredPickupType = 0
+
+[node name="Coin_07" type="Node2D" parent="Gameplay/Pickups"]
+script = ExtResource("5")
+position = Vector2(6940, 350)
+AuthoredPickupType = 0
+
+[node name="Coin_08" type="Node2D" parent="Gameplay/Pickups"]
+script = ExtResource("5")
+position = Vector2(7870, 250)
+AuthoredPickupType = 0
+
+[node name="Blocks" type="Node2D" parent="Gameplay"]
+
+[node name="Block_Flame" type="StaticBody2D" parent="Gameplay/Blocks"]
+script = ExtResource("4")
+position = Vector2(1150, 392)
+Reward = 2
+
+[node name="Block_Coin_01" type="StaticBody2D" parent="Gameplay/Blocks"]
+script = ExtResource("4")
+position = Vector2(3480, 374)
+Reward = 0
+
+[node name="Block_Coin_02" type="StaticBody2D" parent="Gameplay/Blocks"]
+script = ExtResource("4")
+position = Vector2(3528, 374)
+Reward = 0
+
+[node name="Block_Growth_02" type="StaticBody2D" parent="Gameplay/Blocks"]
+script = ExtResource("4")
+position = Vector2(7090, 390)
+Reward = 1
+
+[node name="Block_Coin_03" type="StaticBody2D" parent="Gameplay/Blocks"]
+script = ExtResource("4")
+position = Vector2(7900, 300)
+Reward = 0
+
+[node name="Enemies" type="Node2D" parent="Gameplay"]
+
+[node name="Enemy_01" parent="Gameplay/Enemies" instance=ExtResource("10_flying")]
+position = Vector2(1430, 320)
+AuthoredPatrolDistance = 180.0
+
+[node name="Enemy_02" parent="Gameplay/Enemies" instance=ExtResource("8_ground")]
+position = Vector2(2130, 372)
+
+[node name="Enemy_03" parent="Gameplay/Enemies" instance=ExtResource("9_armored")]
+position = Vector2(3860, 332)
+
+[node name="Enemy_04" parent="Gameplay/Enemies" instance=ExtResource("10_flying")]
+position = Vector2(4620, 260)
+AuthoredPatrolDistance = 180.0
+
+[node name="Enemy_05" parent="Gameplay/Enemies" instance=ExtResource("11_protected")]
+position = Vector2(5500, 380)
+
+[node name="Enemy_06" parent="Gameplay/Enemies" instance=ExtResource("12_shooter")]
+position = Vector2(6160, 340)
+
+[node name="Enemy_07" parent="Gameplay/Enemies" instance=ExtResource("10_flying")]
+position = Vector2(7040, 390)
+AuthoredPatrolDistance = 180.0
+
+[node name="Enemy_08" parent="Gameplay/Enemies" instance=ExtResource("11_protected")]
+position = Vector2(7820, 250)
+
+[node name="Enemy_09" parent="Gameplay/Enemies" instance=ExtResource("12_shooter")]
+position = Vector2(8350, 300)
+
+[node name="Goal" type="Node2D" parent="Gameplay"]
+script = ExtResource("3")
+position = Vector2(8380, 320)
+

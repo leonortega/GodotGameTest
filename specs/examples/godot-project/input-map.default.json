@@ -1,0 +1,35 @@
+{
+  "specId": "PLAYER.INPUT.001",
+  "actions": {
+    "move_left": [
+      "KeyA",
+      "ArrowLeft",
+      "JoypadLeft"
+    ],
+    "move_right": [
+      "KeyD",
+      "ArrowRight",
+      "JoypadRight"
+    ],
+    "move_down": [
+      "KeyS",
+      "ArrowDown",
+      "JoypadDown"
+    ],
+    "jump": [
+      "Space",
+      "KeyK",
+      "JoypadSouth"
+    ],
+    "action": [
+      "Shift",
+      "KeyJ",
+      "JoypadWest"
+    ],
+    "pause": [
+      "Escape",
+      "Enter",
+      "JoypadStart"
+    ]
+  }
+}

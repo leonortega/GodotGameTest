@@ -1,0 +1,14 @@
+{
+  "specId": "CAMERA.FOLLOW.001",
+  "stageId": "1-3",
+  "camera2D": {
+    "smoothingEnabled": true,
+    "horizontalBias": "forward",
+    "limits": {
+      "left": 0,
+      "top": 0,
+      "right": 6912,
+      "bottom": 1080
+    }
+  }
+}

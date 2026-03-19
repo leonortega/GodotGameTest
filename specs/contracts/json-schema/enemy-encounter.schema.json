@@ -1,0 +1,47 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "enemy-encounter.schema.json",
+  "title": "Enemy Encounter",
+  "type": "object",
+  "required": [
+    "enemyType",
+    "contact",
+    "enemyDefeated"
+  ],
+  "properties": {
+    "enemyType": {
+      "type": "string",
+      "enum": [
+        "Ground",
+        "Armored",
+        "Flying"
+      ]
+    },
+    "contact": {
+      "type": "string",
+      "enum": [
+        "stomp",
+        "side",
+        "projectile"
+      ]
+    },
+    "enemyDefeated": {
+      "type": "boolean"
+    },
+    "playerBounce": {
+      "type": "boolean"
+    },
+    "playerDamageResolution": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "enum": [
+        "apply",
+        "ignore",
+        null
+      ]
+    }
+  },
+  "additionalProperties": false
+}

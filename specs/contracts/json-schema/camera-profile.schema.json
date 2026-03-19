@@ -1,0 +1,62 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "camera-profile.schema.json",
+  "title": "Camera Profile",
+  "type": "object",
+  "required": [
+    "stageId",
+    "camera2D"
+  ],
+  "properties": {
+    "stageId": {
+      "type": "string",
+      "pattern": "^[1-9]-[1-9]$"
+    },
+    "camera2D": {
+      "type": "object",
+      "required": [
+        "smoothingEnabled",
+        "horizontalBias",
+        "limits"
+      ],
+      "properties": {
+        "smoothingEnabled": {
+          "type": "boolean"
+        },
+        "horizontalBias": {
+          "type": "string",
+          "enum": [
+            "centered",
+            "forward"
+          ]
+        },
+        "limits": {
+          "type": "object",
+          "required": [
+            "left",
+            "top",
+            "right",
+            "bottom"
+          ],
+          "properties": {
+            "left": {
+              "type": "integer"
+            },
+            "top": {
+              "type": "integer"
+            },
+            "right": {
+              "type": "integer"
+            },
+            "bottom": {
+              "type": "integer"
+            }
+          },
+          "additionalProperties": false
+        }
+      },
+      "additionalProperties": false
+    }
+  },
+  "additionalProperties": false
+}

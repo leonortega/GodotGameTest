@@ -1,0 +1,19 @@
+{
+  "specId": "PLAYER.POWERUPS.001",
+  "input": {
+    "initialForm": "Enhanced",
+    "events": [
+      "contact-damage",
+      "contact-damage-during-invulnerability",
+      "contact-damage-after-invulnerability"
+    ]
+  },
+  "expected": {
+    "formsAfterEvents": [
+      "Powered",
+      "Powered",
+      "Small"
+    ],
+    "lifeLost": false
+  }
+}

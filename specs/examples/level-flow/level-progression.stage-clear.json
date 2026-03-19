@@ -1,0 +1,16 @@
+{
+  "specId": "LEVEL.PROGRESSION.001",
+  "input": {
+    "stageId": "1-3",
+    "lives": 2,
+    "coins": 87,
+    "timeRemaining": 91,
+    "touchGoalMarker": true
+  },
+  "expected": {
+    "stageCleared": true,
+    "nextStageId": "1-4",
+    "bonusScoreFromTime": 91,
+    "sessionState": "continue"
+  }
+}

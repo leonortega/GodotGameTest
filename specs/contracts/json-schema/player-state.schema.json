@@ -1,0 +1,32 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "player-state.schema.json",
+  "title": "Player State",
+  "type": "object",
+  "required": [
+    "form",
+    "invulnerable",
+    "grounded",
+    "canFireProjectile"
+  ],
+  "properties": {
+    "form": {
+      "type": "string",
+      "enum": [
+        "Small",
+        "Powered",
+        "Enhanced"
+      ]
+    },
+    "invulnerable": {
+      "type": "boolean"
+    },
+    "grounded": {
+      "type": "boolean"
+    },
+    "canFireProjectile": {
+      "type": "boolean"
+    }
+  },
+  "additionalProperties": false
+}

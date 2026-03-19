@@ -1,0 +1,14 @@
+{
+  "specId": "AUDIO.SYSTEM.001",
+  "buses": [
+    "Master",
+    "Music",
+    "SFX",
+    "UI"
+  ],
+  "stageThemes": {
+    "grassland": "res://audio/music/stage_grassland_loop.ogg",
+    "cave": "res://audio/music/stage_cave_loop.ogg",
+    "fortress": "res://audio/music/stage_fortress_loop.ogg"
+  }
+}

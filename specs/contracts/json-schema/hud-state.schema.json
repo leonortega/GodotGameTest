@@ -1,0 +1,40 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "hud-state.schema.json",
+  "title": "HUD State",
+  "type": "object",
+  "required": [
+    "stageId",
+    "score",
+    "coins",
+    "lives",
+    "timeRemaining",
+    "paused"
+  ],
+  "properties": {
+    "stageId": {
+      "type": "string",
+      "pattern": "^[1-9]-[1-9]$"
+    },
+    "score": {
+      "type": "integer",
+      "minimum": 0
+    },
+    "coins": {
+      "type": "integer",
+      "minimum": 0
+    },
+    "lives": {
+      "type": "integer",
+      "minimum": 0
+    },
+    "timeRemaining": {
+      "type": "integer",
+      "minimum": 0
+    },
+    "paused": {
+      "type": "boolean"
+    }
+  },
+  "additionalProperties": false
+}

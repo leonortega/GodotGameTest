@@ -1,0 +1,40 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "game-session.schema.json",
+  "title": "Game Session",
+  "type": "object",
+  "required": [
+    "stageId",
+    "lives",
+    "coins",
+    "score",
+    "playerForm"
+  ],
+  "properties": {
+    "stageId": {
+      "type": "string",
+      "pattern": "^[1-9]-[1-9]$"
+    },
+    "lives": {
+      "type": "integer",
+      "minimum": 0
+    },
+    "coins": {
+      "type": "integer",
+      "minimum": 0
+    },
+    "score": {
+      "type": "integer",
+      "minimum": 0
+    },
+    "playerForm": {
+      "type": "string",
+      "enum": [
+        "Small",
+        "Powered",
+        "Enhanced"
+      ]
+    }
+  },
+  "additionalProperties": false
+}

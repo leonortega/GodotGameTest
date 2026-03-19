@@ -1,0 +1,29 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "project-layout.schema.json",
+  "title": "Project Layout",
+  "type": "object",
+  "required": [
+    "rootScene",
+    "autoloads",
+    "primaryScenes"
+  ],
+  "properties": {
+    "rootScene": {
+      "type": "string"
+    },
+    "autoloads": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "primaryScenes": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    }
+  },
+  "additionalProperties": false
+}

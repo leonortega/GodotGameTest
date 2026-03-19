@@ -1,0 +1,17 @@
+{
+  "specId": "ENGINE.PROJECT.001",
+  "rootScene": "Main.tscn",
+  "autoloads": [
+    "GameSession",
+    "AudioDirector"
+  ],
+  "primaryScenes": [
+    "TitleScreen.tscn",
+    "WorldRoot.tscn",
+    "Hud.tscn",
+    "Player.tscn",
+    "EnemyGround.tscn",
+    "EnemyFlying.tscn",
+    "EnemyArmored.tscn"
+  ]
+}

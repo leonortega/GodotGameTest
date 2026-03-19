@@ -1,0 +1,27 @@
+{
+  "specId": "ENEMIES.CORE.001",
+  "input": {
+    "encounters": [
+      {
+        "enemyType": "Ground",
+        "contact": "stomp"
+      },
+      {
+        "enemyType": "Armored",
+        "contact": "stomp"
+      }
+    ]
+  },
+  "expected": {
+    "results": [
+      {
+        "enemyDefeated": true,
+        "playerBounce": true
+      },
+      {
+        "enemyDefeated": false,
+        "playerDamageResolution": "apply"
+      }
+    ]
+  }
+}

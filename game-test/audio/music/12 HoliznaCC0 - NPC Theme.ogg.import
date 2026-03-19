@@ -1,0 +1,19 @@
+[remap]
+
+importer="oggvorbisstr"
+type="AudioStreamOggVorbis"
+uid="uid://butvfir5wyqk7"
+path="res://.godot/imported/12 HoliznaCC0 - NPC Theme.ogg-f428e256096ae35050a042d6939c5cea.oggvorbisstr"
+
+[deps]
+
+source_file="res://audio/music/12 HoliznaCC0 - NPC Theme.ogg"
+dest_files=["res://.godot/imported/12 HoliznaCC0 - NPC Theme.ogg-f428e256096ae35050a042d6939c5cea.oggvorbisstr"]
+
+[params]
+
+loop=false
+loop_offset=0
+bpm=0
+beat_count=0
+bar_beats=4

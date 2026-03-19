@@ -1,0 +1,153 @@
+[gd_scene format=3 uid="uid://ifppjeadelxt"]
+
+[ext_resource type="Texture2D" uid="uid://hdtoufu2wefi" path="res://assets/art/kenney_new_platformer_pack/Sprites/Tiles/Default/terrain_grass_block_top.png" id="1_yhaka"]
+[ext_resource type="Texture2D" uid="uid://c0iy8h3vmlv35" path="res://assets/art/kenney_new_platformer_pack/Sprites/Tiles/Default/terrain_grass_ramp_long_a.png" id="2_a5ib5"]
+[ext_resource type="Texture2D" uid="uid://c0h4343ow810t" path="res://assets/art/kenney_new_platformer_pack/Sprites/Tiles/Default/terrain_grass_block_center.png" id="3_wj0sy"]
+[ext_resource type="Texture2D" uid="uid://rxswboi5ge6x" path="res://assets/art/kenney_new_platformer_pack/Sprites/Tiles/Default/terrain_grass_ramp_long_c.png" id="4_ipffr"]
+[ext_resource type="Texture2D" uid="uid://c41agl5dwkemm" path="res://assets/art/kenney_new_platformer_pack/Sprites/Tiles/Default/terrain_grass_ramp_long_b.png" id="5_g43df"]
+
+[node name="TerrainGrassBlockTop" type="Sprite2D" unique_id=1459264657]
+position = Vector2(595, 166)
+texture = ExtResource("1_yhaka")
+
+[node name="TerrainGrassRampLongA" type="Sprite2D" parent="." unique_id=874119424 groups=["slope"]]
+position = Vector2(64, 0)
+texture = ExtResource("2_a5ib5")
+
+[node name="TerrainGrassBlockTop" type="Sprite2D" parent="." unique_id=1254854660]
+position = Vector2(-63, 0)
+texture = ExtResource("1_yhaka")
+
+[node name="TerrainGrassBlockTop2" type="Sprite2D" parent="." unique_id=1226222052]
+position = Vector2(-127, 0)
+texture = ExtResource("1_yhaka")
+
+[node name="TerrainGrassBlockTop3" type="Sprite2D" parent="." unique_id=771924079]
+position = Vector2(-191, 0)
+texture = ExtResource("1_yhaka")
+
+[node name="TerrainGrassBlockCenter" type="Sprite2D" parent="." unique_id=1539272732]
+position = Vector2(-191, 64)
+texture = ExtResource("3_wj0sy")
+
+[node name="TerrainGrassBlockCenter" type="Sprite2D" parent="TerrainGrassBlockCenter" unique_id=904303098]
+position = Vector2(64, 0)
+texture = ExtResource("3_wj0sy")
+
+[node name="TerrainGrassBlockCenter" type="Sprite2D" parent="TerrainGrassBlockCenter/TerrainGrassBlockCenter" unique_id=1584789511]
+position = Vector2(64, 0)
+texture = ExtResource("3_wj0sy")
+
+[node name="TerrainGrassBlockCenter" type="Sprite2D" parent="TerrainGrassBlockCenter/TerrainGrassBlockCenter/TerrainGrassBlockCenter" unique_id=725242477]
+position = Vector2(64, 0)
+texture = ExtResource("3_wj0sy")
+
+[node name="TerrainGrassBlockCenter2" type="Sprite2D" parent="TerrainGrassBlockCenter" unique_id=1068871101]
+position = Vector2(0, 63)
+texture = ExtResource("3_wj0sy")
+
+[node name="TerrainGrassBlockCenter" type="Sprite2D" parent="TerrainGrassBlockCenter/TerrainGrassBlockCenter2" unique_id=143943249]
+position = Vector2(64, 0)
+texture = ExtResource("3_wj0sy")
+
+[node name="TerrainGrassBlockCenter" type="Sprite2D" parent="TerrainGrassBlockCenter/TerrainGrassBlockCenter2/TerrainGrassBlockCenter" unique_id=1673696325]
+position = Vector2(64, 0)
+texture = ExtResource("3_wj0sy")
+
+[node name="TerrainGrassBlockCenter" type="Sprite2D" parent="TerrainGrassBlockCenter/TerrainGrassBlockCenter2/TerrainGrassBlockCenter/TerrainGrassBlockCenter" unique_id=227633432]
+position = Vector2(64, 0)
+texture = ExtResource("3_wj0sy")
+
+[node name="TerrainGrassBlockCenter" type="Sprite2D" parent="TerrainGrassBlockCenter/TerrainGrassBlockCenter2/TerrainGrassBlockCenter/TerrainGrassBlockCenter/TerrainGrassBlockCenter" unique_id=944756262 groups=["slope"]]
+position = Vector2(64, 0)
+texture = ExtResource("3_wj0sy")
+
+[node name="TerrainGrassBlockCenter2" type="Sprite2D" parent="TerrainGrassBlockCenter/TerrainGrassBlockCenter2" unique_id=401343155 groups=["slope"]]
+position = Vector2(320, 0)
+texture = ExtResource("3_wj0sy")
+
+[node name="TerrainGrassBlockCenter" type="Sprite2D" parent="TerrainGrassBlockCenter/TerrainGrassBlockCenter2/TerrainGrassBlockCenter2" unique_id=1294217303 groups=["slope"]]
+position = Vector2(64, 0)
+texture = ExtResource("3_wj0sy")
+
+[node name="TerrainGrassRampLongC" type="Sprite2D" parent="." unique_id=2086303513 groups=["slope"]]
+position = Vector2(126, 63)
+texture = ExtResource("4_ipffr")
+
+[node name="TerrainGrassRampLongB" type="Sprite2D" parent="." unique_id=1996171645 groups=["slope"]]
+position = Vector2(126, -1)
+texture = ExtResource("5_g43df")
+
+[node name="TerrainGrassRampLongA2" type="Sprite2D" parent="." unique_id=1123203062 groups=["slope"]]
+position = Vector2(190, 63)
+texture = ExtResource("2_a5ib5")
+
+[node name="TerrainGrassRampLongB2" type="Sprite2D" parent="." unique_id=1131967857 groups=["slope"]]
+position = Vector2(254, 63)
+texture = ExtResource("5_g43df")
+
+[node name="TerrainGrassBlockCenter2" type="Sprite2D" parent="." unique_id=426791325 groups=["slope"]]
+position = Vector2(63, 64)
+texture = ExtResource("3_wj0sy")
+
+[node name="TerrainGrassBlockTop4" type="Sprite2D" parent="." unique_id=2021399629 groups=["slope"]]
+position = Vector2(318, 127)
+texture = ExtResource("1_yhaka")
+
+[node name="TerrainGrassRampLongC2" type="Sprite2D" parent="." unique_id=287935899 groups=["slope"]]
+position = Vector2(254, 127)
+texture = ExtResource("4_ipffr")
+
+[node name="TerrainGrassBlockTop5" type="Sprite2D" parent="." unique_id=1545139554 groups=["slope"]]
+position = Vector2(382, 127)
+texture = ExtResource("1_yhaka")
+
+[node name="TerrainGrassRampLongA3" type="Sprite2D" parent="." unique_id=236827670 groups=["slope"]]
+position = Vector2(-254, 0)
+texture = ExtResource("2_a5ib5")
+flip_h = true
+
+[node name="TerrainGrassBlockCenter3" type="Sprite2D" parent="." unique_id=167709431 groups=["slope"]]
+position = Vector2(-315, 128)
+texture = ExtResource("3_wj0sy")
+
+[node name="TerrainGrassBlockCenter3" type="Sprite2D" parent="TerrainGrassBlockCenter3" unique_id=2063105580 groups=["slope"]]
+position = Vector2(60, -1)
+texture = ExtResource("3_wj0sy")
+
+[node name="TerrainGrassBlockCenter4" type="Sprite2D" parent="." unique_id=505122290 groups=["slope"]]
+position = Vector2(-254, 64)
+texture = ExtResource("3_wj0sy")
+
+[node name="TerrainGrassRampLongC3" type="Sprite2D" parent="." unique_id=1385573346 groups=["slope"]]
+position = Vector2(-317, 64)
+texture = ExtResource("4_ipffr")
+flip_h = true
+
+[node name="TerrainGrassRampLongB3" type="Sprite2D" parent="." unique_id=1716157573 groups=["slope"]]
+position = Vector2(-318, 0)
+texture = ExtResource("5_g43df")
+flip_h = true
+
+[node name="TerrainGrassRampLongA4" type="Sprite2D" parent="." unique_id=1472857872 groups=["slope"]]
+position = Vector2(-381, 64)
+texture = ExtResource("2_a5ib5")
+flip_h = true
+
+[node name="TerrainGrassRampLongB4" type="Sprite2D" parent="." unique_id=581469061 groups=["slope"]]
+position = Vector2(-445, 64)
+texture = ExtResource("5_g43df")
+flip_h = true
+
+[node name="TerrainGrassBlockCenter5" type="Sprite2D" parent="." unique_id=112785481 groups=["slope"]]
+position = Vector2(-379, 128)
+texture = ExtResource("3_wj0sy")
+
+[node name="TerrainGrassRampLongC4" type="Sprite2D" parent="." unique_id=171256149 groups=["slope"]]
+position = Vector2(-443, 127)
+texture = ExtResource("4_ipffr")
+flip_h = true
+
+[node name="TerrainGrassBlockTop7" type="Sprite2D" parent="." unique_id=495108214 groups=["slope"]]
+position = Vector2(-507, 127)
+texture = ExtResource("1_yhaka")

@@ -1,0 +1,24 @@
+[remap]
+
+importer="wav"
+type="AudioStreamWAV"
+uid="uid://x6lcoe8a5h2d"
+path="res://.godot/imported/sfx_sound_bling.wav-8b26df0929e52f3b877a83bc0bcf5364.sample"
+
+[deps]
+
+source_file="res://audio/sfx/General Sounds/Weird Sounds/sfx_sound_bling.wav"
+dest_files=["res://.godot/imported/sfx_sound_bling.wav-8b26df0929e52f3b877a83bc0bcf5364.sample"]
+
+[params]
+
+force/8_bit=false
+force/mono=false
+force/max_rate=false
+force/max_rate_hz=44100
+edit/trim=false
+edit/normalize=false
+edit/loop_mode=0
+edit/loop_begin=0
+edit/loop_end=-1
+compress/mode=2

@@ -1,0 +1,19 @@
+[remap]
+
+importer="mp3"
+type="AudioStreamMP3"
+uid="uid://dhnqaw4mub6i5"
+path="res://.godot/imported/06 HoliznaCC0 - Sunny Afternoon.mp3-fd7165ad6326bde9f3bd8dd681cd44ca.mp3str"
+
+[deps]
+
+source_file="res://audio/music/06 HoliznaCC0 - Sunny Afternoon.mp3"
+dest_files=["res://.godot/imported/06 HoliznaCC0 - Sunny Afternoon.mp3-fd7165ad6326bde9f3bd8dd681cd44ca.mp3str"]
+
+[params]
+
+loop=false
+loop_offset=0
+bpm=0
+beat_count=0
+bar_beats=4

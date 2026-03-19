@@ -1,0 +1,18 @@
+{
+  "specId": "DIFFICULTY.BALANCE.001",
+  "stageId": "1-2",
+  "difficultyProfiles": [
+    {
+      "difficulty": "Easy",
+      "maxActiveEnemiesOnScreen": 3
+    },
+    {
+      "difficulty": "Normal",
+      "maxActiveEnemiesOnScreen": 5
+    },
+    {
+      "difficulty": "Hard",
+      "maxActiveEnemiesOnScreen": 7
+    }
+  ]
+}

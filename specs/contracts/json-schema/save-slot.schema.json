@@ -1,0 +1,54 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "save-slot.schema.json",
+  "title": "Save Slot",
+  "type": "object",
+  "required": [
+    "slot"
+  ],
+  "properties": {
+    "slot": {
+      "type": "object",
+      "required": [
+        "highestClearedStage",
+        "bestScore",
+        "settings"
+      ],
+      "properties": {
+        "highestClearedStage": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "pattern": "^[1-9]-[1-9]$"
+        },
+        "bestScore": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "settings": {
+          "type": "object",
+          "required": [
+            "musicVolumeDb",
+            "sfxVolumeDb",
+            "language"
+          ],
+          "properties": {
+            "musicVolumeDb": {
+              "type": "number"
+            },
+            "sfxVolumeDb": {
+              "type": "number"
+            },
+            "language": {
+              "type": "string"
+            }
+          },
+          "additionalProperties": false
+        }
+      },
+      "additionalProperties": false
+    }
+  },
+  "additionalProperties": false
+}

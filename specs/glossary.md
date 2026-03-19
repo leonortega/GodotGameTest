@@ -1,0 +1,32 @@
+# Glossary
+
+- **Small Form**: Default player state with no damage buffer; one hit causes a lost life.
+- **Powered Form**: Upgraded player state that can absorb one hit before shrinking to Small Form.
+- **Enhanced Form**: Upgraded player state that retains Powered Form survivability and grants a ranged attack.
+- **Invulnerability window**: Short period after damage during which the player cannot take another hit.
+- **Run state**: Player movement mode with higher horizontal speed and longer jump distance.
+- **Stomp**: Defeating an eligible enemy by landing on it from above.
+- **Armored enemy**: Enemy that does not lose its threat state from a standard stomp while the player lacks a special attack state.
+- **Protected-head enemy**: Enemy whose top surface is protected, so a direct stomp on the head does not crush it.
+- **Shooter enemy**: Enemy that periodically or conditionally emits hostile projectiles toward the player or across the stage.
+- **Goal marker**: End-of-level object that completes the current stage when touched.
+- **Stage timer**: Countdown value for the current level; reaching zero causes a lost life.
+- **Coin**: Collectible that increases score and contributes toward extra-life rewards.
+- **Extra life threshold**: Coin total required to award one additional life; baseline threshold is 100 collected coins.
+- **Blocking pause**: Pause state in which player movement, enemy motion, timer countdown, and hazard animation are suspended.
+- **World progression**: Ordered advancement from stage `1-1` to `1-4` in the MVP.
+- **Hidden route**: Optional path or room not required for completion but containing bonus rewards.
+- **Environmental obstacle**: Non-enemy stage object that threatens or blocks the player, such as a cactus hazard.
+- **Terrain profile**: The overall height variation of a stage path, including flats, rises, drops, and uneven segments.
+- **Tile collision**: Solid-world collision used to prevent the player or enemies from moving through level geometry.
+- **Contact damage**: Damage caused by colliding with an enemy or hazard outside a valid stomp condition.
+- **CharacterBody2D**: Godot node type used for kinematic character movement with velocity and `move_and_slide()`.
+- **TileSet**: Godot asset that defines reusable tiles, collision, navigation, and scene-tile metadata.
+- **TileMap layer**: One paintable tile layer in a Godot level scene used for ground, decoration, hazards, or one-way geometry.
+- **Scene tile**: A TileSet entry that instantiates a full scene, useful for coins, power-ups, hazards, or breakable blocks.
+- **Autoload**: Godot singleton registered at project level and available across scenes for shared services such as game session state or audio control.
+- **Input Map**: Godot action configuration that maps keyboard, gamepad, or touch input to named gameplay actions.
+- **Camera2D limits**: Camera boundaries used to prevent scrolling beyond the authored level bounds.
+- **PackedScene**: Godot resource type used to instantiate reusable scenes such as player, enemy, or HUD prefabs.
+- **Save slot**: Serialized progression payload written to disk for persistent unlocks or best-run data.
+- **Signal bus**: Event-driven communication pattern often used in Godot to decouple gameplay scenes and UI reactions.

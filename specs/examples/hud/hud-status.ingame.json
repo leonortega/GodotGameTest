@@ -1,0 +1,22 @@
+{
+  "specId": "HUD.STATUS.001",
+  "input": {
+    "stageId": "1-2",
+    "score": 4500,
+    "coins": 37,
+    "lives": 2,
+    "timeRemaining": 251,
+    "paused": false
+  },
+  "expected": {
+    "visibleFields": [
+      "score",
+      "coins",
+      "stageId",
+      "lives",
+      "timeRemaining"
+    ],
+    "stageIdFormat": "1-2",
+    "readable": true
+  }
+}

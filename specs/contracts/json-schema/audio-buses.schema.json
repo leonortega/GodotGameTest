@@ -1,0 +1,25 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "audio-buses.schema.json",
+  "title": "Audio Buses",
+  "type": "object",
+  "required": [
+    "buses",
+    "stageThemes"
+  ],
+  "properties": {
+    "buses": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "stageThemes": {
+      "type": "object",
+      "additionalProperties": {
+        "type": "string"
+      }
+    }
+  },
+  "additionalProperties": false
+}

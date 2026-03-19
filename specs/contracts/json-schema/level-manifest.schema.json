@@ -1,0 +1,61 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "level-manifest.schema.json",
+  "title": "Level Manifest",
+  "type": "object",
+  "required": [
+    "stageId",
+    "scene",
+    "timerSeconds",
+    "spawnPoint",
+    "cameraBounds",
+    "tileLayers"
+  ],
+  "properties": {
+    "stageId": {
+      "type": "string",
+      "pattern": "^[1-9]-[1-9]$"
+    },
+    "scene": {
+      "type": "string"
+    },
+    "timerSeconds": {
+      "type": "integer",
+      "minimum": 1
+    },
+    "spawnPoint": {
+      "type": "string"
+    },
+    "cameraBounds": {
+      "type": "object",
+      "required": [
+        "left",
+        "top",
+        "right",
+        "bottom"
+      ],
+      "properties": {
+        "left": {
+          "type": "integer"
+        },
+        "top": {
+          "type": "integer"
+        },
+        "right": {
+          "type": "integer"
+        },
+        "bottom": {
+          "type": "integer"
+        }
+      },
+      "additionalProperties": false
+    },
+    "tileLayers": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    }
+  },
+  "additionalProperties": false
+}

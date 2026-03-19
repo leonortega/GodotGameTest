@@ -1,0 +1,24 @@
+[remap]
+
+importer="wav"
+type="AudioStreamWAV"
+uid="uid://cxexsjcugn6gh"
+path="res://.godot/imported/sfx_movement_stairs6loop.wav-27a1116e7c3e36734dc6acd7b35f1bc5.sample"
+
+[deps]
+
+source_file="res://audio/sfx/Movement/Climbing Stairs/sfx_movement_stairs6loop.wav"
+dest_files=["res://.godot/imported/sfx_movement_stairs6loop.wav-27a1116e7c3e36734dc6acd7b35f1bc5.sample"]
+
+[params]
+
+force/8_bit=false
+force/mono=false
+force/max_rate=false
+force/max_rate_hz=44100
+edit/trim=false
+edit/normalize=false
+edit/loop_mode=0
+edit/loop_begin=0
+edit/loop_end=-1
+compress/mode=2

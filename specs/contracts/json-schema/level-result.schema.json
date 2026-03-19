@@ -1,0 +1,47 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "level-result.schema.json",
+  "title": "Level Result",
+  "type": "object",
+  "required": [
+    "stageId",
+    "stageCleared",
+    "lives",
+    "coins",
+    "score",
+    "timeRemaining"
+  ],
+  "properties": {
+    "stageId": {
+      "type": "string",
+      "pattern": "^[1-9]-[1-9]$"
+    },
+    "stageCleared": {
+      "type": "boolean"
+    },
+    "lives": {
+      "type": "integer",
+      "minimum": 0
+    },
+    "coins": {
+      "type": "integer",
+      "minimum": 0
+    },
+    "score": {
+      "type": "integer",
+      "minimum": 0
+    },
+    "timeRemaining": {
+      "type": "integer",
+      "minimum": 0
+    },
+    "nextStageId": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "pattern": "^[1-9]-[1-9]$"
+    }
+  },
+  "additionalProperties": false
+}

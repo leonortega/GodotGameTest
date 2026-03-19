@@ -1,0 +1,209 @@
+[gd_scene format=3 uid="uid://d6mc6oqkk460"]
+
+
+
+[ext_resource type="Script" uid="uid://cn7vgu3rdibeq" path="res://scripts/game/StageScene.cs" id="1"]
+
+[ext_resource type="Script" uid="uid://brisc2sthi3c4" path="res://scripts/game/StageBackdrop.cs" id="2"]
+
+[ext_resource type="Script" uid="uid://dtn0slq3gkesa" path="res://scripts/game/GoalMarker.cs" id="3"]
+
+[ext_resource type="Script" uid="uid://dhbr44b1wgegq" path="res://scripts/game/MysteryBlock.cs" id="4"]
+
+[ext_resource type="Script" uid="uid://fh44yuttrx1k" path="res://scripts/game/PickupNode.cs" id="5"]
+
+[ext_resource type="Script" uid="uid://dt21cj5wdasnj" path="res://scripts/game/CactusHazard.cs" id="7"]
+
+[ext_resource type="PackedScene" path="res://scenes/terrain/GrassHill.tscn" id="8_hill"]
+[ext_resource type="PackedScene" path="res://scenes/actors/GroundEnemy.tscn" id="9_ground"]
+[ext_resource type="PackedScene" path="res://scenes/actors/ArmoredEnemy.tscn" id="10_armored"]
+[ext_resource type="PackedScene" path="res://scenes/actors/FlyingEnemy.tscn" id="11_flying"]
+[ext_resource type="PackedScene" path="res://scenes/actors/ProtectedHeadEnemy.tscn" id="12_protected"]
+[ext_resource type="PackedScene" path="res://scenes/actors/ShooterEnemy.tscn" id="13_shooter"]
+
+[node name="Stage_1_1" type="Node2D" unique_id=725139347]
+script = ExtResource("1")
+StageId = "1-1"
+TimerSeconds = 380
+WorldBounds = Rect2(0, 0, 8192, 720)
+SolidRectTiles = Array[Rect2i]([Rect2i(0, 19, 24, 3), Rect2i(42, 19, 5, 3), Rect2i(51, 19, 13, 3), Rect2i(68, 19, 8, 3), Rect2i(89, 19, 5, 3), Rect2i(99, 19, 18, 3), Rect2i(121, 19, 5, 3), Rect2i(139, 19, 11, 3), Rect2i(154, 19, 14, 3), Rect2i(172, 19, 4, 3), Rect2i(189, 19, 3, 3), Rect2i(197, 19, 18, 3), Rect2i(219, 19, 14, 3), Rect2i(237, 19, 3, 3), Rect2i(253, 19, 3, 3)])
+
+[node name="Backdrop" type="Node2D" parent="." unique_id=1555088596]
+script = ExtResource("2")
+
+[node name="TerrainLayer" type="TileMapLayer" parent="." unique_id=664575198]
+
+[node name="DecorLayer" type="TileMapLayer" parent="." unique_id=597609658]
+
+[node name="TileVisualRoot" type="Node2D" parent="."]
+
+[node name="TerrainHills" type="Node2D" parent="."]
+
+[node name="Hill_01" parent="TerrainHills" instance=ExtResource("8_hill")]
+position = Vector2(928, 608)
+
+[node name="Hill_02" parent="TerrainHills" instance=ExtResource("8_hill")]
+position = Vector2(2432, 608)
+
+[node name="Hill_03" parent="TerrainHills" instance=ExtResource("8_hill")]
+position = Vector2(4032, 608)
+
+[node name="Hill_04" parent="TerrainHills" instance=ExtResource("8_hill")]
+position = Vector2(5632, 608)
+
+[node name="Hill_05" parent="TerrainHills" instance=ExtResource("8_hill")]
+position = Vector2(7680, 608)
+
+[node name="Markers" type="Node2D" parent="." unique_id=50690090]
+
+[node name="PlayerSpawn" type="Marker2D" parent="Markers" unique_id=1132822426]
+position = Vector2(96, 560)
+
+[node name="Gameplay" type="Node2D" parent="." unique_id=1852985433]
+
+[node name="Pickups" type="Node2D" parent="Gameplay" unique_id=781841073]
+
+[node name="Coin_01" type="Node2D" parent="Gameplay/Pickups" unique_id=309552520]
+position = Vector2(558, 460)
+script = ExtResource("5")
+
+[node name="Coin_02" type="Node2D" parent="Gameplay/Pickups" unique_id=1966803662]
+position = Vector2(1200, 430)
+script = ExtResource("5")
+
+[node name="Coin_03" type="Node2D" parent="Gameplay/Pickups" unique_id=1364283360]
+position = Vector2(1248, 430)
+script = ExtResource("5")
+
+[node name="Coin_04" type="Node2D" parent="Gameplay/Pickups" unique_id=1089438918]
+position = Vector2(1820, 404)
+script = ExtResource("5")
+
+[node name="Coin_05" type="Node2D" parent="Gameplay/Pickups" unique_id=1997533632]
+position = Vector2(2460, 472)
+script = ExtResource("5")
+
+[node name="Coin_06" type="Node2D" parent="Gameplay/Pickups" unique_id=1956633582]
+position = Vector2(2510, 472)
+script = ExtResource("5")
+
+[node name="Coin_07" type="Node2D" parent="Gameplay/Pickups" unique_id=933333081]
+position = Vector2(3460, 420)
+script = ExtResource("5")
+
+[node name="Coin_08" type="Node2D" parent="Gameplay/Pickups" unique_id=2016899022]
+position = Vector2(4160, 372)
+script = ExtResource("5")
+
+[node name="Coin_09" type="Node2D" parent="Gameplay/Pickups" unique_id=546578748]
+position = Vector2(6460, 430)
+script = ExtResource("5")
+
+[node name="Coin_10" type="Node2D" parent="Gameplay/Pickups" unique_id=517350874]
+position = Vector2(6510, 430)
+script = ExtResource("5")
+
+[node name="Coin_11" type="Node2D" parent="Gameplay/Pickups" unique_id=1548542719]
+position = Vector2(7360, 382)
+script = ExtResource("5")
+
+[node name="Blocks" type="Node2D" parent="Gameplay" unique_id=119984367]
+
+[node name="Block_Growth" type="StaticBody2D" parent="Gameplay/Blocks" unique_id=1386644671]
+position = Vector2(730, 470)
+script = ExtResource("4")
+Reward = 1
+
+[node name="Block_Coin_01" type="StaticBody2D" parent="Gameplay/Blocks" unique_id=59340276]
+position = Vector2(1340, 438)
+script = ExtResource("4")
+
+[node name="Block_Coin_02" type="StaticBody2D" parent="Gameplay/Blocks" unique_id=1243114198]
+position = Vector2(1388, 438)
+script = ExtResource("4")
+
+[node name="Block_Flame" type="StaticBody2D" parent="Gameplay/Blocks" unique_id=465298311]
+position = Vector2(3600, 390)
+script = ExtResource("4")
+Reward = 2
+
+[node name="Block_Coin_03" type="StaticBody2D" parent="Gameplay/Blocks" unique_id=1313399531]
+position = Vector2(6660, 438)
+script = ExtResource("4")
+
+[node name="Block_Growth_02" type="StaticBody2D" parent="Gameplay/Blocks" unique_id=1893112554]
+position = Vector2(7350, 390)
+script = ExtResource("4")
+Reward = 1
+
+[node name="Enemies" type="Node2D" parent="Gameplay" unique_id=392047665]
+
+[node name="Enemy_01" parent="Gameplay/Enemies" instance=ExtResource("9_ground") unique_id=596060885]
+position = Vector2(1088, 590)
+
+[node name="Enemy_03" parent="Gameplay/Enemies" instance=ExtResource("10_armored") unique_id=449084215]
+position = Vector2(2640, 586)
+
+[node name="Enemy_02" parent="Gameplay/Enemies" instance=ExtResource("9_ground") unique_id=1000109572]
+position = Vector2(1900, 586)
+
+[node name="Enemy_04" parent="Gameplay/Enemies" instance=ExtResource("11_flying") unique_id=641600116]
+position = Vector2(3320, 360)
+AuthoredPatrolDistance = 220.0
+
+[node name="Enemy_05" parent="Gameplay/Enemies" instance=ExtResource("12_protected") unique_id=2032945890]
+position = Vector2(1460, 585)
+
+[node name="Enemy_06" parent="Gameplay/Enemies" instance=ExtResource("12_protected") unique_id=2072100634]
+position = Vector2(4940, 586)
+
+[node name="Enemy_07" parent="Gameplay/Enemies" instance=ExtResource("13_shooter") unique_id=1733381312]
+position = Vector2(5660, 586)
+
+[node name="Enemy_08" parent="Gameplay/Enemies" instance=ExtResource("9_ground") unique_id=632193265]
+position = Vector2(6640, 586)
+
+[node name="Enemy_09" parent="Gameplay/Enemies" instance=ExtResource("12_protected") unique_id=981727374]
+position = Vector2(7320, 586)
+
+[node name="Enemy_10" parent="Gameplay/Enemies" instance=ExtResource("13_shooter") unique_id=354777814]
+position = Vector2(7888, 586)
+
+[node name="Hazards" type="Node2D" parent="Gameplay" unique_id=1195871663]
+
+[node name="Cactus_01" type="StaticBody2D" parent="Gameplay/Hazards" unique_id=1923012196]
+position = Vector2(1182, 507)
+script = ExtResource("7")
+
+[node name="Cactus_02" type="StaticBody2D" parent="Gameplay/Hazards" unique_id=384706570]
+position = Vector2(4020, 586)
+script = ExtResource("7")
+
+[node name="Cactus_03" type="StaticBody2D" parent="Gameplay/Hazards" unique_id=1867520472]
+position = Vector2(1660, 586)
+script = ExtResource("7")
+
+[node name="Cactus_04" type="StaticBody2D" parent="Gameplay/Hazards" unique_id=1937167737]
+position = Vector2(3000, 586)
+script = ExtResource("7")
+
+[node name="Cactus_05" type="StaticBody2D" parent="Gameplay/Hazards" unique_id=884114939]
+position = Vector2(5300, 586)
+script = ExtResource("7")
+
+[node name="Cactus_06" type="StaticBody2D" parent="Gameplay/Hazards" unique_id=811981520]
+position = Vector2(5790, 540)
+script = ExtResource("7")
+
+[node name="Cactus_07" type="StaticBody2D" parent="Gameplay/Hazards" unique_id=1115738830]
+position = Vector2(6830, 540)
+script = ExtResource("7")
+
+[node name="Cactus_08" type="StaticBody2D" parent="Gameplay/Hazards" unique_id=2128187205]
+position = Vector2(7610, 520)
+script = ExtResource("7")
+
+[node name="Goal" type="Node2D" parent="Gameplay" unique_id=1867758073]
+position = Vector2(7940, 540)
+script = ExtResource("3")
+

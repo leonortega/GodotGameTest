@@ -1,0 +1,24 @@
+[remap]
+
+importer="wav"
+type="AudioStreamWAV"
+uid="uid://h6qrfcixlfwy"
+path="res://.godot/imported/sfx_sound_refereewhistle.wav-ad02d3e98c70d17f8d675c36c316e26e.sample"
+
+[deps]
+
+source_file="res://audio/sfx/General Sounds/Weird Sounds/sfx_sound_refereewhistle.wav"
+dest_files=["res://.godot/imported/sfx_sound_refereewhistle.wav-ad02d3e98c70d17f8d675c36c316e26e.sample"]
+
+[params]
+
+force/8_bit=false
+force/mono=false
+force/max_rate=false
+force/max_rate_hz=44100
+edit/trim=false
+edit/normalize=false
+edit/loop_mode=0
+edit/loop_begin=0
+edit/loop_end=-1
+compress/mode=2
