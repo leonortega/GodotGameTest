@@ -4,6 +4,13 @@ namespace GameTest;
 
 public partial class OverlayLayer : CanvasLayer
 {
+    private static readonly EnemyKind[] TitleEnemyChoices =
+    [
+        EnemyKind.Ground,
+        EnemyKind.Armored,
+        EnemyKind.ProtectedHead
+    ];
+
     private readonly ColorRect _backdrop = new();
 
     private readonly CenterContainer _titleCenter = new();
@@ -38,6 +45,7 @@ public partial class OverlayLayer : CanvasLayer
     private Action? _secondaryAction;
     private Action? _tertiaryAction;
     private float _titleAnimationTime;
+    private EnemyKind _titleEnemyKind = EnemyKind.ProtectedHead;
 
     public bool AllowsPauseResume { get; private set; }
 
@@ -83,6 +91,7 @@ public partial class OverlayLayer : CanvasLayer
         _tertiaryAction = difficultyAction;
         AllowsPauseResume = false;
         _titleAnimationTime = 0f;
+        _titleEnemyKind = TitleEnemyChoices[GD.RandRange(0, TitleEnemyChoices.Length - 1)];
 
         _titleCenter.Visible = true;
         _menuCenter.Visible = false;
@@ -161,12 +170,12 @@ public partial class OverlayLayer : CanvasLayer
         GameUi.StyleLogoSecondary(_logoSecondary);
         GameUi.StylePixelCaption(_logoCaption);
 
-        _titleAnimationArea.CustomMinimumSize = new Vector2(760, 118);
+        _titleAnimationArea.CustomMinimumSize = new Vector2(760, 156);
         _titleAnimationArea.MouseFilter = Control.MouseFilterEnum.Ignore;
         _titleAnimationArea.ClipContents = true;
 
-        ConfigureTitleSprite(_titleRunner, new Vector2(82f, 82f));
-        ConfigureTitleSprite(_titleChaser, new Vector2(76f, 76f));
+        ConfigureTitleSprite(_titleRunner, new Vector2(116f, 116f));
+        ConfigureTitleSprite(_titleChaser, new Vector2(108f, 108f));
         _titleAnimationArea.AddChild(_titleRunner);
         _titleAnimationArea.AddChild(_titleChaser);
 
@@ -311,19 +320,19 @@ public partial class OverlayLayer : CanvasLayer
             ? playerFrames.WalkA
             : playerFrames.WalkB;
 
-        var enemyFrames = GameAssets.GetEnemyFrames(EnemyKind.ProtectedHead);
+        var enemyFrames = GameAssets.GetEnemyFrames(_titleEnemyKind);
         _titleChaser.Texture = Mathf.PosMod(Mathf.FloorToInt(_titleAnimationTime * 10f), 2) == 0
             ? enemyFrames.WalkA
             : enemyFrames.WalkB;
 
-        var cycleWidth = areaSize.X + 220f;
-        var runnerX = areaSize.X - Mathf.PosMod(_titleAnimationTime * 170f, cycleWidth);
-        var runnerY = areaSize.Y - 78f;
+        var cycleWidth = areaSize.X + 300f;
+        var runnerX = areaSize.X - Mathf.PosMod(_titleAnimationTime * 190f, cycleWidth);
+        var runnerY = areaSize.Y - 114f;
         _titleRunner.Position = new Vector2(runnerX, runnerY);
         _titleRunner.FlipH = true;
 
-        var chaserX = runnerX + 118f;
-        var chaserY = areaSize.Y - 70f;
+        var chaserX = runnerX + 148f;
+        var chaserY = areaSize.Y - 102f;
         _titleChaser.Position = new Vector2(chaserX, chaserY);
         _titleChaser.FlipH = true;
     }

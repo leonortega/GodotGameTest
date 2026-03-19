@@ -12,14 +12,13 @@
 
 [ext_resource type="Script" uid="uid://fh44yuttrx1k" path="res://scripts/game/PickupNode.cs" id="5"]
 
-[ext_resource type="Script" uid="uid://dt21cj5wdasnj" path="res://scripts/game/CactusHazard.cs" id="7"]
-
 [ext_resource type="PackedScene" path="res://scenes/terrain/GrassHill.tscn" id="8_hill"]
 [ext_resource type="PackedScene" path="res://scenes/actors/GroundEnemy.tscn" id="9_ground"]
 [ext_resource type="PackedScene" path="res://scenes/actors/ArmoredEnemy.tscn" id="10_armored"]
 [ext_resource type="PackedScene" path="res://scenes/actors/FlyingEnemy.tscn" id="11_flying"]
 [ext_resource type="PackedScene" path="res://scenes/actors/ProtectedHeadEnemy.tscn" id="12_protected"]
 [ext_resource type="PackedScene" path="res://scenes/actors/ShooterEnemy.tscn" id="13_shooter"]
+[ext_resource type="PackedScene" path="res://scenes/actors/Cactus.tscn" id="14_cactus"]
 
 [node name="Stage_1_1" type="Node2D" unique_id=725139347]
 script = ExtResource("1")
@@ -139,10 +138,10 @@ Reward = 1
 [node name="Enemies" type="Node2D" parent="Gameplay" unique_id=392047665]
 
 [node name="Enemy_01" parent="Gameplay/Enemies" instance=ExtResource("9_ground") unique_id=596060885]
-position = Vector2(1088, 590)
+position = Vector2(1136, 495)
 
 [node name="Enemy_03" parent="Gameplay/Enemies" instance=ExtResource("10_armored") unique_id=449084215]
-position = Vector2(2640, 586)
+position = Vector2(2640, 496)
 
 [node name="Enemy_02" parent="Gameplay/Enemies" instance=ExtResource("9_ground") unique_id=1000109572]
 position = Vector2(1900, 586)
@@ -167,41 +166,33 @@ position = Vector2(6640, 586)
 position = Vector2(7320, 586)
 
 [node name="Enemy_10" parent="Gameplay/Enemies" instance=ExtResource("13_shooter") unique_id=354777814]
-position = Vector2(7888, 586)
+position = Vector2(7888, 497)
 
 [node name="Hazards" type="Node2D" parent="Gameplay" unique_id=1195871663]
 
-[node name="Cactus_01" type="StaticBody2D" parent="Gameplay/Hazards" unique_id=1923012196]
+[node name="Cactus_01" parent="Gameplay/Hazards" instance=ExtResource("14_cactus") unique_id=1923012196]
 position = Vector2(1182, 507)
-script = ExtResource("7")
 
-[node name="Cactus_02" type="StaticBody2D" parent="Gameplay/Hazards" unique_id=384706570]
+[node name="Cactus_02" parent="Gameplay/Hazards" instance=ExtResource("14_cactus") unique_id=384706570]
 position = Vector2(4020, 586)
-script = ExtResource("7")
 
-[node name="Cactus_03" type="StaticBody2D" parent="Gameplay/Hazards" unique_id=1867520472]
+[node name="Cactus_03" parent="Gameplay/Hazards" instance=ExtResource("14_cactus") unique_id=1867520472]
 position = Vector2(1660, 586)
-script = ExtResource("7")
 
-[node name="Cactus_04" type="StaticBody2D" parent="Gameplay/Hazards" unique_id=1937167737]
+[node name="Cactus_04" parent="Gameplay/Hazards" instance=ExtResource("14_cactus") unique_id=1937167737]
 position = Vector2(3000, 586)
-script = ExtResource("7")
 
-[node name="Cactus_05" type="StaticBody2D" parent="Gameplay/Hazards" unique_id=884114939]
+[node name="Cactus_05" parent="Gameplay/Hazards" instance=ExtResource("14_cactus") unique_id=884114939]
 position = Vector2(5300, 586)
-script = ExtResource("7")
 
-[node name="Cactus_06" type="StaticBody2D" parent="Gameplay/Hazards" unique_id=811981520]
+[node name="Cactus_06" parent="Gameplay/Hazards" instance=ExtResource("14_cactus") unique_id=811981520]
 position = Vector2(5790, 540)
-script = ExtResource("7")
 
-[node name="Cactus_07" type="StaticBody2D" parent="Gameplay/Hazards" unique_id=1115738830]
+[node name="Cactus_07" parent="Gameplay/Hazards" instance=ExtResource("14_cactus") unique_id=1115738830]
 position = Vector2(6830, 540)
-script = ExtResource("7")
 
-[node name="Cactus_08" type="StaticBody2D" parent="Gameplay/Hazards" unique_id=2128187205]
+[node name="Cactus_08" parent="Gameplay/Hazards" instance=ExtResource("14_cactus") unique_id=2128187205]
 position = Vector2(7610, 520)
-script = ExtResource("7")
 
 [node name="Goal" type="Node2D" parent="Gameplay" unique_id=1867758073]
 position = Vector2(7940, 540)

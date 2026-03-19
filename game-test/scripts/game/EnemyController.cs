@@ -10,7 +10,7 @@ public partial class EnemyController : CharacterBody2D
     private const float GroundProbeDepth = 56f;
     private const float GroundSnapAllowance = 40f;
     private const float MaximumSupportedDrop = 38f;
-    private const float MaximumSupportedRise = 40f;
+    private const float MaximumSupportedRise = 56f;
 
     private CollisionShape2D _collision = null!;
     private RectangleShape2D _shape = null!;
@@ -247,8 +247,9 @@ public partial class EnemyController : CharacterBody2D
     private bool TryMoveAcrossTerrain(float stepDistance)
     {
         var nextX = GlobalPosition.X + stepDistance;
-        var halfWidth = _size.X * 0.5f - 4f;
-        if (!TryGetGroundSupportY(nextX, halfWidth, out var supportY))
+        var bodyHalfWidth = _size.X * 0.5f - 4f;
+        var frontProbeX = nextX + _direction * (_size.X * 0.3f);
+        if (!TryGetGroundSupportY(frontProbeX, 2f, out var supportY))
         {
             return false;
         }
@@ -260,7 +261,12 @@ public partial class EnemyController : CharacterBody2D
             return false;
         }
 
-        GlobalPosition = new Vector2(nextX, supportY - _size.Y * 0.5f);
+        if (!TryGetGroundSupportY(nextX, bodyHalfWidth, out var bodySupportY))
+        {
+            bodySupportY = supportY;
+        }
+
+        GlobalPosition = new Vector2(nextX, bodySupportY - _size.Y * 0.5f);
         return true;
     }
 
