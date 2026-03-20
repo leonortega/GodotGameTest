@@ -128,6 +128,19 @@ public partial class AudioDirector : Node
         BuildCueCache();
     }
 
+    public override void _ExitTree()
+    {
+        if (_musicPlayer is not null)
+        {
+            _musicPlayer.Finished -= HandleMusicFinished;
+        }
+
+        if (ReferenceEquals(Instance, this))
+        {
+            Instance = null!;
+        }
+    }
+
     public void PlayMusicForTheme(StageTheme theme)
     {
         var nextCue = theme.ToString();

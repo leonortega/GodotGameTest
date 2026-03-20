@@ -25,6 +25,8 @@ Define how stages are authored in Godot so that collision, decoration, hazards, 
 - `LEVEL.AUTHORING.001-R4B`: Environmental obstacles such as cactus hazards shall be authorable as scene instances or hazard tiles without custom one-off code per stage.
 - `LEVEL.AUTHORING.001-R4C`: Repeated gameplay actors and hazards, including the player, enemies, and cactus hazards, shall be authorable as reusable packed scenes rather than duplicated one-off node trees.
 - `LEVEL.AUTHORING.001-R4D`: Stage load logic may normalize authored enemy, hazard, block, and goal placement onto valid terrain support so that minor authoring offsets do not leave content floating or buried.
+- `LEVEL.AUTHORING.001-R4E`: Dynamic traversal elements such as floating moving platforms and timed falling blocks shall be authorable through reusable scene composition without stage-specific gameplay forks.
+- `LEVEL.AUTHORING.001-R4F`: Falling block lines shall be authorable as repeated single falling-block scene instances, and grounded enemies shall not rely on those falling blocks as stable authored support.
 - `LEVEL.AUTHORING.001-R5`: Level data shall expose stage identifier, timer baseline, spawn point, and world bounds.
 - `LEVEL.AUTHORING.001-R6`: World bounds authored in the level scene shall be usable by the camera system to prevent scrolling outside the playable area.
 - `LEVEL.AUTHORING.001-R7`: Hidden routes and bonus areas shall remain authorable through scene composition without requiring separate code forks per level.
@@ -60,6 +62,18 @@ Scenario: Authored placements can be normalized at load time
   Then runtime normalization may snap that content to a valid supported position
   And the stage shall not require a bespoke per-stage correction script
 
+Scenario: Dynamic traversal elements are authorable
+  Given a designer wants to add a floating moving platform or a falling block line to a stage
+  When the level is edited
+  Then those traversal elements shall be authorable through normal level-scene composition
+  And no bespoke per-stage gameplay script fork shall be required
+
+Scenario: Falling blocks are not enemy support
+  Given a designer authors falling blocks in a traversal section
+  When grounded enemies are placed for the stage
+  Then those enemies shall be placed on stable terrain or other approved support
+  And the falling blocks shall not be treated as valid resting support for grounded enemy placement
+
 Scenario: Level metadata provides camera and timer context
   Given stage 1-3 is loaded
   When the runtime reads stage metadata
@@ -67,7 +81,7 @@ Scenario: Level metadata provides camera and timer context
 ```
 
 ## Example Inputs/Outputs
-- Example input: A `1-1` level scene containing TileMap-based ground, reusable hill scenes, a player spawn marker, enemy packed scenes, cactus hazard scenes, and a goal scene.
+- Example input: A `1-1` level scene containing TileMap-based ground, reusable hill scenes, floating moving platforms, repeated falling block scene instances, a player spawn marker, enemy packed scenes, cactus hazard scenes, and a goal scene.
 - Expected output: The runtime can load the stage, normalize minor placement offsets, and present reusable authored content without stage-specific logic embedded in the player controller.
 
 ## Edge Cases

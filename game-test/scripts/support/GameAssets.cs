@@ -95,6 +95,13 @@ public static class GameAssets
     public static Texture2D GetEnemyProjectileTexture() =>
         GetTrimmedTexture($"{ArtRoot}/Sprites/Tiles/Default/gem_red.png");
 
+    public static Texture2D GetFallingBlockTexture(StageTheme theme) => GetTexture(theme switch
+    {
+        StageTheme.Cave => $"{ArtRoot}/Sprites/Tiles/Default/bricks_grey.png",
+        StageTheme.Fortress => $"{ArtRoot}/Sprites/Tiles/Default/bricks_grey.png",
+        _ => $"{ArtRoot}/Sprites/Tiles/Default/bricks_brown.png"
+    });
+
     public static Texture2D GetCactusTexture() =>
         GetTrimmedTexture($"{ArtRoot}/Sprites/Tiles/Double/cactus.png");
 

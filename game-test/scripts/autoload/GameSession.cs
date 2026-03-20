@@ -34,6 +34,14 @@ public partial class GameSession : Node
         LoadProgress();
     }
 
+    public override void _ExitTree()
+    {
+        if (ReferenceEquals(Instance, this))
+        {
+            Instance = null!;
+        }
+    }
+
     public void StartNewRun()
     {
         HasActiveRun = true;

@@ -41,6 +41,7 @@ public partial class StageScene : Node2D
     private Node _pickupsRoot = null!;
     private Node _blocksRoot = null!;
     private Node _enemiesRoot = null!;
+    private Node? _dynamicsRoot;
     private Node? _hazardsRoot;
     private GoalMarker _goal = null!;
 
@@ -145,6 +146,40 @@ public partial class StageScene : Node2D
         }
     }
 
+    public IEnumerable<FloatingMovingPlatform> GetMovingPlatforms()
+    {
+        EnsureReferences();
+        if (_dynamicsRoot is null)
+        {
+            yield break;
+        }
+
+        foreach (Node child in _dynamicsRoot.GetChildren())
+        {
+            if (child is FloatingMovingPlatform platform)
+            {
+                yield return platform;
+            }
+        }
+    }
+
+    public IEnumerable<FallingBlock> GetFallingBlocks()
+    {
+        EnsureReferences();
+        if (_dynamicsRoot is null)
+        {
+            yield break;
+        }
+
+        foreach (Node child in _dynamicsRoot.GetChildren())
+        {
+            if (child is FallingBlock block)
+            {
+                yield return block;
+            }
+        }
+    }
+
     public GoalMarker GetGoal()
     {
         EnsureReferences();
@@ -195,6 +230,7 @@ public partial class StageScene : Node2D
         _pickupsRoot = GetNode("Gameplay/Pickups");
         _blocksRoot = GetNode("Gameplay/Blocks");
         _enemiesRoot = GetNode("Gameplay/Enemies");
+        _dynamicsRoot = GetNodeOrNull("Gameplay/Dynamics");
         _hazardsRoot = GetNodeOrNull("Gameplay/Hazards");
         _goal = GetNode<GoalMarker>("Gameplay/Goal");
 
@@ -678,6 +714,24 @@ public partial class StageScene : Node2D
             if (nearestTop is null || surfaceY < nearestTop.Value)
             {
                 nearestTop = surfaceY;
+            }
+        }
+
+        foreach (var platform in GetMovingPlatforms())
+        {
+            if (platform.SupportRightX <= overlapMinX || platform.SupportLeftX >= overlapMaxX)
+            {
+                continue;
+            }
+
+            if (platform.SupportTopY < objectBottomY - upwardTolerance)
+            {
+                continue;
+            }
+
+            if (nearestTop is null || platform.SupportTopY < nearestTop.Value)
+            {
+                nearestTop = platform.SupportTopY;
             }
         }
 

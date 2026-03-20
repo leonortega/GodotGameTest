@@ -4,7 +4,14 @@ namespace GameTest;
 
 public partial class PlayerController : CharacterBody2D
 {
+    private const float CoyoteTimeSeconds = 0.1f;
+    private const float JumpBufferSeconds = 0.15f;
+    private const float JumpReleaseVelocityMultiplier = 0.5f;
+    private const float LandingFeedbackThreshold = 280f;
+    private const float HeavyImpactThreshold = 620f;
     private const float Gravity = 1850f;
+    private const float FallGravityMultiplier = 1.25f;
+    private const float MaxFallSpeed = 900f;
     private const float WalkSpeed = 250f;
     private const float RunSpeed = 380f;
     private const float JumpVelocity = -640f;
@@ -18,18 +25,32 @@ public partial class PlayerController : CharacterBody2D
     private CollisionShape2D _collision = null!;
     private RectangleShape2D _shape = null!;
     private Sprite2D _sprite = null!;
+    private Tween? _feedbackTween;
     private float _invulnerabilityTime;
     private float _fireCooldown;
     private float _animationTime;
+    private float _coyoteTimer;
+    private float _jumpBufferTimer;
+    private float _relativeVisualVelocityX;
     private int _remainingAirJumps = 1;
+    private Vector2 _feedbackScale = Vector2.One;
 
     public bool SimulationActive { get; set; }
     public int Facing { get; private set; } = 1;
     public Rect2 HitBox => new(GlobalPosition - _size * 0.5f, _size);
     public bool IsInvulnerable => _invulnerabilityTime > 0f;
 
-    public event Action<Vector2, int>? FireRequested;
-    public event Action<MysteryBlock>? BlockHit;
+    [Signal]
+    public delegate void FireRequestedEventHandler(Vector2 origin, int facing);
+
+    [Signal]
+    public delegate void BlockHitEventHandler(MysteryBlock block);
+
+    [Signal]
+    public delegate void ImpactFeedbackRequestedEventHandler(float shakeAmount);
+
+    [Signal]
+    public delegate void DustBurstRequestedEventHandler(Vector2 worldPosition, int facing, float strength);
 
     public override void _Ready()
     {
@@ -64,46 +85,103 @@ public partial class PlayerController : CharacterBody2D
         var moveDirection = Input.GetActionStrength("move_right") - Input.GetActionStrength("move_left");
         var running = Input.IsActionPressed("action");
         var targetSpeed = moveDirection * (running ? RunSpeed : WalkSpeed);
+        var relativeVelocityX = Velocity.X;
+        var deltaSeconds = (float)delta;
+        var onFloorAtFrameStart = IsOnFloor();
 
-        if (IsOnFloor())
+        if (onFloorAtFrameStart)
         {
+            _coyoteTimer = CoyoteTimeSeconds;
             _remainingAirJumps = 1;
-        }
-
-        if (Mathf.Abs(moveDirection) > 0.01f)
-        {
-            Velocity = new Vector2(Mathf.MoveToward(Velocity.X, targetSpeed, Acceleration * (float)delta), Velocity.Y);
-            Facing = moveDirection > 0 ? 1 : -1;
         }
         else
         {
-            Velocity = new Vector2(Mathf.MoveToward(Velocity.X, 0f, Friction * (float)delta), Velocity.Y);
+            _coyoteTimer = Mathf.Max(0f, _coyoteTimer - deltaSeconds);
         }
 
         if (Input.IsActionJustPressed("jump"))
         {
-            if (IsOnFloor())
+            _jumpBufferTimer = JumpBufferSeconds;
+        }
+        else
+        {
+            _jumpBufferTimer = Mathf.Max(0f, _jumpBufferTimer - deltaSeconds);
+        }
+
+        if (Mathf.Abs(moveDirection) > 0.01f)
+        {
+            relativeVelocityX = Mathf.MoveToward(relativeVelocityX, targetSpeed, Acceleration * deltaSeconds);
+            Facing = moveDirection > 0 ? 1 : -1;
+        }
+        else
+        {
+            relativeVelocityX = Mathf.MoveToward(relativeVelocityX, 0f, Friction * deltaSeconds);
+        }
+
+        _relativeVisualVelocityX = relativeVelocityX;
+        Velocity = new Vector2(relativeVelocityX, Velocity.Y);
+
+        if (_jumpBufferTimer > 0f)
+        {
+            if (onFloorAtFrameStart || _coyoteTimer > 0f)
             {
                 Velocity = new Vector2(Velocity.X, JumpVelocity);
+                _jumpBufferTimer = 0f;
+                _coyoteTimer = 0f;
                 AudioDirector.Instance.PlaySfx("jump");
             }
             else if (_remainingAirJumps > 0)
             {
                 _remainingAirJumps--;
                 Velocity = new Vector2(Velocity.X, JumpVelocity);
+                _jumpBufferTimer = 0f;
                 AudioDirector.Instance.PlaySfx("jump");
             }
         }
 
+        if (Input.IsActionJustReleased("jump") && Velocity.Y < 0f)
+        {
+            Velocity = new Vector2(Velocity.X, Velocity.Y * JumpReleaseVelocityMultiplier);
+        }
+
         var wasMovingUp = Velocity.Y < 0f;
-        Velocity = new Vector2(Velocity.X, Velocity.Y + Gravity * (float)delta);
+        if (!IsOnFloor() || Velocity.Y < 0f)
+        {
+            var gravityScale = Velocity.Y > 0f ? FallGravityMultiplier : 1f;
+            var nextVerticalVelocity = Velocity.Y + Gravity * gravityScale * deltaSeconds;
+            Velocity = new Vector2(Velocity.X, Mathf.Min(nextVerticalVelocity, MaxFallSpeed));
+        }
+        else if (Velocity.Y > 0f)
+        {
+            Velocity = new Vector2(Velocity.X, 0f);
+        }
+
+        var impactVelocityY = Velocity.Y;
+
         MoveAndSlide();
-        SnapToGround();
+        if (IsOnCeiling() && Velocity.Y < 0f)
+        {
+            Velocity = new Vector2(Velocity.X, 0f);
+        }
+
+        var snappedToGround = SnapToGround();
+        var groundedAfterMove = IsOnFloor() || snappedToGround;
+        if (!onFloorAtFrameStart && groundedAfterMove && impactVelocityY > LandingFeedbackThreshold)
+        {
+            var impactStrength = Mathf.Clamp((impactVelocityY - LandingFeedbackThreshold) / (MaxFallSpeed - LandingFeedbackThreshold), 0f, 1f);
+            PlayFeedbackSquash(new Vector2(1f + impactStrength * 0.22f, 1f - impactStrength * 0.18f));
+            EmitSignal(SignalName.DustBurstRequested, GetFootPosition(), Facing, 0.75f + impactStrength * 0.65f);
+
+            if (impactVelocityY >= HeavyImpactThreshold)
+            {
+                EmitSignal(SignalName.ImpactFeedbackRequested, 1.8f + impactStrength * 2.8f);
+            }
+        }
 
         if (GameSession.Instance.CurrentForm == PlayerForm.Enhanced && Input.IsActionJustPressed("action") && _fireCooldown <= 0f)
         {
             _fireCooldown = 0.28f;
-            FireRequested?.Invoke(GlobalPosition + new Vector2(Facing * 26f, -6f), Facing);
+            EmitSignal(SignalName.FireRequested, GlobalPosition + new Vector2(Facing * 26f, -6f), Facing);
             AudioDirector.Instance.PlaySfx("fire");
         }
 
@@ -114,7 +192,7 @@ public partial class PlayerController : CharacterBody2D
                 var collision = GetSlideCollision(i);
                 if (collision.GetCollider() is MysteryBlock block && collision.GetNormal().Y > 0.6f)
                 {
-                    BlockHit?.Invoke(block);
+                    EmitSignal(SignalName.BlockHit, block);
                 }
             }
         }
@@ -132,13 +210,22 @@ public partial class PlayerController : CharacterBody2D
         _invulnerabilityTime = 0f;
         Facing = 1;
         _animationTime = 0f;
+        _coyoteTimer = 0f;
+        _jumpBufferTimer = 0f;
+        _relativeVisualVelocityX = 0f;
         _remainingAirJumps = 1;
+        _feedbackTween?.Kill();
+        _feedbackTween = null;
+        _feedbackScale = Vector2.One;
         UpdateVisual(true);
     }
 
     public void BounceFromStomp()
     {
         Velocity = new Vector2(Velocity.X, BounceVelocity);
+        PlayFeedbackSquash(new Vector2(0.9f, 1.14f));
+        EmitSignal(SignalName.ImpactFeedbackRequested, 2.2f);
+        EmitSignal(SignalName.DustBurstRequested, GetFootPosition(), Facing, 0.95f);
     }
 
     public DamageResult ApplyDamage()
@@ -166,17 +253,18 @@ public partial class PlayerController : CharacterBody2D
             {
                 texture = frames.Jump;
             }
-            else if (Input.IsActionPressed("move_down") && Mathf.Abs(Velocity.X) < 32f)
+            else if (Input.IsActionPressed("move_down") && Mathf.Abs(_relativeVisualVelocityX) < 32f)
             {
                 texture = frames.Duck;
             }
-            else if (Mathf.Abs(Velocity.X) > 36f)
+            else if (Mathf.Abs(_relativeVisualVelocityX) > 36f)
             {
                 texture = Mathf.PosMod(Mathf.FloorToInt(_animationTime * 10f), 2) == 0 ? frames.WalkA : frames.WalkB;
             }
         }
 
         GameAssets.ApplyFittedSprite(_sprite, texture, new Vector2(_size.X + 10f, _size.Y + 12f), _size.Y * 0.5f, true);
+        ApplyFeedbackTransform(_size.Y * 0.5f);
         _sprite.FlipH = Facing < 0;
 
         if (_invulnerabilityTime > 0f && !forceRefresh)
@@ -188,11 +276,45 @@ public partial class PlayerController : CharacterBody2D
         _sprite.Visible = true;
     }
 
-    private void SnapToGround()
+    private void ApplyFeedbackTransform(float bottomY)
+    {
+        if (_sprite.Texture is null)
+        {
+            return;
+        }
+
+        var textureSize = _sprite.Texture.GetSize();
+        var scaled = new Vector2(_sprite.Scale.X * _feedbackScale.X, _sprite.Scale.Y * _feedbackScale.Y);
+        _sprite.Scale = scaled;
+        _sprite.Position = new Vector2(_sprite.Position.X, bottomY - textureSize.Y * scaled.Y * 0.5f);
+    }
+
+    private void PlayFeedbackSquash(Vector2 peakScale)
+    {
+        _feedbackTween?.Kill();
+        _feedbackTween = CreateTween();
+        _feedbackTween.SetTrans(Tween.TransitionType.Back);
+        _feedbackTween.SetEase(Tween.EaseType.Out);
+        _feedbackTween.TweenProperty(this, nameof(FeedbackScale), peakScale, 0.07f);
+        _feedbackTween.TweenProperty(this, nameof(FeedbackScale), Vector2.One, 0.12f);
+    }
+
+    public Vector2 FeedbackScale
+    {
+        get => _feedbackScale;
+        set => _feedbackScale = value;
+    }
+
+    private Vector2 GetFootPosition()
+    {
+        return GlobalPosition + new Vector2(0f, _size.Y * 0.5f - 2f);
+    }
+
+    private bool SnapToGround()
     {
         if (Velocity.Y < 0f)
         {
-            return;
+            return false;
         }
 
         var query = PhysicsRayQueryParameters2D.Create(
@@ -204,20 +326,20 @@ public partial class PlayerController : CharacterBody2D
         var result = GetWorld2D().DirectSpaceState.IntersectRay(query);
         if (result.Count == 0)
         {
-            return;
+            return false;
         }
 
         var normal = result["normal"].AsVector2();
         if (normal.Y < 0.55f)
         {
-            return;
+            return false;
         }
 
         var supportY = result["position"].AsVector2().Y;
         var desiredY = supportY - _size.Y * 0.5f;
         if (desiredY < GlobalPosition.Y - GroundSnapAllowance || desiredY > GlobalPosition.Y + GroundProbeDepth)
         {
-            return;
+            return false;
         }
 
         GlobalPosition = new Vector2(GlobalPosition.X, desiredY);
@@ -225,5 +347,7 @@ public partial class PlayerController : CharacterBody2D
         {
             Velocity = new Vector2(Velocity.X, 0f);
         }
+
+        return true;
     }
 }

@@ -47,7 +47,8 @@ public partial class EnemyController : CharacterBody2D
         _ => new Vector2(34, 34)
     };
 
-    public event Action<Vector2, int>? ShootRequested;
+    [Signal]
+    public delegate void ShootRequestedEventHandler(Vector2 origin, int facing);
 
     public override void _Ready()
     {
@@ -137,7 +138,7 @@ public partial class EnemyController : CharacterBody2D
             if (_shotCooldown <= 0f)
             {
                 _shotCooldown = 1.7f;
-                ShootRequested?.Invoke(GlobalPosition + new Vector2(_direction * 20f, -8f), _direction);
+                EmitSignal(SignalName.ShootRequested, GlobalPosition + new Vector2(_direction * 20f, -8f), _direction);
             }
 
             UpdateVisual();

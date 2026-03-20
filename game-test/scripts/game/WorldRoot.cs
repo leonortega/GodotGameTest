@@ -4,6 +4,12 @@ namespace GameTest;
 
 public partial class WorldRoot : Node2D
 {
+    private const float CameraVerticalOffset = 90f;
+    private const float CameraLookAheadDistance = 96f;
+    private const float CameraLookAheadResponsiveness = 5.5f;
+    private const float CameraCatchUpResponsiveness = 7.5f;
+    private const float CameraShakeDecay = 14f;
+
     private static readonly PackedScene PlayerScene = GD.Load<PackedScene>("res://scenes/actors/Player.tscn");
     private static readonly PackedScene GroundEnemyScene = GD.Load<PackedScene>("res://scenes/actors/GroundEnemy.tscn");
     private static readonly PackedScene ArmoredEnemyScene = GD.Load<PackedScene>("res://scenes/actors/ArmoredEnemy.tscn");
@@ -18,6 +24,7 @@ public partial class WorldRoot : Node2D
     private readonly List<ProjectileNode> _projectiles = [];
     private readonly List<EnemyProjectileNode> _enemyProjectiles = [];
     private readonly List<CactusHazard> _hazards = [];
+    private readonly RandomNumberGenerator _cameraShakeRng = new();
 
     private Node2D _stageRoot = null!;
     private Node2D _entityRoot = null!;
@@ -28,15 +35,23 @@ public partial class WorldRoot : Node2D
     private double _timerAccumulator;
     private int _stageTimeRemaining;
     private bool _transitionLocked;
+    private float _cameraLookAheadX;
+    private float _cameraShakeAmount;
 
     public bool SimulationActive { get; private set; }
 
-    public event Action? StageCompleted;
-    public event Action? StageRestartRequested;
-    public event Action? GameOver;
+    [Signal]
+    public delegate void StageCompletedEventHandler();
+
+    [Signal]
+    public delegate void StageRestartRequestedEventHandler();
+
+    [Signal]
+    public delegate void GameOverEventHandler();
 
     public override void _Ready()
     {
+        _cameraShakeRng.Randomize();
         _stageRoot = new Node2D { Name = "StageRoot" };
         _entityRoot = new Node2D { Name = "EntityRoot" };
 
@@ -65,7 +80,7 @@ public partial class WorldRoot : Node2D
             }
         }
 
-        UpdateCameraOffset();
+        UpdateCameraOffset((float)delta);
         UpdateEnemySimulation();
         AdvanceProjectiles(delta);
         if (AdvanceEnemyProjectiles(delta))
@@ -137,15 +152,20 @@ public partial class WorldRoot : Node2D
         _player.Respawn(_stage.PlayerSpawnPosition);
         _player.BlockHit += HandleBlockHit;
         _player.FireRequested += SpawnProjectile;
+        _player.ImpactFeedbackRequested += OnImpactFeedbackRequested;
+        _player.DustBurstRequested += OnDustBurstRequested;
 
         _camera = new Camera2D
         {
             Enabled = true,
-            PositionSmoothingEnabled = false
+            PositionSmoothingEnabled = false,
+            LimitSmoothed = true
         };
         _entityRoot.AddChild(_camera);
         _camera.MakeCurrent();
-        UpdateCameraOffset();
+        _cameraLookAheadX = 0f;
+        _cameraShakeAmount = 0f;
+        UpdateCameraOffset(0f, true);
 
         GameSession.Instance.SetTimer(_stageTimeRemaining);
         AudioDirector.Instance.PlayMusicForTheme(_stage.Theme);
@@ -167,6 +187,19 @@ public partial class WorldRoot : Node2D
         if (_player is not null)
         {
             _player.SimulationActive = isActive;
+        }
+
+        if (_stage is not null)
+        {
+            foreach (var platform in _stage.GetMovingPlatforms())
+            {
+                platform.SimulationActive = isActive;
+            }
+
+            foreach (var block in _stage.GetFallingBlocks())
+            {
+                block.SimulationActive = isActive;
+            }
         }
 
         UpdateEnemySimulation();
@@ -286,7 +319,7 @@ public partial class WorldRoot : Node2D
         GameSession.Instance.AddScore(_stageTimeRemaining * 10);
         AudioDirector.Instance.StopMusic();
         AudioDirector.Instance.PlaySfx("clear");
-        StageCompleted?.Invoke();
+        EmitSignal(SignalName.StageCompleted);
     }
 
     private void HandleBlockHit(MysteryBlock block)
@@ -489,7 +522,7 @@ public partial class WorldRoot : Node2D
             return;
         }
 
-        StageRestartRequested?.Invoke();
+        EmitSignal(SignalName.StageRestartRequested);
     }
 
     private async void HandleContactLifeLoss()
@@ -505,16 +538,16 @@ public partial class WorldRoot : Node2D
 
         await ToSignal(GetTree().CreateTimer(0.6), SceneTreeTimer.SignalName.Timeout);
 
-        StageRestartRequested?.Invoke();
+        EmitSignal(SignalName.StageRestartRequested);
     }
 
     private void TriggerGameOver()
     {
         SetSimulationActive(false);
-        GameOver?.Invoke();
+        EmitSignal(SignalName.GameOver);
     }
 
-    private void UpdateCameraOffset()
+    private void UpdateCameraOffset(float deltaSeconds, bool snap = false)
     {
         if (_camera is null || _player is null)
         {
@@ -540,12 +573,64 @@ public partial class WorldRoot : Node2D
             minCenterY = maxCenterY = bounds.GetCenter().Y;
         }
 
-        var desiredCenter = _player.GlobalPosition + new Vector2(0f, 90f);
+        var lookAheadTargetX = 0f;
+        if (Mathf.Abs(_player.Velocity.X) > 24f)
+        {
+            lookAheadTargetX = Mathf.Sign(_player.Velocity.X) * CameraLookAheadDistance;
+        }
+        else if (_player.Facing != 0)
+        {
+            lookAheadTargetX = _player.Facing * (CameraLookAheadDistance * 0.35f);
+        }
+
+        if (snap || deltaSeconds <= 0f)
+        {
+            _cameraLookAheadX = lookAheadTargetX;
+        }
+        else
+        {
+            var lookAheadLerpWeight = 1f - Mathf.Exp(-CameraLookAheadResponsiveness * deltaSeconds);
+            _cameraLookAheadX = Mathf.Lerp(_cameraLookAheadX, lookAheadTargetX, lookAheadLerpWeight);
+        }
+
+        var desiredCenter = _player.GlobalPosition + new Vector2(_cameraLookAheadX, CameraVerticalOffset);
         var clampedCenter = new Vector2(
             Mathf.Clamp(desiredCenter.X, minCenterX, maxCenterX),
             Mathf.Clamp(desiredCenter.Y, minCenterY, maxCenterY));
 
-        _camera.GlobalPosition = clampedCenter;
+        if (snap || deltaSeconds <= 0f)
+        {
+            _camera.GlobalPosition = clampedCenter;
+            _camera.Offset = Vector2.Zero;
+            return;
+        }
+
+        var cameraLerpWeight = 1f - Mathf.Exp(-CameraCatchUpResponsiveness * deltaSeconds);
+        _camera.GlobalPosition = _camera.GlobalPosition.Lerp(clampedCenter, cameraLerpWeight);
+
+        if (_cameraShakeAmount > 0f)
+        {
+            _camera.Offset = new Vector2(
+                _cameraShakeRng.RandfRange(-_cameraShakeAmount, _cameraShakeAmount),
+                _cameraShakeRng.RandfRange(-_cameraShakeAmount * 0.75f, _cameraShakeAmount * 0.75f));
+            _cameraShakeAmount = Mathf.Max(0f, _cameraShakeAmount - CameraShakeDecay * deltaSeconds);
+        }
+        else
+        {
+            _camera.Offset = Vector2.Zero;
+        }
+    }
+
+    private void OnImpactFeedbackRequested(float shakeAmount)
+    {
+        _cameraShakeAmount = Mathf.Max(_cameraShakeAmount, shakeAmount);
+    }
+
+    private void OnDustBurstRequested(Vector2 worldPosition, int facing, float strength)
+    {
+        var dustPuff = new DustPuff();
+        _entityRoot.AddChild(dustPuff);
+        dustPuff.Configure(worldPosition, facing, strength);
     }
 
     private void PopulateEnemiesForDifficulty()

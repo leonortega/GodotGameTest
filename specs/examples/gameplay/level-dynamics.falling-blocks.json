@@ -1,0 +1,21 @@
+{
+  "specId": "LEVEL.DYNAMICS.002",
+  "input": {
+    "blockWidth": 32,
+    "lineBlockCount": 4,
+    "isSuspended": true,
+    "hasGroundBelow": false,
+    "hasRealGapsBetweenBlocks": true,
+    "gapWidthPixels": 48,
+    "playerContactSeconds": 0.5
+  },
+  "expected": {
+    "contactedBlockFalls": true,
+    "neighborBlocksRemainStable": true,
+    "stableAfterTrigger": false,
+    "gapsAreWalkable": false,
+    "gapWidthMatchesOnePointFiveBlocks": true,
+    "surfaceContactStartsTimer": true,
+    "groundedEnemiesAllowedOnBlocks": false
+  }
+}

@@ -1,0 +1,16 @@
+{
+  "specId": "LEVEL.DYNAMICS.001",
+  "input": {
+    "platformType": "floating-moving",
+    "hasGroundBelow": false,
+    "hasGroundBelowAtLeftExtent": false,
+    "hasGroundBelowAtRightExtent": false,
+    "movement": "horizontal-patrol"
+  },
+  "expected": {
+    "remainsAirborne": true,
+    "movesLeftRight": true,
+    "canCarryPlayer": true,
+    "staysUnsupportedAcrossFullSweep": true
+  }
+}

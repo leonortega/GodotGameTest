@@ -4,7 +4,7 @@ VisualStudioVersion = 17.5.2.0
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "game-test", "game-test", "{EC558AAF-5378-B1F8-2D63-E4EBA94BC4F5}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GameTest", "game-test\GameTest.csproj", "{634871E6-ADE4-00A6-9981-CE76B4404A5C}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GameTest", "GameTest.csproj", "{634871E6-ADE4-00A6-9981-CE76B4404A5C}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

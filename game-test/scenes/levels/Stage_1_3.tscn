@@ -1,4 +1,4 @@
-[gd_scene load_steps=8]
+[gd_scene load_steps=10]
 
 
 
@@ -16,14 +16,16 @@
 [ext_resource type="PackedScene" path="res://scenes/actors/FlyingEnemy.tscn" id="10_flying"]
 [ext_resource type="PackedScene" path="res://scenes/actors/ProtectedHeadEnemy.tscn" id="11_protected"]
 [ext_resource type="PackedScene" path="res://scenes/actors/ShooterEnemy.tscn" id="12_shooter"]
+[ext_resource type="PackedScene" path="res://scenes/terrain/FloatingMovingPlatform.tscn" id="13_moving"]
+[ext_resource type="PackedScene" path="res://scenes/terrain/FallingBlock.tscn" id="14_falling"]
 
 [node name="Stage_1_3" type="Node2D"]
 script = ExtResource("1")
 StageId = "1-3"
 Theme = 2
 TimerSeconds = 340
-WorldBounds = Rect2(0, 0, 8512, 720)
-SolidRectTiles = [Rect2i(0, 18, 10, 1), Rect2i(14, 16, 8, 1), Rect2i(26, 14, 9, 1), Rect2i(39, 12, 9, 1), Rect2i(52, 11, 8, 1), Rect2i(64, 13, 9, 1), Rect2i(77, 11, 9, 1), Rect2i(90, 10, 9, 1), Rect2i(103, 12, 8, 1), Rect2i(116, 11, 10, 1), Rect2i(130, 9, 10, 1), Rect2i(144, 11, 8, 1), Rect2i(157, 13, 9, 1), Rect2i(171, 11, 8, 1), Rect2i(184, 10, 9, 1), Rect2i(198, 12, 8, 1), Rect2i(211, 11, 9, 1), Rect2i(225, 9, 9, 1), Rect2i(239, 11, 8, 1), Rect2i(250, 9, 16, 1)]
+WorldBounds = Rect2(0, 0, 11008, 720)
+SolidRectTiles = [Rect2i(0, 18, 10, 1), Rect2i(26, 14, 9, 1), Rect2i(39, 12, 9, 1), Rect2i(52, 11, 8, 1), Rect2i(64, 13, 9, 1), Rect2i(77, 11, 5, 1), Rect2i(93, 10, 6, 1), Rect2i(109, 12, 2, 1), Rect2i(116, 11, 10, 1), Rect2i(130, 9, 3, 1), Rect2i(145, 11, 7, 1), Rect2i(157, 13, 9, 1), Rect2i(171, 11, 8, 1), Rect2i(184, 10, 9, 1), Rect2i(198, 12, 8, 1), Rect2i(211, 11, 9, 1), Rect2i(225, 9, 9, 1), Rect2i(239, 11, 8, 1), Rect2i(250, 9, 16, 1), Rect2i(270, 12, 6, 1), Rect2i(292, 13, 3, 1), Rect2i(305, 9, 4, 1), Rect2i(319, 11, 1, 1), Rect2i(340, 9, 4, 1)]
 
 [node name="Backdrop" type="Node2D" parent="."]
 script = ExtResource("2")
@@ -47,7 +49,7 @@ position = Vector2(96, 553)
 
 [node name="Coin_01" type="Node2D" parent="Gameplay/Pickups"]
 script = ExtResource("5")
-position = Vector2(576, 448)
+position = Vector2(768, 384)
 AuthoredPickupType = 0
 
 [node name="Coin_02" type="Node2D" parent="Gameplay/Pickups"]
@@ -67,17 +69,17 @@ AuthoredPickupType = 0
 
 [node name="Coin_05" type="Node2D" parent="Gameplay/Pickups"]
 script = ExtResource("5")
-position = Vector2(2608, 296)
+position = Vector2(2528, 232)
 AuthoredPickupType = 0
 
 [node name="Coin_06" type="Node2D" parent="Gameplay/Pickups"]
 script = ExtResource("5")
-position = Vector2(3000, 200)
+position = Vector2(2816, 152)
 AuthoredPickupType = 0
 
 [node name="Coin_07" type="Node2D" parent="Gameplay/Pickups"]
 script = ExtResource("5")
-position = Vector2(4320, 232)
+position = Vector2(4096, 184)
 AuthoredPickupType = 0
 
 [node name="Coin_08" type="Node2D" parent="Gameplay/Pickups"]
@@ -90,6 +92,36 @@ script = ExtResource("5")
 position = Vector2(8240, 232)
 AuthoredPickupType = 0
 
+[node name="Coin_10" type="Node2D" parent="Gameplay/Pickups"]
+script = ExtResource("5")
+position = Vector2(8736, 344)
+AuthoredPickupType = 0
+
+[node name="Coin_11" type="Node2D" parent="Gameplay/Pickups"]
+script = ExtResource("5")
+position = Vector2(9120, 280)
+AuthoredPickupType = 0
+
+[node name="Coin_12" type="Node2D" parent="Gameplay/Pickups"]
+script = ExtResource("5")
+position = Vector2(9136, 152)
+AuthoredPickupType = 0
+
+[node name="Coin_13" type="Node2D" parent="Gameplay/Pickups"]
+script = ExtResource("5")
+position = Vector2(9856, 248)
+AuthoredPickupType = 0
+
+[node name="Coin_14" type="Node2D" parent="Gameplay/Pickups"]
+script = ExtResource("5")
+position = Vector2(9856, 232)
+AuthoredPickupType = 0
+
+[node name="Coin_15" type="Node2D" parent="Gameplay/Pickups"]
+script = ExtResource("5")
+position = Vector2(10816, 232)
+AuthoredPickupType = 0
+
 [node name="Blocks" type="Node2D" parent="Gameplay"]
 
 [node name="Block_Flame" type="StaticBody2D" parent="Gameplay/Blocks"]
@@ -99,12 +131,12 @@ Reward = 2
 
 [node name="Block_Coin_01" type="StaticBody2D" parent="Gameplay/Blocks"]
 script = ExtResource("4")
-position = Vector2(2976, 248)
+position = Vector2(2720, 216)
 Reward = 0
 
 [node name="Block_Coin_02" type="StaticBody2D" parent="Gameplay/Blocks"]
 script = ExtResource("4")
-position = Vector2(3024, 248)
+position = Vector2(2768, 216)
 Reward = 0
 
 [node name="Block_Growth_02" type="StaticBody2D" parent="Gameplay/Blocks"]
@@ -117,6 +149,16 @@ script = ExtResource("4")
 position = Vector2(8144, 216)
 Reward = 0
 
+[node name="Block_Coin_04" type="StaticBody2D" parent="Gameplay/Blocks"]
+script = ExtResource("4")
+position = Vector2(9200, 184)
+Reward = 0
+
+[node name="Block_Flame_02" type="StaticBody2D" parent="Gameplay/Blocks"]
+script = ExtResource("4")
+position = Vector2(10816, 216)
+Reward = 2
+
 [node name="Enemies" type="Node2D" parent="Gameplay"]
 
 [node name="Enemy_01" parent="Gameplay/Enemies" instance=ExtResource("10_flying")]
@@ -127,10 +169,10 @@ AuthoredPatrolDistance = 180.0
 position = Vector2(2180, 399)
 
 [node name="Enemy_03" parent="Gameplay/Enemies" instance=ExtResource("9_armored")]
-position = Vector2(3820, 336)
+position = Vector2(3744, 336)
 
 [node name="Enemy_04" parent="Gameplay/Enemies" instance=ExtResource("10_flying")]
-position = Vector2(4740, 260)
+position = Vector2(4896, 192)
 AuthoredPatrolDistance = 180.0
 
 [node name="Enemy_05" parent="Gameplay/Enemies" instance=ExtResource("11_protected")]
@@ -149,7 +191,132 @@ position = Vector2(7696, 333)
 [node name="Enemy_09" parent="Gameplay/Enemies" instance=ExtResource("12_shooter")]
 position = Vector2(8280, 273)
 
+[node name="Enemy_10" parent="Gameplay/Enemies" instance=ExtResource("10_flying")]
+position = Vector2(9200, 280)
+AuthoredPatrolDistance = 180.0
+
+[node name="Enemy_11" parent="Gameplay/Enemies" instance=ExtResource("11_protected")]
+position = Vector2(9368, 397)
+
+[node name="Enemy_12" parent="Gameplay/Enemies" instance=ExtResource("9_armored")]
+position = Vector2(9824, 272)
+
+[node name="Enemy_13" parent="Gameplay/Enemies" instance=ExtResource("12_shooter")]
+position = Vector2(10944, 273)
+
+[node name="Dynamics" type="Node2D" parent="Gameplay"]
+
+[node name="MovingPlatform_01" parent="Gameplay/Dynamics" instance=ExtResource("13_moving")]
+position = Vector2(544, 432)
+WidthTiles = 6
+PatrolDistance = 64.0
+MoveSpeed = 78.0
+
+[node name="MovingPlatform_02" parent="Gameplay/Dynamics" instance=ExtResource("13_moving")]
+position = Vector2(2784, 304)
+WidthTiles = 6
+PatrolDistance = 64.0
+MoveSpeed = 82.0
+
+[node name="FallingBlock_01_01" parent="Gameplay/Dynamics" instance=ExtResource("14_falling")]
+position = Vector2(3208, 256)
+TriggerDelaySeconds = 0.5
+FallGravity = 1500.0
+
+[node name="FallingBlock_01_02" parent="Gameplay/Dynamics" instance=ExtResource("14_falling")]
+position = Vector2(3288, 256)
+TriggerDelaySeconds = 0.5
+FallGravity = 1500.0
+
+[node name="FallingBlock_01_03" parent="Gameplay/Dynamics" instance=ExtResource("14_falling")]
+position = Vector2(3368, 256)
+TriggerDelaySeconds = 0.5
+FallGravity = 1500.0
+
+[node name="FallingBlock_01_04" parent="Gameplay/Dynamics" instance=ExtResource("14_falling")]
+position = Vector2(3448, 256)
+TriggerDelaySeconds = 0.5
+FallGravity = 1500.0
+
+[node name="FallingBlock_02_01" parent="Gameplay/Dynamics" instance=ExtResource("14_falling")]
+position = Vector2(4328, 288)
+TriggerDelaySeconds = 0.5
+FallGravity = 1500.0
+
+[node name="FallingBlock_02_02" parent="Gameplay/Dynamics" instance=ExtResource("14_falling")]
+position = Vector2(4408, 288)
+TriggerDelaySeconds = 0.5
+FallGravity = 1500.0
+
+[node name="FallingBlock_02_03" parent="Gameplay/Dynamics" instance=ExtResource("14_falling")]
+position = Vector2(4488, 288)
+TriggerDelaySeconds = 0.5
+FallGravity = 1500.0
+
+[node name="FallingBlock_02_04" parent="Gameplay/Dynamics" instance=ExtResource("14_falling")]
+position = Vector2(4568, 288)
+TriggerDelaySeconds = 0.5
+FallGravity = 1500.0
+
+[node name="MovingPlatform_03" parent="Gameplay/Dynamics" instance=ExtResource("13_moving")]
+position = Vector2(9056, 384)
+WidthTiles = 6
+PatrolDistance = 60.0
+MoveSpeed = 78.0
+
+[node name="FallingBlock_03_01" parent="Gameplay/Dynamics" instance=ExtResource("14_falling")]
+position = Vector2(9464, 240)
+TriggerDelaySeconds = 0.5
+FallGravity = 1500.0
+
+[node name="FallingBlock_03_02" parent="Gameplay/Dynamics" instance=ExtResource("14_falling")]
+position = Vector2(9544, 240)
+TriggerDelaySeconds = 0.5
+FallGravity = 1500.0
+
+[node name="FallingBlock_03_03" parent="Gameplay/Dynamics" instance=ExtResource("14_falling")]
+position = Vector2(9624, 240)
+TriggerDelaySeconds = 0.5
+FallGravity = 1500.0
+
+[node name="FallingBlock_03_04" parent="Gameplay/Dynamics" instance=ExtResource("14_falling")]
+position = Vector2(9704, 240)
+TriggerDelaySeconds = 0.5
+FallGravity = 1500.0
+
+[node name="MovingPlatform_04" parent="Gameplay/Dynamics" instance=ExtResource("13_moving")]
+position = Vector2(10048, 320)
+WidthTiles = 6
+PatrolDistance = 60.0
+MoveSpeed = 80.0
+
+[node name="FallingBlock_04_01" parent="Gameplay/Dynamics" instance=ExtResource("14_falling")]
+position = Vector2(10264, 256)
+TriggerDelaySeconds = 0.5
+FallGravity = 1500.0
+
+[node name="FallingBlock_04_02" parent="Gameplay/Dynamics" instance=ExtResource("14_falling")]
+position = Vector2(10344, 256)
+TriggerDelaySeconds = 0.5
+FallGravity = 1500.0
+
+[node name="FallingBlock_04_03" parent="Gameplay/Dynamics" instance=ExtResource("14_falling")]
+position = Vector2(10424, 256)
+TriggerDelaySeconds = 0.5
+FallGravity = 1500.0
+
+[node name="FallingBlock_04_04" parent="Gameplay/Dynamics" instance=ExtResource("14_falling")]
+position = Vector2(10504, 256)
+TriggerDelaySeconds = 0.5
+FallGravity = 1500.0
+
+[node name="MovingPlatform_05" parent="Gameplay/Dynamics" instance=ExtResource("13_moving")]
+position = Vector2(10720, 352)
+WidthTiles = 6
+PatrolDistance = 64.0
+MoveSpeed = 80.0
+
 [node name="Goal" type="Node2D" parent="Gameplay"]
 script = ExtResource("3")
-position = Vector2(8420, 288)
+position = Vector2(10920, 288)
 

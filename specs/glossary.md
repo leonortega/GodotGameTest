@@ -20,6 +20,9 @@
 - **Hidden route**: Optional path or room not required for completion but containing bonus rewards.
 - **Environmental obstacle**: Non-enemy stage object that threatens or blocks the player, such as a cactus hazard.
 - **Terrain profile**: The overall height variation of a stage path, including flats, rises, drops, and uneven segments.
+- **Floating moving platform**: An airborne platform with no direct support beneath it that patrols horizontally and can carry the player.
+- **Falling block**: A single suspended block that falls after about 0.5 seconds of sustained player contact, with no ground directly beneath its footprint.
+- **Falling block line**: A repeated authored sequence of single falling blocks, usually four or more in a row, with real gaps between adjacent blocks.
 - **Tile collision**: Solid-world collision used to prevent the player or enemies from moving through level geometry.
 - **Contact damage**: Damage caused by colliding with an enemy or hazard outside a valid stomp condition.
 - **CharacterBody2D**: Godot node type used for kinematic character movement with velocity and `move_and_slide()`.

@@ -61,6 +61,25 @@
 | Fall below bounds | Lose life | Used for pits and missed jumps |
 | Authored strike block too close to support below | Lift or reject placement | Must preserve minimum playable hit clearance |
 
+## Dynamic Traversal Rules (`LEVEL.DYNAMICS.001`, `LEVEL.DYNAMICS.002`)
+
+| Decision Point | Default Rule | Notes |
+|---|---|---|
+| Floating platform has no support below | Remains airborne and patrols horizontally | No visible support column required |
+| Floating platform patrol sweep reaches supported ground | Not allowed | Midpoint and both extents must remain over unsupported air |
+| Player stands on floating moving platform | Carry player with platform motion | Normal jump remains available |
+| Player jumps off moving platform | Platform continues patrol | Player detaches normally |
+| Falling block line composition | Author `4` or more single falling blocks in sequence | Each block remains an independent scene instance |
+| Falling block width | Match one terrain block | Visual and collision footprint stay aligned |
+| Falling block touched briefly | Remain suspended | Trigger delay not yet met |
+| Falling block touched for `0.5` seconds | Only the contacted block falls | Neighboring blocks remain suspended until triggered separately |
+| Player stands on a falling block | Start that block's trigger timer | Contact is per block, not per authored line |
+| Falling block spacing | Keep gaps about `1.5` terrain blocks wide | Gaps are real open space, not hidden walkable collision |
+| Falling block corridor overlaps nearby geometry | Not allowed | Clear space must remain before, after, and beneath each block footprint |
+| Player leaves a falling block early | Reset that block's trigger timer | Must be touched again long enough |
+| Ground directly beneath a falling block footprint | Not allowed | Each block must remain unsupported |
+| Enemy placement on falling blocks | Not allowed | Grounded enemies must resolve to authored terrain or other stable support |
+
 ## Difficulty Scaling Rules (`DIFFICULTY.BALANCE.001`)
 
 | Decision Point | Default Rule | Notes |
@@ -87,6 +106,7 @@
 | Stage container | One Godot scene per stage | Supports isolated level iteration |
 | Terrain authoring | Shared TileSet with separated TileMap layers | Solid, hazard, and decoration concerns stay distinct |
 | Interactive placement | Scene instances or scene tiles | Coins, pickups, enemies, goal markers |
+| Dynamic traversal placement | Reusable scene composition | Moving platforms and single falling block scenes |
 | Hazard placement | Scene instances or hazard tiles | Example: cactus obstacles |
 | Metadata source | Level scene plus lightweight manifest data | Provides stage id, timer, spawn, and bounds |
 | Terrain profile | Allow rises, drops, and uneven ground | Avoid over-reliance on long flat paths |
