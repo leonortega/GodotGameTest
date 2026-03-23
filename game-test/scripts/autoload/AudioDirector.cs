@@ -48,6 +48,11 @@ public partial class AudioDirector : Node
             "res://assets/art/kenney_new_platformer_pack/Sounds/sfx_magic.ogg",
             "res://audio/sfx/General Sounds/Positive Sounds/sfx_sounds_powerup11.wav"
         ],
+        ["power_gain_happy"] =
+        [
+            "res://audio/sfx/General Sounds/Positive Sounds/sfx_sounds_powerup18.wav",
+            "res://audio/sfx/General Sounds/Positive Sounds/sfx_sounds_powerup16.wav"
+        ],
         ["extra_life"] =
         [
             "res://assets/art/kenney_new_platformer_pack/Sounds/sfx_gem.ogg",
@@ -78,6 +83,21 @@ public partial class AudioDirector : Node
             "res://assets/art/kenney_new_platformer_pack/Sounds/sfx_throw.ogg",
             "res://audio/sfx/Weapons/Lasers/sfx_wpn_laser3.wav"
         ],
+        ["player_fire"] =
+        [
+            "res://audio/sfx/Weapons/Single Shot Sounds/sfx_weapon_singleshot7.wav",
+            "res://audio/sfx/Weapons/Lasers/sfx_wpn_laser9.wav"
+        ],
+        ["double_jump"] =
+        [
+            "res://assets/art/kenney_new_platformer_pack/Sounds/sfx_jump-high.ogg",
+            "res://audio/sfx/Movement/Jumping and Landing/sfx_movement_jump16.wav"
+        ],
+        ["hard_land"] =
+        [
+            "res://audio/sfx/Movement/Jumping and Landing/sfx_movement_jump14_landing.wav",
+            "res://audio/sfx/Movement/Falling Sounds/sfx_sounds_falling4.wav"
+        ],
         ["life_lost"] =
         [
             "res://audio/sfx/General Sounds/Negative Sounds/sfx_sounds_negative1.wav",
@@ -87,6 +107,11 @@ public partial class AudioDirector : Node
         [
             "res://assets/art/kenney_new_platformer_pack/Sounds/sfx_select.ogg",
             "res://audio/sfx/General Sounds/Positive Sounds/sfx_sounds_powerup15.wav"
+        ],
+        ["goal_happy"] =
+        [
+            "res://audio/sfx/General Sounds/Fanfares/sfx_sounds_fanfare3.wav",
+            "res://audio/sfx/General Sounds/Positive Sounds/sfx_sounds_powerup18.wav"
         ],
         ["block"] =
         [
@@ -104,15 +129,24 @@ public partial class AudioDirector : Node
         [
             "res://audio/sfx/General Sounds/Menu Sounds/sfx_menu_select1.wav",
             "res://assets/art/kenney_new_platformer_pack/Sounds/sfx_select.ogg"
+        ],
+        ["menu_button"] =
+        [
+            "res://audio/sfx/General Sounds/Buttons/sfx_sounds_button3.wav",
+            "res://audio/sfx/General Sounds/Menu Sounds/sfx_menu_select2.wav"
+        ],
+        ["menu_focus"] =
+        [
+            "res://audio/sfx/General Sounds/Menu Sounds/sfx_menu_move2.wav",
+            "res://audio/sfx/General Sounds/Buttons/sfx_sounds_button10.wav"
         ]
     };
 
     public static AudioDirector Instance { get; private set; } = null!;
 
     private readonly Dictionary<StageTheme, AudioStream> _musicTracks = [];
-    private readonly Dictionary<string, AudioStream[]> _sfxCues = [];
+    private readonly Dictionary<string, AudioStream> _sfxCues = [];
     private AudioStreamPlayer _musicPlayer = null!;
-    private readonly RandomNumberGenerator _rng = new();
 
     public string CurrentMusicCue { get; private set; } = string.Empty;
 
@@ -157,17 +191,17 @@ public partial class AudioDirector : Node
 
     public void PlaySfx(string cueName)
     {
-        if (_sfxCues.TryGetValue(cueName, out var cues) && cues.Length > 0)
+        if (_sfxCues.TryGetValue(cueName, out var cue))
         {
-            PlayOneShot(cues[_rng.RandiRange(0, cues.Length - 1)], SfxBusName);
+            PlayOneShot(cue, SfxBusName);
         }
     }
 
     public void PlayUi(string cueName)
     {
-        if (_sfxCues.TryGetValue(cueName, out var cues) && cues.Length > 0)
+        if (_sfxCues.TryGetValue(cueName, out var cue))
         {
-            PlayOneShot(cues[_rng.RandiRange(0, cues.Length - 1)], UiBusName);
+            PlayOneShot(cue, UiBusName);
         }
     }
 
@@ -225,21 +259,28 @@ public partial class AudioDirector : Node
         _musicTracks[StageTheme.Treetop] = LoadLoopingMusic(MusicAssetPaths[StageTheme.Treetop]) ?? CreateMusicLoop([392.0f, 523.25f, 659.25f, 783.99f, 698.46f, 659.25f, 587.33f, 523.25f], 138f, 0.15f, 0.11f);
         _musicTracks[StageTheme.Fortress] = LoadLoopingMusic(MusicAssetPaths[StageTheme.Fortress]) ?? CreateMusicLoop([220.0f, 261.63f, 293.66f, 329.63f, 311.13f, 293.66f, 246.94f, 196.0f], 118f, 0.17f, 0.04f);
 
-        _sfxCues["jump"] = LoadOptionalAudioSet(SfxAssetPaths["jump"], CreateBlipCue(610f, 900f, 0.12f, 0.24f, Waveform.Square));
-        _sfxCues["coin"] = LoadOptionalAudioSet(SfxAssetPaths["coin"], CreateBlipCue(1200f, 1680f, 0.08f, 0.20f, Waveform.Square));
-        _sfxCues["powerup"] = LoadOptionalAudioSet(SfxAssetPaths["powerup"], CreateBlipCue(360f, 820f, 0.34f, 0.22f, Waveform.Triangle));
-        _sfxCues["extra_life"] = LoadOptionalAudioSet(SfxAssetPaths["extra_life"], CreateArpeggioCue([660f, 880f, 1320f, 1760f], 0.38f, 0.16f));
-        _sfxCues["pickup"] = LoadOptionalAudioSet(SfxAssetPaths["pickup"], CreateBlipCue(540f, 860f, 0.12f, 0.18f, Waveform.Triangle));
-        _sfxCues["stomp"] = LoadOptionalAudioSet(SfxAssetPaths["stomp"], CreateBlipCue(240f, 120f, 0.10f, 0.28f, Waveform.Noise));
-        _sfxCues["enemy_down"] = LoadOptionalAudioSet(SfxAssetPaths["enemy_down"], CreateBlipCue(330f, 160f, 0.18f, 0.24f, Waveform.Saw));
-        _sfxCues["damage"] = LoadOptionalAudioSet(SfxAssetPaths["damage"], CreateBlipCue(220f, 110f, 0.24f, 0.30f, Waveform.Noise));
-        _sfxCues["fire"] = LoadOptionalAudioSet(SfxAssetPaths["fire"], CreateBlipCue(760f, 520f, 0.12f, 0.18f, Waveform.Saw));
-        _sfxCues["life_lost"] = LoadOptionalAudioSet(SfxAssetPaths["life_lost"], CreateBlipCue(240f, 80f, 0.45f, 0.32f, Waveform.Saw));
-        _sfxCues["clear"] = LoadOptionalAudioSet(SfxAssetPaths["clear"], CreateArpeggioCue([523.25f, 659.25f, 783.99f, 1046.5f], 0.62f, 0.18f));
-        _sfxCues["block"] = LoadOptionalAudioSet(SfxAssetPaths["block"], CreateBlipCue(440f, 540f, 0.10f, 0.14f, Waveform.Square));
-        _sfxCues["pause"] = LoadOptionalAudioSet(SfxAssetPaths["pause"], CreateBlipCue(880f, 660f, 0.10f, 0.16f, Waveform.Square));
-        _sfxCues["resume"] = LoadOptionalAudioSet(SfxAssetPaths["resume"], CreateBlipCue(660f, 920f, 0.10f, 0.16f, Waveform.Square));
-        _sfxCues["menu_open"] = LoadOptionalAudioSet(SfxAssetPaths["menu_open"], CreateBlipCue(720f, 960f, 0.08f, 0.12f, Waveform.Triangle));
+        _sfxCues["jump"] = LoadOptionalAudio(SfxAssetPaths["jump"], CreateBlipCue(610f, 900f, 0.12f, 0.24f, Waveform.Square));
+        _sfxCues["coin"] = LoadOptionalAudio(SfxAssetPaths["coin"], CreateBlipCue(1200f, 1680f, 0.08f, 0.20f, Waveform.Square));
+        _sfxCues["powerup"] = LoadOptionalAudio(SfxAssetPaths["powerup"], CreateBlipCue(360f, 820f, 0.34f, 0.22f, Waveform.Triangle));
+        _sfxCues["power_gain_happy"] = LoadOptionalAudio(SfxAssetPaths["power_gain_happy"], CreateArpeggioCue([659.25f, 783.99f, 987.77f, 1318.51f], 0.34f, 0.18f));
+        _sfxCues["extra_life"] = LoadOptionalAudio(SfxAssetPaths["extra_life"], CreateArpeggioCue([660f, 880f, 1320f, 1760f], 0.38f, 0.16f));
+        _sfxCues["pickup"] = LoadOptionalAudio(SfxAssetPaths["pickup"], CreateBlipCue(540f, 860f, 0.12f, 0.18f, Waveform.Triangle));
+        _sfxCues["stomp"] = LoadOptionalAudio(SfxAssetPaths["stomp"], CreateBlipCue(240f, 120f, 0.10f, 0.28f, Waveform.Noise));
+        _sfxCues["enemy_down"] = LoadOptionalAudio(SfxAssetPaths["enemy_down"], CreateBlipCue(330f, 160f, 0.18f, 0.24f, Waveform.Saw));
+        _sfxCues["damage"] = LoadOptionalAudio(SfxAssetPaths["damage"], CreateBlipCue(220f, 110f, 0.24f, 0.30f, Waveform.Noise));
+        _sfxCues["fire"] = LoadOptionalAudio(SfxAssetPaths["fire"], CreateBlipCue(760f, 520f, 0.12f, 0.18f, Waveform.Saw));
+        _sfxCues["player_fire"] = LoadOptionalAudio(SfxAssetPaths["player_fire"], CreateBlipCue(920f, 640f, 0.10f, 0.18f, Waveform.Saw));
+        _sfxCues["double_jump"] = LoadOptionalAudio(SfxAssetPaths["double_jump"], CreateBlipCue(980f, 1420f, 0.12f, 0.22f, Waveform.Square));
+        _sfxCues["hard_land"] = LoadOptionalAudio(SfxAssetPaths["hard_land"], CreateBlipCue(180f, 90f, 0.16f, 0.28f, Waveform.Noise));
+        _sfxCues["life_lost"] = LoadOptionalAudio(SfxAssetPaths["life_lost"], CreateBlipCue(240f, 80f, 0.45f, 0.32f, Waveform.Saw));
+        _sfxCues["clear"] = LoadOptionalAudio(SfxAssetPaths["clear"], CreateArpeggioCue([523.25f, 659.25f, 783.99f, 1046.5f], 0.62f, 0.18f));
+        _sfxCues["goal_happy"] = LoadOptionalAudio(SfxAssetPaths["goal_happy"], CreateArpeggioCue([783.99f, 987.77f, 1174.66f, 1567.98f], 0.46f, 0.20f));
+        _sfxCues["block"] = LoadOptionalAudio(SfxAssetPaths["block"], CreateBlipCue(440f, 540f, 0.10f, 0.14f, Waveform.Square));
+        _sfxCues["pause"] = LoadOptionalAudio(SfxAssetPaths["pause"], CreateBlipCue(880f, 660f, 0.10f, 0.16f, Waveform.Square));
+        _sfxCues["resume"] = LoadOptionalAudio(SfxAssetPaths["resume"], CreateBlipCue(660f, 920f, 0.10f, 0.16f, Waveform.Square));
+        _sfxCues["menu_open"] = LoadOptionalAudio(SfxAssetPaths["menu_open"], CreateBlipCue(720f, 960f, 0.08f, 0.12f, Waveform.Triangle));
+        _sfxCues["menu_button"] = LoadOptionalAudio(SfxAssetPaths["menu_button"], CreateBlipCue(640f, 760f, 0.08f, 0.14f, Waveform.Square));
+        _sfxCues["menu_focus"] = LoadOptionalAudio(SfxAssetPaths["menu_focus"], CreateBlipCue(520f, 620f, 0.05f, 0.10f, Waveform.Triangle));
     }
 
     private static AudioStream? LoadLoopingMusic(IEnumerable<string> paths)
@@ -256,10 +297,8 @@ public partial class AudioDirector : Node
         return null;
     }
 
-    private static AudioStream[] LoadOptionalAudioSet(IEnumerable<string> paths, AudioStream fallback)
+    private static AudioStream LoadOptionalAudio(IEnumerable<string> paths, AudioStream fallback)
     {
-        var streams = new List<AudioStream>();
-
         foreach (var path in paths)
         {
             if (!ResourceLoader.Exists(path))
@@ -270,11 +309,11 @@ public partial class AudioDirector : Node
             var stream = GD.Load<AudioStream>(path);
             if (stream is not null)
             {
-                streams.Add(stream);
+                return stream;
             }
         }
 
-        return streams.Count > 0 ? streams.ToArray() : [fallback];
+        return fallback;
     }
 
     private void PlayOneShot(AudioStream stream, string busName)

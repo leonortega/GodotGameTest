@@ -14,6 +14,15 @@ public partial class OverlayLayer : CanvasLayer
         EnemyKind.ProtectedHead
     ];
 
+    private static readonly EnemyKind[] EnemyGuideOrder =
+    [
+        EnemyKind.Ground,
+        EnemyKind.Armored,
+        EnemyKind.ProtectedHead,
+        EnemyKind.Flying,
+        EnemyKind.Shooter
+    ];
+
     private readonly ColorRect _backdrop = new();
 
     private readonly CenterContainer _titleCenter = new();
@@ -26,8 +35,8 @@ public partial class OverlayLayer : CanvasLayer
     private readonly RichTextLabel _titleBody = new();
     private readonly Button _titleStartButton = new();
     private readonly Button _titleControlsButton = new();
+    private readonly Button _titleEnemiesButton = new();
     private readonly Button _titleDifficultyButton = new();
-    private readonly Button _titleLevelButton = new();
 
     private readonly CenterContainer _menuCenter = new();
     private readonly PanelContainer _panel = new();
@@ -46,10 +55,19 @@ public partial class OverlayLayer : CanvasLayer
     private readonly Label _timedTitle = new();
     private readonly RichTextLabel _timedBody = new();
 
+    private readonly CenterContainer _enemyGuideCenter = new();
+    private readonly PanelContainer _enemyGuidePanel = new();
+    private readonly Label _enemyGuideKicker = new();
+    private readonly Label _enemyGuideTitle = new();
+    private readonly ScrollContainer _enemyGuideScroll = new();
+    private readonly VBoxContainer _enemyGuideList = new();
+    private readonly Button _enemyGuideBackButton = new();
+
     private Action? _primaryAction;
     private Action? _secondaryAction;
     private Action? _tertiaryAction;
     private Action? _quaternaryAction;
+    private Button? _lastHighlightedButton;
     private float _titleAnimationTime;
     private EnemyKind _titleEnemyKind = EnemyKind.ProtectedHead;
     private bool _useCompactMenuLogo;
@@ -69,6 +87,7 @@ public partial class OverlayLayer : CanvasLayer
         BuildTitleScreen();
         BuildGenericOverlay();
         BuildTimedCard();
+        BuildEnemyGuide();
 
         if (GetViewport() is { } viewport)
         {
@@ -99,19 +118,19 @@ public partial class OverlayLayer : CanvasLayer
         UpdateTitleAnimation();
     }
 
-    public void ShowTitleScreen(string body, string difficultyText, string levelText, Action startAction, Action controlsAction, Action difficultyAction, Action levelAction)
+    public void ShowTitleScreen(string body, string difficultyText, Action startAction, Action controlsAction, Action enemiesAction, Action difficultyAction)
     {
         RefreshResponsiveLayout();
         _backdrop.Color = new Color(0.03f, 0.04f, 0.08f, 0.98f);
         _titleLogo.Texture = GameAssets.GetTitleLogo();
         _titleBody.Text = body;
         _titleDifficultyButton.Text = difficultyText;
-        _titleLevelButton.Text = levelText;
 
         _primaryAction = startAction;
         _secondaryAction = controlsAction;
-        _tertiaryAction = difficultyAction;
-        _quaternaryAction = levelAction;
+        _tertiaryAction = enemiesAction;
+        _quaternaryAction = difficultyAction;
+        _lastHighlightedButton = null;
         AllowsPauseResume = false;
         _titleAnimationTime = 0f;
         _titleEnemyKind = TitleEnemyChoices[GD.RandRange(0, TitleEnemyChoices.Length - 1)];
@@ -121,6 +140,7 @@ public partial class OverlayLayer : CanvasLayer
         _titleCenter.Visible = true;
         _menuCenter.Visible = false;
         _timedCenter.Visible = false;
+        _enemyGuideCenter.Visible = false;
         Visible = true;
         UpdateTitleAnimation();
     }
@@ -154,11 +174,31 @@ public partial class OverlayLayer : CanvasLayer
         _primaryAction = primaryAction;
         _secondaryAction = secondaryAction;
         _tertiaryAction = null;
+        _lastHighlightedButton = null;
         AllowsPauseResume = allowPauseResume;
 
         _titleCenter.Visible = false;
         _menuCenter.Visible = true;
         _timedCenter.Visible = false;
+        _enemyGuideCenter.Visible = false;
+        Visible = true;
+    }
+
+    public void ShowEnemyGuide(Action backAction)
+    {
+        RefreshResponsiveLayout();
+        _backdrop.Color = new Color(0.03f, 0.04f, 0.08f, 0.98f);
+        _primaryAction = backAction;
+        _secondaryAction = null;
+        _tertiaryAction = null;
+        _quaternaryAction = null;
+        _lastHighlightedButton = null;
+        AllowsPauseResume = false;
+
+        _titleCenter.Visible = false;
+        _menuCenter.Visible = false;
+        _timedCenter.Visible = false;
+        _enemyGuideCenter.Visible = true;
         Visible = true;
     }
 
@@ -187,6 +227,7 @@ public partial class OverlayLayer : CanvasLayer
         _titleCenter.Visible = false;
         _menuCenter.Visible = false;
         _timedCenter.Visible = false;
+        _enemyGuideCenter.Visible = false;
     }
 
     private void BuildTitleScreen()
@@ -231,28 +272,32 @@ public partial class OverlayLayer : CanvasLayer
 
         var actions = new HBoxContainer
         {
-            Alignment = BoxContainer.AlignmentMode.Center
+            Alignment = BoxContainer.AlignmentMode.Center,
+            SizeFlagsHorizontal = Control.SizeFlags.ShrinkCenter
         };
         actions.AddThemeConstantOverride("separation", 14);
 
         GameUi.StyleButton(_titleStartButton);
         GameUi.StyleButton(_titleControlsButton);
+        GameUi.StyleButton(_titleEnemiesButton);
         GameUi.StyleButton(_titleDifficultyButton);
-        GameUi.StyleButton(_titleLevelButton);
-        _titleDifficultyButton.CustomMinimumSize = new Vector2(236, 50);
-        _titleLevelButton.CustomMinimumSize = new Vector2(196, 50);
+        RegisterMenuButton(_titleStartButton);
+        RegisterMenuButton(_titleControlsButton);
+        RegisterMenuButton(_titleEnemiesButton);
+        RegisterMenuButton(_titleDifficultyButton);
         _titleStartButton.Text = "Start Game";
         _titleControlsButton.Text = "Controls";
+        _titleEnemiesButton.Text = "Enemies";
 
-        _titleStartButton.Pressed += () => _primaryAction?.Invoke();
-        _titleControlsButton.Pressed += () => _secondaryAction?.Invoke();
-        _titleDifficultyButton.Pressed += () => _tertiaryAction?.Invoke();
-        _titleLevelButton.Pressed += () => _quaternaryAction?.Invoke();
+        _titleStartButton.Pressed += () => InvokeMenuAction(_primaryAction);
+        _titleControlsButton.Pressed += () => InvokeMenuAction(_secondaryAction);
+        _titleEnemiesButton.Pressed += () => InvokeMenuAction(_tertiaryAction);
+        _titleDifficultyButton.Pressed += () => InvokeMenuAction(_quaternaryAction);
 
         actions.AddChild(_titleStartButton);
         actions.AddChild(_titleControlsButton);
+        actions.AddChild(_titleEnemiesButton);
         actions.AddChild(_titleDifficultyButton);
-        actions.AddChild(_titleLevelButton);
 
         card.AddChild(_titleLogoStage);
         card.AddChild(_titleAnimationArea);
@@ -290,8 +335,10 @@ public partial class OverlayLayer : CanvasLayer
 
         GameUi.StyleButton(_primaryButton);
         GameUi.StyleButton(_secondaryButton);
-        _primaryButton.Pressed += () => _primaryAction?.Invoke();
-        _secondaryButton.Pressed += () => _secondaryAction?.Invoke();
+        RegisterMenuButton(_primaryButton);
+        RegisterMenuButton(_secondaryButton);
+        _primaryButton.Pressed += () => InvokeMenuAction(_primaryAction);
+        _secondaryButton.Pressed += () => InvokeMenuAction(_secondaryAction);
 
         actions.AddChild(_primaryButton);
         actions.AddChild(_secondaryButton);
@@ -350,6 +397,109 @@ public partial class OverlayLayer : CanvasLayer
         AddChild(_timedCenter);
     }
 
+    private void BuildEnemyGuide()
+    {
+        _enemyGuideCenter.AnchorRight = 1;
+        _enemyGuideCenter.AnchorBottom = 1;
+
+        _enemyGuidePanel.CustomMinimumSize = new Vector2(820, 0);
+        GameUi.StyleOverlayPanel(_enemyGuidePanel);
+
+        var card = new VBoxContainer();
+        card.AddThemeConstantOverride("separation", 14);
+
+        _enemyGuideKicker.HorizontalAlignment = HorizontalAlignment.Center;
+        _enemyGuideKicker.Text = "Enemy Guide";
+        GameUi.StyleAccent(_enemyGuideKicker);
+
+        _enemyGuideTitle.HorizontalAlignment = HorizontalAlignment.Center;
+        _enemyGuideTitle.Text = "Know What Each Foe Does";
+        GameUi.StyleHeader(_enemyGuideTitle);
+
+        _enemyGuideScroll.CustomMinimumSize = new Vector2(720, 360);
+        _enemyGuideScroll.HorizontalScrollMode = ScrollContainer.ScrollMode.Disabled;
+        _enemyGuideScroll.SizeFlagsHorizontal = Control.SizeFlags.ExpandFill;
+        _enemyGuideScroll.SizeFlagsVertical = Control.SizeFlags.ExpandFill;
+
+        _enemyGuideList.AddThemeConstantOverride("separation", 12);
+        _enemyGuideList.SizeFlagsHorizontal = Control.SizeFlags.ExpandFill;
+
+        foreach (var enemyKind in EnemyGuideOrder)
+        {
+            _enemyGuideList.AddChild(CreateEnemyGuideCard(enemyKind));
+        }
+
+        _enemyGuideScroll.AddChild(_enemyGuideList);
+
+        GameUi.StyleButton(_enemyGuideBackButton);
+        RegisterMenuButton(_enemyGuideBackButton);
+        _enemyGuideBackButton.Text = "Back";
+        _enemyGuideBackButton.Pressed += () => InvokeMenuAction(_primaryAction);
+
+        card.AddChild(_enemyGuideKicker);
+        card.AddChild(_enemyGuideTitle);
+        card.AddChild(_enemyGuideScroll);
+        card.AddChild(_enemyGuideBackButton);
+
+        _enemyGuidePanel.AddChild(card);
+        _enemyGuideCenter.AddChild(_enemyGuidePanel);
+        AddChild(_enemyGuideCenter);
+    }
+
+    private Control CreateEnemyGuideCard(EnemyKind kind)
+    {
+        var cardPanel = new PanelContainer();
+        GameUi.StyleOverlayPanel(cardPanel);
+
+        var row = new HBoxContainer();
+        row.AddThemeConstantOverride("separation", 16);
+        row.SizeFlagsHorizontal = Control.SizeFlags.ExpandFill;
+
+        var portraitWrap = new CenterContainer
+        {
+            CustomMinimumSize = new Vector2(104, 104),
+            SizeFlagsVertical = Control.SizeFlags.ShrinkCenter
+        };
+
+        var portrait = new TextureRect
+        {
+            CustomMinimumSize = new Vector2(84, 84),
+            StretchMode = TextureRect.StretchModeEnum.KeepAspectCentered,
+            TextureFilter = CanvasItem.TextureFilterEnum.Nearest,
+            Texture = GetEnemyGuideTexture(kind)
+        };
+        portraitWrap.AddChild(portrait);
+
+        var textColumn = new VBoxContainer();
+        textColumn.AddThemeConstantOverride("separation", 6);
+        textColumn.SizeFlagsHorizontal = Control.SizeFlags.ExpandFill;
+
+        var name = new Label
+        {
+            Text = GetEnemyGuideTitle(kind),
+            HorizontalAlignment = HorizontalAlignment.Left
+        };
+        GameUi.StylePixelCaption(name);
+
+        var body = new RichTextLabel
+        {
+            BbcodeEnabled = true,
+            FitContent = true,
+            ScrollActive = false,
+            SizeFlagsHorizontal = Control.SizeFlags.ExpandFill,
+            Text = GetEnemyGuideBody(kind)
+        };
+        GameUi.StyleBody(body);
+
+        textColumn.AddChild(name);
+        textColumn.AddChild(body);
+
+        row.AddChild(portraitWrap);
+        row.AddChild(textColumn);
+        cardPanel.AddChild(row);
+        return cardPanel;
+    }
+
     private static void ConfigureOverlayLogo(TextureRect logo, Vector2 size)
     {
         logo.CustomMinimumSize = size;
@@ -392,8 +542,11 @@ public partial class OverlayLayer : CanvasLayer
         _titleLogo.Size = titleLogoSize;
         _titleAnimationArea.CustomMinimumSize = new Vector2(titleAnimationWidth, titleAnimationHeight);
         _titleBody.CustomMinimumSize = new Vector2(titleBodyWidth, 0f);
-        _titleDifficultyButton.CustomMinimumSize = new Vector2(Mathf.Clamp(titlePanelWidth * 0.22f, 180f, 260f), 50f);
-        _titleLevelButton.CustomMinimumSize = new Vector2(Mathf.Clamp(titlePanelWidth * 0.18f, 160f, 220f), 50f);
+        var titleButtonWidth = Mathf.Clamp((titlePanelWidth - 56f) / 4f, 148f, 220f);
+        _titleStartButton.CustomMinimumSize = new Vector2(titleButtonWidth, 50f);
+        _titleControlsButton.CustomMinimumSize = new Vector2(titleButtonWidth, 50f);
+        _titleEnemiesButton.CustomMinimumSize = new Vector2(titleButtonWidth, 50f);
+        _titleDifficultyButton.CustomMinimumSize = new Vector2(Mathf.Clamp(titlePanelWidth * 0.24f, titleButtonWidth, 260f), 50f);
 
         var menuPanelWidth = Mathf.Clamp(viewportSize.X * 0.52f, 420f, 700f);
         var menuLogoSize = _useCompactMenuLogo
@@ -414,6 +567,10 @@ public partial class OverlayLayer : CanvasLayer
         _timedPanel.CustomMinimumSize = new Vector2(timedPanelWidth, 0f);
         _timedBody.CustomMinimumSize = new Vector2(Mathf.Clamp(timedPanelWidth - 80f, 260f, 500f), 0f);
         _timedLogo.CustomMinimumSize = timedLogoSize;
+
+        var enemyGuidePanelWidth = Mathf.Clamp(viewportSize.X * 0.78f, 620f, 980f);
+        _enemyGuidePanel.CustomMinimumSize = new Vector2(enemyGuidePanelWidth, 0f);
+        _enemyGuideScroll.CustomMinimumSize = new Vector2(enemyGuidePanelWidth - 64f, Mathf.Clamp(viewportSize.Y * 0.52f, 300f, 440f));
     }
 
     private static Vector2 GetScaledLogoSize(float maxWidth, float maxHeight)
@@ -474,14 +631,26 @@ public partial class OverlayLayer : CanvasLayer
 
         var cycleWidth = areaSize.X + 300f;
         var runnerX = areaSize.X - Mathf.PosMod(_titleAnimationTime * 190f, cycleWidth);
-        var runnerY = areaSize.Y - 114f;
+        var runnerSize = _titleRunner.Size;
+        if (runnerSize.X <= 0f || runnerSize.Y <= 0f)
+        {
+            runnerSize = _titleRunner.CustomMinimumSize;
+        }
+
+        var chaserSize = _titleChaser.Size;
+        if (chaserSize.X <= 0f || chaserSize.Y <= 0f)
+        {
+            chaserSize = _titleChaser.CustomMinimumSize;
+        }
+
+        var runnerY = areaSize.Y - runnerSize.Y - 10f;
         _titleRunner.Position = new Vector2(runnerX, runnerY);
         _titleRunner.FlipH = true;
 
         var chaserX = runnerX + 148f;
-        var chaserY = areaSize.Y - 102f;
+        var chaserY = areaSize.Y - chaserSize.Y - 12f;
         _titleChaser.Position = new Vector2(chaserX, chaserY);
-        _titleChaser.FlipH = true;
+        _titleChaser.FlipH = false;
     }
 
     private void ShowTimedCard(Color backdropColor, string kicker, Texture2D portrait, string title, string body, bool showLogo)
@@ -500,10 +669,71 @@ public partial class OverlayLayer : CanvasLayer
         _primaryAction = null;
         _secondaryAction = null;
         _tertiaryAction = null;
+        _lastHighlightedButton = null;
         AllowsPauseResume = false;
         _titleCenter.Visible = false;
         _menuCenter.Visible = false;
         _timedCenter.Visible = true;
         Visible = true;
+    }
+
+    private static Texture2D GetEnemyGuideTexture(EnemyKind kind)
+    {
+        var frames = GameAssets.GetEnemyFrames(kind);
+        return kind switch
+        {
+            EnemyKind.Flying => frames.WalkA,
+            EnemyKind.ProtectedHead => frames.WalkA,
+            EnemyKind.Shooter => frames.WalkA,
+            _ => frames.Idle
+        };
+    }
+
+    private static string GetEnemyGuideTitle(EnemyKind kind) => kind switch
+    {
+        EnemyKind.Ground => "Ground Slime",
+        EnemyKind.Armored => "Armored Shell",
+        EnemyKind.ProtectedHead => "Spike Slime",
+        EnemyKind.Flying => "Flying Slime",
+        EnemyKind.Shooter => "Barnacle Shooter",
+        _ => kind.ToString()
+    };
+
+    private static string GetEnemyGuideBody(EnemyKind kind) => kind switch
+    {
+        EnemyKind.Ground => "[b]Behavior:[/b] Walks left and right across platforms and turns around at edges or patrol limits.\n[b]Weakness:[/b] Safe to stomp from above or hit with your attack when enhanced.",
+        EnemyKind.Armored => "[b]Behavior:[/b] Slower than the basic walker, but it keeps patrolling ground platforms.\n[b]Power:[/b] Your projectile is reflected, and you cannot stomp it safely. Jump over it or avoid tight fights.",
+        EnemyKind.ProtectedHead => "[b]Behavior:[/b] A faster ground patrol enemy with a dangerous protected top.\n[b]Power:[/b] Do not land on it from above. Attack it from the side when you have the enhanced shot.",
+        EnemyKind.Flying => "[b]Behavior:[/b] Floats through the air in a wave pattern instead of following the ground.\n[b]Power:[/b] It ignores pits and platform edges, so watch its vertical movement before jumping.",
+        EnemyKind.Shooter => "[b]Behavior:[/b] Holds position, aims in one direction, and fires enemy projectiles on a regular rhythm.\n[b]Power:[/b] It controls space from far away, so close distance carefully or attack between shots.",
+        _ => string.Empty
+    };
+
+    private void RegisterMenuButton(Button button)
+    {
+        button.FocusEntered += () => PlayMenuFocus(button);
+        button.MouseEntered += () => PlayMenuFocus(button);
+    }
+
+    private void PlayMenuFocus(Button button)
+    {
+        if (_lastHighlightedButton == button)
+        {
+            return;
+        }
+
+        _lastHighlightedButton = button;
+        AudioDirector.Instance.PlayUi("menu_focus");
+    }
+
+    private static void InvokeMenuAction(Action? action)
+    {
+        if (action is null)
+        {
+            return;
+        }
+
+        AudioDirector.Instance.PlayUi("menu_button");
+        action.Invoke();
     }
 }

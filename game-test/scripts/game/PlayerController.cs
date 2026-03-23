@@ -135,7 +135,7 @@ public partial class PlayerController : CharacterBody2D
                 _remainingAirJumps--;
                 Velocity = new Vector2(Velocity.X, JumpVelocity);
                 _jumpBufferTimer = 0f;
-                AudioDirector.Instance.PlaySfx("jump");
+                AudioDirector.Instance.PlaySfx("double_jump");
             }
         }
 
@@ -171,6 +171,7 @@ public partial class PlayerController : CharacterBody2D
             var impactStrength = Mathf.Clamp((impactVelocityY - LandingFeedbackThreshold) / (MaxFallSpeed - LandingFeedbackThreshold), 0f, 1f);
             PlayFeedbackSquash(new Vector2(1f + impactStrength * 0.22f, 1f - impactStrength * 0.18f));
             EmitSignal(SignalName.DustBurstRequested, GetFootPosition(), Facing, 0.75f + impactStrength * 0.65f);
+            AudioDirector.Instance.PlaySfx("hard_land");
 
             if (impactVelocityY >= HeavyImpactThreshold)
             {
@@ -182,7 +183,7 @@ public partial class PlayerController : CharacterBody2D
         {
             _fireCooldown = 0.28f;
             EmitSignal(SignalName.FireRequested, GlobalPosition + new Vector2(Facing * 26f, -6f), Facing);
-            AudioDirector.Instance.PlaySfx("fire");
+            AudioDirector.Instance.PlaySfx("player_fire");
         }
 
         if (wasMovingUp)

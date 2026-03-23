@@ -227,6 +227,7 @@ public partial class WorldRoot : Node2D
                     AudioDirector.Instance.PlaySfx("coin");
                     break;
                 case PickupType.Growth:
+                    var gainedGrowthPower = GameSession.Instance.CurrentForm == PlayerForm.Small;
                     if (GameSession.Instance.CurrentForm == PlayerForm.Small)
                     {
                         GameSession.Instance.SetForm(PlayerForm.Powered);
@@ -237,8 +238,13 @@ public partial class WorldRoot : Node2D
                     }
 
                     AudioDirector.Instance.PlaySfx("powerup");
+                    if (gainedGrowthPower)
+                    {
+                        AudioDirector.Instance.PlaySfx("power_gain_happy");
+                    }
                     break;
                 case PickupType.Flame:
+                    var previousForm = GameSession.Instance.CurrentForm;
                     if (GameSession.Instance.CurrentForm == PlayerForm.Small)
                     {
                         GameSession.Instance.SetForm(PlayerForm.Powered);
@@ -249,6 +255,10 @@ public partial class WorldRoot : Node2D
                     }
 
                     AudioDirector.Instance.PlaySfx("powerup");
+                    if (GameSession.Instance.CurrentForm != previousForm)
+                    {
+                        AudioDirector.Instance.PlaySfx("power_gain_happy");
+                    }
                     break;
                 case PickupType.ExtraLife:
                     GameSession.Instance.AddLife();
@@ -318,7 +328,7 @@ public partial class WorldRoot : Node2D
         SetSimulationActive(false);
         GameSession.Instance.AddScore(_stageTimeRemaining * 10);
         AudioDirector.Instance.StopMusic();
-        AudioDirector.Instance.PlaySfx("clear");
+        AudioDirector.Instance.PlaySfx("goal_happy");
         EmitSignal(SignalName.StageCompleted);
     }
 
