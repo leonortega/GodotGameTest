@@ -4,6 +4,9 @@ namespace GameTest;
 
 public partial class OverlayLayer : CanvasLayer
 {
+    private const float TitleLogoIntroDuration = 0.55f;
+    private static readonly Vector2 LogoSourceSize = new(430f, 368f);
+
     private static readonly EnemyKind[] TitleEnemyChoices =
     [
         EnemyKind.Ground,
@@ -15,9 +18,8 @@ public partial class OverlayLayer : CanvasLayer
 
     private readonly CenterContainer _titleCenter = new();
     private readonly PanelContainer _titlePanel = new();
-    private readonly Label _logoPrimary = new();
-    private readonly Label _logoSecondary = new();
-    private readonly Label _logoCaption = new();
+    private readonly Control _titleLogoStage = new();
+    private readonly TextureRect _titleLogo = new();
     private readonly Control _titleAnimationArea = new();
     private readonly TextureRect _titleRunner = new();
     private readonly TextureRect _titleChaser = new();
@@ -29,6 +31,7 @@ public partial class OverlayLayer : CanvasLayer
 
     private readonly CenterContainer _menuCenter = new();
     private readonly PanelContainer _panel = new();
+    private readonly TextureRect _menuLogo = new();
     private readonly Label _kicker = new();
     private readonly Label _title = new();
     private readonly RichTextLabel _body = new();
@@ -37,6 +40,7 @@ public partial class OverlayLayer : CanvasLayer
 
     private readonly CenterContainer _timedCenter = new();
     private readonly PanelContainer _timedPanel = new();
+    private readonly TextureRect _timedLogo = new();
     private readonly Label _timedKicker = new();
     private readonly TextureRect _timedPortrait = new();
     private readonly Label _timedTitle = new();
@@ -48,6 +52,7 @@ public partial class OverlayLayer : CanvasLayer
     private Action? _quaternaryAction;
     private float _titleAnimationTime;
     private EnemyKind _titleEnemyKind = EnemyKind.ProtectedHead;
+    private bool _useCompactMenuLogo;
 
     public bool AllowsPauseResume { get; private set; }
 
@@ -65,7 +70,22 @@ public partial class OverlayLayer : CanvasLayer
         BuildGenericOverlay();
         BuildTimedCard();
 
+        if (GetViewport() is { } viewport)
+        {
+            viewport.SizeChanged += OnViewportSizeChanged;
+        }
+
+        RefreshResponsiveLayout();
+
         Visible = false;
+    }
+
+    public override void _ExitTree()
+    {
+        if (GetViewport() is { } viewport)
+        {
+            viewport.SizeChanged -= OnViewportSizeChanged;
+        }
     }
 
     public override void _Process(double delta)
@@ -81,10 +101,9 @@ public partial class OverlayLayer : CanvasLayer
 
     public void ShowTitleScreen(string body, string difficultyText, string levelText, Action startAction, Action controlsAction, Action difficultyAction, Action levelAction)
     {
+        RefreshResponsiveLayout();
         _backdrop.Color = new Color(0.03f, 0.04f, 0.08f, 0.98f);
-        _logoPrimary.Text = "SUPER";
-        _logoSecondary.Text = "PIXEL QUEST";
-        _logoCaption.Text = "RUN. STOMP. SURVIVE.";
+        _titleLogo.Texture = GameAssets.GetTitleLogo();
         _titleBody.Text = body;
         _titleDifficultyButton.Text = difficultyText;
         _titleLevelButton.Text = levelText;
@@ -96,6 +115,8 @@ public partial class OverlayLayer : CanvasLayer
         AllowsPauseResume = false;
         _titleAnimationTime = 0f;
         _titleEnemyKind = TitleEnemyChoices[GD.RandRange(0, TitleEnemyChoices.Length - 1)];
+        _titleLogo.Modulate = new Color(1f, 1f, 1f, 0f);
+        _titleLogo.Scale = Vector2.One * 0.9f;
 
         _titleCenter.Visible = true;
         _menuCenter.Visible = false;
@@ -112,9 +133,15 @@ public partial class OverlayLayer : CanvasLayer
         Action primaryAction,
         string? secondaryText = null,
         Action? secondaryAction = null,
-        bool allowPauseResume = false)
+        bool allowPauseResume = false,
+        bool showLogo = false,
+        bool compactLogo = false)
     {
+        _useCompactMenuLogo = compactLogo;
+        RefreshResponsiveLayout();
         _backdrop.Color = new Color(0.02f, 0.04f, 0.06f, 0.74f);
+        _menuLogo.Texture = showLogo ? GameAssets.GetTitleLogo() : null;
+        _menuLogo.Visible = showLogo;
         _kicker.Text = kicker;
         _title.Text = title;
         _body.Text = body;
@@ -137,14 +164,16 @@ public partial class OverlayLayer : CanvasLayer
 
     public void ShowStageIntro(PlayerForm form, int lives, string stageId)
     {
+        RefreshResponsiveLayout();
         var body = $"[center]Lives [b]x {lives}[/b]\nForm [b]{form}[/b][/center]";
-        ShowTimedCard(new Color(0f, 0f, 0f, 1f), $"Stage {stageId}", GameAssets.GetPlayerFrames(form).Idle, "Get Ready", body);
+        ShowTimedCard(new Color(0f, 0f, 0f, 1f), $"Stage {stageId}", GameAssets.GetPlayerFrames(form).Idle, "Get Ready", body, showLogo: false);
     }
 
     public void ShowStageSummary(string stageId, PlayerForm form, int score, int coins, int lives, int timeRemaining)
     {
+        RefreshResponsiveLayout();
         var body = $"[center]Score [b]{score:000000}[/b]\nCoins [b]{coins:00}[/b]\nLives [b]{lives}[/b]\nTime [b]{timeRemaining:000}[/b]\nForm [b]{form}[/b][/center]";
-        ShowTimedCard(new Color(0f, 0f, 0f, 0.92f), $"Stage {stageId} Clear", GameAssets.GetPlayerFrames(form).Idle, "Run Summary", body);
+        ShowTimedCard(new Color(0f, 0f, 0f, 0.92f), $"Stage {stageId} Clear", GameAssets.GetPlayerFrames(form).Idle, "Run Summary", body, showLogo: false);
     }
 
     public void HideOverlay()
@@ -165,43 +194,53 @@ public partial class OverlayLayer : CanvasLayer
         _titleCenter.AnchorRight = 1;
         _titleCenter.AnchorBottom = 1;
 
-        _titlePanel.CustomMinimumSize = new Vector2(840, 0);
+        _titlePanel.CustomMinimumSize = new Vector2(960, 0);
         GameUi.StyleOverlayPanel(_titlePanel);
 
         var card = new VBoxContainer();
-        card.AddThemeConstantOverride("separation", 14);
+        card.AddThemeConstantOverride("separation", 18);
 
-        GameUi.StyleLogoPrimary(_logoPrimary);
-        GameUi.StyleLogoSecondary(_logoSecondary);
-        GameUi.StylePixelCaption(_logoCaption);
+        _titleLogoStage.CustomMinimumSize = new Vector2(460, 360);
+        _titleLogoStage.SizeFlagsHorizontal = Control.SizeFlags.ShrinkCenter;
+        _titleLogoStage.MouseFilter = Control.MouseFilterEnum.Ignore;
 
-        _titleAnimationArea.CustomMinimumSize = new Vector2(760, 156);
+        _titleLogo.CustomMinimumSize = new Vector2(430, 368);
+        _titleLogo.Size = new Vector2(430, 368);
+        _titleLogo.SizeFlagsHorizontal = Control.SizeFlags.ShrinkCenter;
+        _titleLogo.StretchMode = TextureRect.StretchModeEnum.KeepAspectCentered;
+        _titleLogo.TextureFilter = CanvasItem.TextureFilterEnum.Nearest;
+        _titleLogo.MouseFilter = Control.MouseFilterEnum.Ignore;
+        _titleLogo.ExpandMode = TextureRect.ExpandModeEnum.FitWidth;
+        _titleLogo.Texture = GameAssets.GetTitleLogo();
+        _titleLogoStage.AddChild(_titleLogo);
+
+        _titleAnimationArea.CustomMinimumSize = new Vector2(840, 184);
         _titleAnimationArea.MouseFilter = Control.MouseFilterEnum.Ignore;
         _titleAnimationArea.ClipContents = true;
 
-        ConfigureTitleSprite(_titleRunner, new Vector2(116f, 116f));
-        ConfigureTitleSprite(_titleChaser, new Vector2(108f, 108f));
+        ConfigureTitleSprite(_titleRunner, new Vector2(132f, 132f));
+        ConfigureTitleSprite(_titleChaser, new Vector2(124f, 124f));
         _titleAnimationArea.AddChild(_titleRunner);
         _titleAnimationArea.AddChild(_titleChaser);
 
         _titleBody.BbcodeEnabled = true;
         _titleBody.FitContent = true;
         _titleBody.ScrollActive = false;
-        _titleBody.CustomMinimumSize = new Vector2(720, 0);
+        _titleBody.CustomMinimumSize = new Vector2(780, 0);
         GameUi.StyleBody(_titleBody);
 
         var actions = new HBoxContainer
         {
             Alignment = BoxContainer.AlignmentMode.Center
         };
-        actions.AddThemeConstantOverride("separation", 12);
+        actions.AddThemeConstantOverride("separation", 14);
 
         GameUi.StyleButton(_titleStartButton);
         GameUi.StyleButton(_titleControlsButton);
         GameUi.StyleButton(_titleDifficultyButton);
         GameUi.StyleButton(_titleLevelButton);
-        _titleDifficultyButton.CustomMinimumSize = new Vector2(220, 46);
-        _titleLevelButton.CustomMinimumSize = new Vector2(180, 46);
+        _titleDifficultyButton.CustomMinimumSize = new Vector2(236, 50);
+        _titleLevelButton.CustomMinimumSize = new Vector2(196, 50);
         _titleStartButton.Text = "Start Game";
         _titleControlsButton.Text = "Controls";
 
@@ -215,9 +254,7 @@ public partial class OverlayLayer : CanvasLayer
         actions.AddChild(_titleDifficultyButton);
         actions.AddChild(_titleLevelButton);
 
-        card.AddChild(_logoPrimary);
-        card.AddChild(_logoSecondary);
-        card.AddChild(_logoCaption);
+        card.AddChild(_titleLogoStage);
         card.AddChild(_titleAnimationArea);
         card.AddChild(_titleBody);
         card.AddChild(actions);
@@ -236,6 +273,8 @@ public partial class OverlayLayer : CanvasLayer
 
         var card = new VBoxContainer();
         card.AddThemeConstantOverride("separation", 12);
+
+        ConfigureOverlayLogo(_menuLogo, new Vector2(220, 188));
 
         GameUi.StyleAccent(_kicker);
         GameUi.StyleHeader(_title);
@@ -257,6 +296,7 @@ public partial class OverlayLayer : CanvasLayer
         actions.AddChild(_primaryButton);
         actions.AddChild(_secondaryButton);
 
+        card.AddChild(_menuLogo);
         card.AddChild(_kicker);
         card.AddChild(_title);
         card.AddChild(_body);
@@ -276,6 +316,8 @@ public partial class OverlayLayer : CanvasLayer
 
         var timedCard = new VBoxContainer();
         timedCard.AddThemeConstantOverride("separation", 10);
+
+        ConfigureOverlayLogo(_timedLogo, new Vector2(220, 188));
 
         _timedKicker.HorizontalAlignment = HorizontalAlignment.Center;
         GameUi.StyleAccent(_timedKicker);
@@ -298,6 +340,7 @@ public partial class OverlayLayer : CanvasLayer
         _timedBody.CustomMinimumSize = new Vector2(280, 0);
         GameUi.StyleBody(_timedBody);
 
+        timedCard.AddChild(_timedLogo);
         timedCard.AddChild(_timedKicker);
         timedCard.AddChild(portraitCenter);
         timedCard.AddChild(_timedTitle);
@@ -305,6 +348,81 @@ public partial class OverlayLayer : CanvasLayer
         _timedPanel.AddChild(timedCard);
         _timedCenter.AddChild(_timedPanel);
         AddChild(_timedCenter);
+    }
+
+    private static void ConfigureOverlayLogo(TextureRect logo, Vector2 size)
+    {
+        logo.CustomMinimumSize = size;
+        logo.SizeFlagsHorizontal = Control.SizeFlags.ShrinkCenter;
+        logo.StretchMode = TextureRect.StretchModeEnum.KeepAspectCentered;
+        logo.TextureFilter = CanvasItem.TextureFilterEnum.Nearest;
+        logo.MouseFilter = Control.MouseFilterEnum.Ignore;
+        logo.Visible = false;
+    }
+
+    private void OnViewportSizeChanged()
+    {
+        RefreshResponsiveLayout();
+        if (_titleCenter.Visible)
+        {
+            UpdateTitleAnimation();
+        }
+    }
+
+    private void RefreshResponsiveLayout()
+    {
+        var viewportSize = GetViewport()?.GetVisibleRect().Size ?? Vector2.Zero;
+        if (viewportSize.X <= 0f || viewportSize.Y <= 0f)
+        {
+            return;
+        }
+
+        var titlePanelWidth = Mathf.Clamp(viewportSize.X * 0.82f, 720f, 1100f);
+        var titleLogoSize = GetScaledLogoSize(
+            Mathf.Clamp(titlePanelWidth * 0.46f, 260f, 430f),
+            Mathf.Clamp(viewportSize.Y * 0.40f, 190f, 368f));
+        var titleStageSize = titleLogoSize + new Vector2(32f, 24f);
+        var titleAnimationWidth = Mathf.Clamp(titlePanelWidth - 120f, 560f, 900f);
+        var titleAnimationHeight = Mathf.Clamp(viewportSize.Y * 0.24f, 140f, 220f);
+        var titleBodyWidth = Mathf.Clamp(titlePanelWidth - 180f, 520f, 860f);
+
+        _titlePanel.CustomMinimumSize = new Vector2(titlePanelWidth, 0f);
+        _titleLogoStage.CustomMinimumSize = titleStageSize;
+        _titleLogo.CustomMinimumSize = titleLogoSize;
+        _titleLogo.Size = titleLogoSize;
+        _titleAnimationArea.CustomMinimumSize = new Vector2(titleAnimationWidth, titleAnimationHeight);
+        _titleBody.CustomMinimumSize = new Vector2(titleBodyWidth, 0f);
+        _titleDifficultyButton.CustomMinimumSize = new Vector2(Mathf.Clamp(titlePanelWidth * 0.22f, 180f, 260f), 50f);
+        _titleLevelButton.CustomMinimumSize = new Vector2(Mathf.Clamp(titlePanelWidth * 0.18f, 160f, 220f), 50f);
+
+        var menuPanelWidth = Mathf.Clamp(viewportSize.X * 0.52f, 420f, 700f);
+        var menuLogoSize = _useCompactMenuLogo
+            ? GetScaledLogoSize(
+                Mathf.Clamp(menuPanelWidth * 0.20f, 88f, 136f),
+                Mathf.Clamp(viewportSize.Y * 0.11f, 72f, 112f))
+            : GetScaledLogoSize(
+                Mathf.Clamp(menuPanelWidth * 0.28f, 110f, 180f),
+                Mathf.Clamp(viewportSize.Y * 0.16f, 90f, 150f));
+        _panel.CustomMinimumSize = new Vector2(menuPanelWidth, 0f);
+        _body.CustomMinimumSize = new Vector2(Mathf.Clamp(menuPanelWidth - 40f, 380f, 660f), 0f);
+        _menuLogo.CustomMinimumSize = menuLogoSize;
+
+        var timedPanelWidth = Mathf.Clamp(viewportSize.X * 0.40f, 340f, 560f);
+        var timedLogoSize = GetScaledLogoSize(
+            Mathf.Clamp(timedPanelWidth * 0.55f, 160f, 300f),
+            Mathf.Clamp(viewportSize.Y * 0.22f, 120f, 220f));
+        _timedPanel.CustomMinimumSize = new Vector2(timedPanelWidth, 0f);
+        _timedBody.CustomMinimumSize = new Vector2(Mathf.Clamp(timedPanelWidth - 80f, 260f, 500f), 0f);
+        _timedLogo.CustomMinimumSize = timedLogoSize;
+    }
+
+    private static Vector2 GetScaledLogoSize(float maxWidth, float maxHeight)
+    {
+        var scale = Mathf.Min(maxWidth / LogoSourceSize.X, maxHeight / LogoSourceSize.Y);
+        scale = Mathf.Max(scale, 0.1f);
+        return new Vector2(
+            Mathf.Round(LogoSourceSize.X * scale),
+            Mathf.Round(LogoSourceSize.Y * scale));
     }
 
     private static void ConfigureTitleSprite(TextureRect sprite, Vector2 size)
@@ -318,6 +436,26 @@ public partial class OverlayLayer : CanvasLayer
 
     private void UpdateTitleAnimation()
     {
+        var logoAreaSize = _titleLogoStage.Size;
+        if (logoAreaSize.X <= 0f || logoAreaSize.Y <= 0f)
+        {
+            logoAreaSize = _titleLogoStage.CustomMinimumSize;
+        }
+
+        var introProgress = Mathf.Clamp(_titleAnimationTime / TitleLogoIntroDuration, 0f, 1f);
+        var easedProgress = 1f - Mathf.Pow(1f - introProgress, 3f);
+        var logoBaseSize = _titleLogo.CustomMinimumSize;
+        var logoTargetX = (logoAreaSize.X - logoBaseSize.X) * 0.5f;
+        var logoTargetY = (logoAreaSize.Y - logoBaseSize.Y) * 0.5f;
+        var logoStartX = logoTargetX - 96f;
+        var logoBob = Mathf.Sin(_titleAnimationTime * 2.4f) * 4f;
+        var logoScale = 0.92f + easedProgress * 0.08f + Mathf.Sin(_titleAnimationTime * 3.1f) * 0.015f;
+
+        _titleLogo.PivotOffset = logoBaseSize * 0.5f;
+        _titleLogo.Position = new Vector2(Mathf.Lerp(logoStartX, logoTargetX, easedProgress), logoTargetY + logoBob);
+        _titleLogo.Scale = Vector2.One * logoScale;
+        _titleLogo.Modulate = new Color(1f, 1f, 1f, 0.35f + easedProgress * 0.65f);
+
         var areaSize = _titleAnimationArea.Size;
         if (areaSize.X <= 0f || areaSize.Y <= 0f)
         {
@@ -346,9 +484,11 @@ public partial class OverlayLayer : CanvasLayer
         _titleChaser.FlipH = true;
     }
 
-    private void ShowTimedCard(Color backdropColor, string kicker, Texture2D portrait, string title, string body)
+    private void ShowTimedCard(Color backdropColor, string kicker, Texture2D portrait, string title, string body, bool showLogo)
     {
         _backdrop.Color = backdropColor;
+        _timedLogo.Texture = showLogo ? GameAssets.GetTitleLogo() : null;
+        _timedLogo.Visible = showLogo;
         _timedKicker.Text = kicker;
         _timedKicker.Visible = !string.IsNullOrWhiteSpace(kicker);
         _timedPortrait.Texture = portrait;

@@ -136,7 +136,9 @@ public partial class Main : Node
 			ResumeGame,
 			"Title",
 			ShowTitleOverlay,
-			true);
+			true,
+			false,
+			false);
 	}
 
 	private void ResumeGame()
@@ -168,7 +170,9 @@ public partial class Main : Node
 			"Play Again",
 			StartNewGame,
 			"Title",
-			ShowTitleOverlay);
+			ShowTitleOverlay,
+			showLogo: false,
+			compactLogo: false);
 	}
 
 	private async void RunStageClearSequenceAsync(ulong version, string clearedStageId)
@@ -218,7 +222,9 @@ public partial class Main : Node
 			"Restart",
 			StartNewGame,
 			"Title",
-			ShowTitleOverlay);
+			ShowTitleOverlay,
+			showLogo: false,
+			compactLogo: false);
 	}
 
 	private void EnsureInputMap()

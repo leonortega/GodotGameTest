@@ -9,7 +9,7 @@ public partial class HudLayer : CanvasLayer
     private readonly Label _stageValue = new();
     private readonly Label _livesValue = new();
     private readonly Label _timeValue = new();
-    private readonly Label _formValue = new();
+    private readonly Label _difficultyValue = new();
 
     public override void _Ready()
     {
@@ -43,7 +43,7 @@ public partial class HudLayer : CanvasLayer
         bar.AddChild(BuildItem("Stage", _stageValue));
         bar.AddChild(BuildItem("Lives", _livesValue));
         bar.AddChild(BuildItem("Time", _timeValue));
-        bar.AddChild(BuildItem("Form", _formValue));
+        bar.AddChild(BuildItem("Difficulty", _difficultyValue));
 
         panel.AddChild(bar);
         root.AddChild(panel);
@@ -64,7 +64,7 @@ public partial class HudLayer : CanvasLayer
         _stageValue.Text = GameSession.Instance.GetDisplayStageId();
         _livesValue.Text = GameSession.Instance.Lives.ToString();
         _timeValue.Text = GameSession.Instance.TimeRemaining.ToString("000");
-        _formValue.Text = GameSession.Instance.CurrentForm.ToString();
+        _difficultyValue.Text = GameSession.Instance.CurrentDifficulty.ToString().ToUpperInvariant();
     }
 
     private static VBoxContainer BuildItem(string label, Label value)

@@ -6,9 +6,11 @@ public static class GameAssets
 {
     private const string ArtRoot = "res://assets/art/kenney_new_platformer_pack";
     private const string UiRoot = "res://assets/ui/kenney_ui-pack-pixel-adventure";
+    private const string FontRoot = "res://assets/fonts/Silkscreen";
 
     private static readonly Dictionary<string, Texture2D> FullTextureCache = [];
     private static readonly Dictionary<string, Texture2D> TrimmedTextureCache = [];
+    private static readonly Dictionary<string, Font> FontCache = [];
 
     public readonly record struct PlayerFrames(Texture2D Idle, Texture2D WalkA, Texture2D WalkB, Texture2D Jump, Texture2D Hit, Texture2D Duck);
     public readonly record struct EnemyFrames(Texture2D Idle, Texture2D WalkA, Texture2D WalkB, Texture2D Alternate);
@@ -122,6 +124,11 @@ public static class GameAssets
 
     public static Texture2D GetStarIcon() =>
         GetTrimmedTexture($"{ArtRoot}/Sprites/Tiles/Default/star.png");
+
+    public static Texture2D GetTitleLogo() =>
+        GetTexture("res://assets/ui/PixelQuest_Logo.png");
+
+    public static Font GetUiFont(bool bold = false) => GetFont($"{FontRoot}/Silkscreen-{(bold ? "Bold" : "Regular")}.ttf");
 
     public static Texture2D GetBackdropBase(StageTheme theme) => GetTexture(theme switch
     {
@@ -264,6 +271,22 @@ public static class GameAssets
         }
 
         return texture;
+    }
+
+    private static Font GetFont(string path)
+    {
+        if (!FontCache.TryGetValue(path, out var font))
+        {
+            font = ResourceLoader.Load<FontFile>(path);
+            if (font is null)
+            {
+                throw new InvalidOperationException($"Missing font asset: {path}");
+            }
+
+            FontCache[path] = font;
+        }
+
+        return font;
     }
 
     private static Texture2D GetTrimmedTexture(string path)

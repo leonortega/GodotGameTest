@@ -669,16 +669,43 @@ public partial class WorldRoot : Node2D
             clone.AuthoredPatrolDistance = source.AuthoredPatrolDistance;
 
             source.GetParent().AddChild(clone);
-            var offsetX = index % 2 == 0 ? 96f : -96f;
-            var desiredPosition = new Vector2(
-                Mathf.Clamp(source.GlobalPosition.X + offsetX, _stage.WorldBounds.Position.X + 64f, _stage.WorldBounds.End.X - 64f),
-                source.GlobalPosition.Y);
             var spawnPosition = source.AuthoredKind == EnemyKind.Flying
-                ? desiredPosition
-                : _stage.SnapEnemyPosition(desiredPosition, source.AuthoredKind);
+                ? source.GlobalPosition
+                : FindHardCloneSpawnPosition(source, index);
             clone.Configure(new EnemySpawn(source.AuthoredKind, spawnPosition, Mathf.Max(140f, source.AuthoredPatrolDistance)));
             _enemies.Add(clone);
         }
+    }
+
+    private Vector2 FindHardCloneSpawnPosition(EnemyController source, int cloneIndex)
+    {
+        var preferredOffset = cloneIndex % 2 == 0 ? 96f : -96f;
+        var collisionSize = EnemyController.GetCollisionSizeForKind(source.AuthoredKind);
+        var supportHalfWidth = collisionSize.X * 0.5f - 4f;
+        var minX = _stage.WorldBounds.Position.X + 64f;
+        var maxX = _stage.WorldBounds.End.X - 64f;
+        var candidateOffsets = new[]
+        {
+            preferredOffset,
+            -preferredOffset,
+            preferredOffset * 1.5f,
+            -preferredOffset * 1.5f,
+            0f
+        };
+
+        foreach (var offset in candidateOffsets)
+        {
+            var candidateX = Mathf.Clamp(source.GlobalPosition.X + offset, minX, maxX);
+            var supportTop = _stage.GetEnemySupportTop(candidateX, supportHalfWidth, source.GlobalPosition.Y + collisionSize.Y * 0.5f, 40f);
+            if (!supportTop.HasValue)
+            {
+                continue;
+            }
+
+            return new Vector2(candidateX, supportTop.Value - collisionSize.Y * 0.5f);
+        }
+
+        return source.GlobalPosition;
     }
 
     private static EnemyController InstantiateEnemyScene(EnemyKind kind)

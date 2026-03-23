@@ -194,6 +194,7 @@ public partial class StageScene : Node2D
             desiredPosition.X - supportHalfWidth,
             desiredPosition.X + supportHalfWidth,
             desiredPosition.Y + collisionSize.Y * 0.5f,
+            includeMovingPlatforms: false,
             upwardTolerance: SupportSnapTolerance);
 
         if (supportTop is null)
@@ -210,6 +211,7 @@ public partial class StageScene : Node2D
             centerX - halfWidth,
             centerX + halfWidth,
             objectBottomY,
+            includeMovingPlatforms: false,
             upwardTolerance: upwardTolerance);
     }
 
@@ -650,7 +652,7 @@ public partial class StageScene : Node2D
         _goal.Position = new Vector2(_goal.Position.X, supportTop.Value);
     }
 
-    private float? FindNearestSupportTop(float overlapMinX, float overlapMaxX, float objectBottomY, Rect2I? excludeRect = null, float upwardTolerance = 0f)
+    private float? FindNearestSupportTop(float overlapMinX, float overlapMaxX, float objectBottomY, Rect2I? excludeRect = null, bool includeMovingPlatforms = true, float upwardTolerance = 0f)
     {
         float? nearestTop = null;
         var sampleX = (overlapMinX + overlapMaxX) * 0.5f;
@@ -715,6 +717,11 @@ public partial class StageScene : Node2D
             {
                 nearestTop = surfaceY;
             }
+        }
+
+        if (!includeMovingPlatforms)
+        {
+            return nearestTop;
         }
 
         foreach (var platform in GetMovingPlatforms())

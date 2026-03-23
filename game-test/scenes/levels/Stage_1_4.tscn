@@ -1,17 +1,11 @@
-[gd_scene load_steps=10]
+[gd_scene format=3 uid="uid://cwsdpn0cikkhh"]
 
-
-
-[ext_resource type="Script" path="res://scripts/game/StageScene.cs" id="1"]
-
-[ext_resource type="Script" path="res://scripts/game/StageBackdrop.cs" id="2"]
-
-[ext_resource type="Script" path="res://scripts/game/GoalMarker.cs" id="3"]
-
-[ext_resource type="Script" path="res://scripts/game/MysteryBlock.cs" id="4"]
-
-[ext_resource type="Script" path="res://scripts/game/PickupNode.cs" id="5"]
-[ext_resource type="PackedScene" path="res://scenes/terrain/FortressHill.tscn" id="8_hill"]
+[ext_resource type="Script" uid="uid://cn7vgu3rdibeq" path="res://scripts/game/StageScene.cs" id="1"]
+[ext_resource type="Script" uid="uid://brisc2sthi3c4" path="res://scripts/game/StageBackdrop.cs" id="2"]
+[ext_resource type="Script" uid="uid://dtn0slq3gkesa" path="res://scripts/game/GoalMarker.cs" id="3"]
+[ext_resource type="Script" uid="uid://dhbr44b1wgegq" path="res://scripts/game/MysteryBlock.cs" id="4"]
+[ext_resource type="Script" uid="uid://fh44yuttrx1k" path="res://scripts/game/PickupNode.cs" id="5"]
+[ext_resource type="PackedScene" uid="uid://bytlgcfjsykn3" path="res://scenes/terrain/FortressHill.tscn" id="8_hill"]
 [ext_resource type="PackedScene" path="res://scenes/actors/GroundEnemy.tscn" id="9_ground"]
 [ext_resource type="PackedScene" path="res://scenes/actors/ArmoredEnemy.tscn" id="10_armored"]
 [ext_resource type="PackedScene" path="res://scenes/actors/FlyingEnemy.tscn" id="11_flying"]
@@ -21,386 +15,338 @@
 [ext_resource type="PackedScene" path="res://scenes/terrain/FloatingMovingPlatform.tscn" id="15_moving"]
 [ext_resource type="PackedScene" path="res://scenes/terrain/FallingBlock.tscn" id="16_falling"]
 
-[node name="Stage_1_4" type="Node2D"]
+[node name="Stage_1_4" type="Node2D" unique_id=37791693]
 script = ExtResource("1")
 StageId = "1-4"
 Theme = 3
 TimerSeconds = 320
 WorldBounds = Rect2(0, 0, 11136, 720)
-SolidRectTiles = [Rect2i(0, 19, 18, 3), Rect2i(15, 16, 3, 1), Rect2i(22, 17, 3, 1), Rect2i(38, 14, 6, 1), Rect2i(47, 15, 2, 1), Rect2i(59, 17, 1, 1), Rect2i(120, 19, 9, 3), Rect2i(123, 15, 4, 1), Rect2i(135, 16, 5, 1), Rect2i(143, 14, 6, 1), Rect2i(152, 12, 5, 1), Rect2i(160, 14, 5, 1), Rect2i(168, 16, 5, 1), Rect2i(177, 19, 5, 3), Rect2i(233, 14, 4, 1), Rect2i(241, 16, 4, 1), Rect2i(246, 16, 16, 1), Rect2i(276, 13, 2, 1), Rect2i(286, 16, 2, 1), Rect2i(309, 19, 3, 3), Rect2i(330, 13, 3, 1), Rect2i(343, 19, 5, 3)]
+SolidRectTiles = Array[Rect2i]([Rect2i(0, 19, 18, 3), Rect2i(15, 16, 3, 1), Rect2i(22, 17, 3, 1), Rect2i(38, 14, 6, 1), Rect2i(47, 15, 2, 1), Rect2i(59, 17, 1, 1), Rect2i(120, 19, 9, 3), Rect2i(123, 15, 4, 1), Rect2i(135, 16, 5, 1), Rect2i(143, 14, 6, 1), Rect2i(152, 12, 5, 1), Rect2i(160, 14, 5, 1), Rect2i(168, 16, 5, 1), Rect2i(177, 19, 5, 3), Rect2i(233, 14, 4, 1), Rect2i(241, 16, 4, 1), Rect2i(246, 16, 16, 1), Rect2i(276, 13, 2, 1), Rect2i(286, 16, 2, 1), Rect2i(309, 19, 3, 3), Rect2i(330, 13, 3, 1), Rect2i(343, 19, 5, 3)])
 
-[node name="Backdrop" type="Node2D" parent="."]
+[node name="Backdrop" type="Node2D" parent="." unique_id=1577003627]
 script = ExtResource("2")
 
-[node name="TerrainLayer" type="TileMapLayer" parent="."]
+[node name="TerrainLayer" type="TileMapLayer" parent="." unique_id=1832033892]
 
-[node name="DecorLayer" type="TileMapLayer" parent="."]
+[node name="DecorLayer" type="TileMapLayer" parent="." unique_id=849586934]
 
-[node name="TileVisualRoot" type="Node2D" parent="."]
+[node name="TileVisualRoot" type="Node2D" parent="." unique_id=1363062612]
 
-[node name="TerrainHills" type="Node2D" parent="."]
+[node name="TerrainHills" type="Node2D" parent="." unique_id=174958483]
 
-[node name="Hill_02" parent="TerrainHills" instance=ExtResource("8_hill")]
+[node name="Hill_02" parent="TerrainHills" unique_id=1833423057 instance=ExtResource("8_hill")]
 position = Vector2(2624, 608)
 
-[node name="Hill_03" parent="TerrainHills" instance=ExtResource("8_hill")]
+[node name="Hill_03" parent="TerrainHills" unique_id=1089810420 instance=ExtResource("8_hill")]
 position = Vector2(3008, 608)
 
-[node name="Hill_05" parent="TerrainHills" instance=ExtResource("8_hill")]
+[node name="Hill_05" parent="TerrainHills" unique_id=511870596 instance=ExtResource("8_hill")]
 position = Vector2(5824, 608)
 
-[node name="Hill_06" parent="TerrainHills" instance=ExtResource("8_hill")]
+[node name="Hill_06" parent="TerrainHills" unique_id=1021455374 instance=ExtResource("8_hill")]
 position = Vector2(6208, 608)
 
-[node name="Hill_07" parent="TerrainHills" instance=ExtResource("8_hill")]
+[node name="Hill_07" parent="TerrainHills" unique_id=1979389070 instance=ExtResource("8_hill")]
 position = Vector2(6592, 608)
 
-[node name="Hill_08" parent="TerrainHills" instance=ExtResource("8_hill")]
+[node name="Hill_08" parent="TerrainHills" unique_id=1525243358 instance=ExtResource("8_hill")]
 position = Vector2(6976, 608)
 
-[node name="Hill_09" parent="TerrainHills" instance=ExtResource("8_hill")]
+[node name="Hill_09" parent="TerrainHills" unique_id=1693122848 instance=ExtResource("8_hill")]
 position = Vector2(7360, 608)
 
-[node name="Markers" type="Node2D" parent="."]
+[node name="Markers" type="Node2D" parent="." unique_id=1041768710]
 
-[node name="PlayerSpawn" type="Marker2D" parent="Markers"]
+[node name="PlayerSpawn" type="Marker2D" parent="Markers" unique_id=245586122]
 position = Vector2(96, 560)
 
-[node name="Gameplay" type="Node2D" parent="."]
+[node name="Gameplay" type="Node2D" parent="." unique_id=410095114]
 
-[node name="Pickups" type="Node2D" parent="Gameplay"]
+[node name="Pickups" type="Node2D" parent="Gameplay" unique_id=1588149244]
 
-[node name="Coin_01" type="Node2D" parent="Gameplay/Pickups"]
-script = ExtResource("5")
+[node name="Coin_01" type="Node2D" parent="Gameplay/Pickups" unique_id=451770141]
 position = Vector2(736, 384)
-AuthoredPickupType = 0
-
-[node name="Coin_02" type="Node2D" parent="Gameplay/Pickups"]
 script = ExtResource("5")
+
+[node name="Coin_02" type="Node2D" parent="Gameplay/Pickups" unique_id=744337793]
 position = Vector2(1184, 368)
-AuthoredPickupType = 0
-
-[node name="Coin_03" type="Node2D" parent="Gameplay/Pickups"]
 script = ExtResource("5")
-position = Vector2(1312, 360)
-AuthoredPickupType = 0
 
-[node name="Coin_04" type="Node2D" parent="Gameplay/Pickups"]
+[node name="Coin_03" type="Node2D" parent="Gameplay/Pickups" unique_id=1140214436]
+position = Vector2(1330, 374)
 script = ExtResource("5")
+
+[node name="Coin_04" type="Node2D" parent="Gameplay/Pickups" unique_id=1557561897]
 position = Vector2(1760, 240)
-AuthoredPickupType = 0
-
-[node name="Coin_05" type="Node2D" parent="Gameplay/Pickups"]
 script = ExtResource("5")
+
+[node name="Coin_05" type="Node2D" parent="Gameplay/Pickups" unique_id=389158085]
 position = Vector2(2528, 440)
-AuthoredPickupType = 0
-
-[node name="Coin_06" type="Node2D" parent="Gameplay/Pickups"]
 script = ExtResource("5")
+
+[node name="Coin_06" type="Node2D" parent="Gameplay/Pickups" unique_id=1437205519]
 position = Vector2(3136, 328)
-AuthoredPickupType = 0
-
-[node name="Coin_07" type="Node2D" parent="Gameplay/Pickups"]
 script = ExtResource("5")
-position = Vector2(3968, 440)
-AuthoredPickupType = 0
 
-[node name="Coin_08" type="Node2D" parent="Gameplay/Pickups"]
+[node name="Coin_07" type="Node2D" parent="Gameplay/Pickups" unique_id=2090303778]
+position = Vector2(3915, 412)
 script = ExtResource("5")
+
+[node name="Coin_08" type="Node2D" parent="Gameplay/Pickups" unique_id=1663215348]
 position = Vector2(4864, 328)
-AuthoredPickupType = 0
-
-[node name="Coin_09" type="Node2D" parent="Gameplay/Pickups"]
 script = ExtResource("5")
+
+[node name="Coin_09" type="Node2D" parent="Gameplay/Pickups" unique_id=1481162707]
 position = Vector2(5936, 440)
-AuthoredPickupType = 0
-
-[node name="Coin_10" type="Node2D" parent="Gameplay/Pickups"]
 script = ExtResource("5")
+
+[node name="Coin_10" type="Node2D" parent="Gameplay/Pickups" unique_id=1371016816]
 position = Vector2(6848, 344)
-AuthoredPickupType = 0
-
-[node name="Coin_11" type="Node2D" parent="Gameplay/Pickups"]
 script = ExtResource("5")
+
+[node name="Coin_11" type="Node2D" parent="Gameplay/Pickups" unique_id=1323214513]
 position = Vector2(7600, 408)
-AuthoredPickupType = 0
-
-[node name="Coin_12" type="Node2D" parent="Gameplay/Pickups"]
 script = ExtResource("5")
+
+[node name="Coin_12" type="Node2D" parent="Gameplay/Pickups" unique_id=400619629]
 position = Vector2(8160, 456)
-AuthoredPickupType = 0
-
-[node name="Coin_13" type="Node2D" parent="Gameplay/Pickups"]
 script = ExtResource("5")
-position = Vector2(544, 468)
-AuthoredPickupType = 0
 
-[node name="Coin_14" type="Node2D" parent="Gameplay/Pickups"]
+[node name="Coin_13" type="Node2D" parent="Gameplay/Pickups" unique_id=1658559673]
+position = Vector2(567, 465)
 script = ExtResource("5")
-position = Vector2(3888, 176)
-AuthoredPickupType = 0
 
-[node name="Coin_15" type="Node2D" parent="Gameplay/Pickups"]
+[node name="Coin_14" type="Node2D" parent="Gameplay/Pickups" unique_id=2042776145]
+position = Vector2(3843, 366)
 script = ExtResource("5")
+
+[node name="Coin_15" type="Node2D" parent="Gameplay/Pickups" unique_id=614406401]
 position = Vector2(7520, 404)
-AuthoredPickupType = 0
-
-[node name="Coin_16" type="Node2D" parent="Gameplay/Pickups"]
 script = ExtResource("5")
+
+[node name="Coin_16" type="Node2D" parent="Gameplay/Pickups" unique_id=87262617]
 position = Vector2(8832, 360)
-AuthoredPickupType = 0
-
-[node name="Coin_17" type="Node2D" parent="Gameplay/Pickups"]
 script = ExtResource("5")
+
+[node name="Coin_17" type="Node2D" parent="Gameplay/Pickups" unique_id=1786301640]
 position = Vector2(8912, 360)
-AuthoredPickupType = 0
-
-[node name="Coin_18" type="Node2D" parent="Gameplay/Pickups"]
 script = ExtResource("5")
-position = Vector2(9056, 184)
-AuthoredPickupType = 0
 
-[node name="Coin_19" type="Node2D" parent="Gameplay/Pickups"]
+[node name="Coin_18" type="Node2D" parent="Gameplay/Pickups" unique_id=8648680]
+position = Vector2(9032, 278)
 script = ExtResource("5")
-position = Vector2(9632, 184)
-AuthoredPickupType = 0
 
-[node name="Coin_20" type="Node2D" parent="Gameplay/Pickups"]
+[node name="Coin_19" type="Node2D" parent="Gameplay/Pickups" unique_id=2144663231]
+position = Vector2(9596, 309)
 script = ExtResource("5")
+
+[node name="Coin_20" type="Node2D" parent="Gameplay/Pickups" unique_id=1326731645]
 position = Vector2(10016, 488)
-AuthoredPickupType = 0
-
-[node name="Coin_21" type="Node2D" parent="Gameplay/Pickups"]
 script = ExtResource("5")
+
+[node name="Coin_21" type="Node2D" parent="Gameplay/Pickups" unique_id=192314007]
 position = Vector2(10688, 184)
-AuthoredPickupType = 0
+script = ExtResource("5")
 
-[node name="Blocks" type="Node2D" parent="Gameplay"]
+[node name="Blocks" type="Node2D" parent="Gameplay" unique_id=438018468]
 
-[node name="Block_Growth" type="StaticBody2D" parent="Gameplay/Blocks"]
+[node name="Block_Growth" type="StaticBody2D" parent="Gameplay/Blocks" unique_id=1250307971]
+position = Vector2(1280, 376)
 script = ExtResource("4")
-position = Vector2(1280, 472)
 Reward = 1
 
-[node name="Block_Flame" type="StaticBody2D" parent="Gameplay/Blocks"]
-script = ExtResource("4")
+[node name="Block_Flame" type="StaticBody2D" parent="Gameplay/Blocks" unique_id=1630734019]
 position = Vector2(3184, 440)
+script = ExtResource("4")
 Reward = 2
 
-[node name="Block_Coin" type="StaticBody2D" parent="Gameplay/Blocks"]
-script = ExtResource("4")
+[node name="Block_Coin" type="StaticBody2D" parent="Gameplay/Blocks" unique_id=364896027]
 position = Vector2(4928, 312)
-Reward = 0
-
-[node name="Block_Coin_02" type="StaticBody2D" parent="Gameplay/Blocks"]
 script = ExtResource("4")
+
+[node name="Block_Coin_02" type="StaticBody2D" parent="Gameplay/Blocks" unique_id=1521004278]
 position = Vector2(7040, 440)
-Reward = 0
-
-[node name="Block_Flame_02" type="StaticBody2D" parent="Gameplay/Blocks"]
 script = ExtResource("4")
+
+[node name="Block_Flame_02" type="StaticBody2D" parent="Gameplay/Blocks" unique_id=622120345]
 position = Vector2(7808, 440)
+script = ExtResource("4")
 Reward = 2
 
-[node name="Block_Coin_03" type="StaticBody2D" parent="Gameplay/Blocks"]
+[node name="Block_Coin_03" type="StaticBody2D" parent="Gameplay/Blocks" unique_id=1266629348]
+position = Vector2(9753, 312)
 script = ExtResource("4")
-position = Vector2(9856, 184)
-Reward = 0
 
-[node name="Block_Flame_03" type="StaticBody2D" parent="Gameplay/Blocks"]
+[node name="Block_Flame_03" type="StaticBody2D" parent="Gameplay/Blocks" unique_id=638060939]
+position = Vector2(10684, 287)
 script = ExtResource("4")
-position = Vector2(10432, 184)
 Reward = 2
 
-[node name="Enemies" type="Node2D" parent="Gameplay"]
+[node name="Enemies" type="Node2D" parent="Gameplay" unique_id=1757212127]
 
-[node name="Enemy_01" parent="Gameplay/Enemies" instance=ExtResource("9_ground")]
+[node name="Enemy_01" parent="Gameplay/Enemies" unique_id=1153055615 instance=ExtResource("9_ground")]
 position = Vector2(416, 591)
 
-[node name="Enemy_02" parent="Gameplay/Enemies" instance=ExtResource("10_armored")]
-position = Vector2(2528, 208)
+[node name="Enemy_02" parent="Gameplay/Enemies" unique_id=1026034182 instance=ExtResource("10_armored")]
+position = Vector2(2752, 496)
 
-[node name="Enemy_03" parent="Gameplay/Enemies" instance=ExtResource("11_flying")]
+[node name="Enemy_03" parent="Gameplay/Enemies" unique_id=1019567129 instance=ExtResource("11_flying")]
 position = Vector2(1376, 352)
 AuthoredPatrolDistance = 160.0
 
-[node name="Enemy_04" parent="Gameplay/Enemies" instance=ExtResource("10_armored")]
+[node name="Enemy_04" parent="Gameplay/Enemies" unique_id=715563411 instance=ExtResource("10_armored")]
 position = Vector2(2832, 496)
 
-[node name="Enemy_05" parent="Gameplay/Enemies" instance=ExtResource("11_flying")]
+[node name="Enemy_05" parent="Gameplay/Enemies" unique_id=1164347442 instance=ExtResource("11_flying")]
 position = Vector2(4680, 260)
 AuthoredPatrolDistance = 190.0
 
-[node name="Enemy_06" parent="Gameplay/Enemies" instance=ExtResource("12_protected")]
-position = Vector2(3264, 160)
+[node name="Enemy_06" parent="Gameplay/Enemies" unique_id=751359717 instance=ExtResource("12_protected")]
+position = Vector2(3968, 461)
 
-[node name="Enemy_07" parent="Gameplay/Enemies" instance=ExtResource("13_shooter")]
-position = Vector2(5712, 593)
+[node name="Enemy_07" parent="Gameplay/Enemies" unique_id=1384696707 instance=ExtResource("13_shooter")]
+position = Vector2(6405, 496)
 
-[node name="Enemy_08" parent="Gameplay/Enemies" instance=ExtResource("10_armored")]
-position = Vector2(6336, 496)
+[node name="Enemy_08" parent="Gameplay/Enemies" unique_id=50436960 instance=ExtResource("10_armored")]
+position = Vector2(6773, 493)
 
-[node name="Enemy_09" parent="Gameplay/Enemies" instance=ExtResource("12_protected")]
-position = Vector2(7424, 493)
+[node name="Enemy_09" parent="Gameplay/Enemies" unique_id=1556424049 instance=ExtResource("12_protected")]
+position = Vector2(7488, 429)
 
-[node name="Enemy_10" parent="Gameplay/Enemies" instance=ExtResource("13_shooter")]
+[node name="Enemy_10" parent="Gameplay/Enemies" unique_id=1831225640 instance=ExtResource("13_shooter")]
 position = Vector2(7760, 497)
 
-[node name="Enemy_11" parent="Gameplay/Enemies" instance=ExtResource("11_flying")]
+[node name="Enemy_11" parent="Gameplay/Enemies" unique_id=1735486741 instance=ExtResource("11_flying")]
 position = Vector2(8880, 392)
 AuthoredPatrolDistance = 160.0
 
-[node name="Enemy_12" parent="Gameplay/Enemies" instance=ExtResource("12_protected")]
-position = Vector2(8992, 176)
+[node name="Enemy_12" parent="Gameplay/Enemies" unique_id=1136655309 instance=ExtResource("12_protected")]
+position = Vector2(8864, 397)
 
-[node name="Enemy_13" parent="Gameplay/Enemies" instance=ExtResource("13_shooter")]
-position = Vector2(9808, 176)
+[node name="Enemy_13" parent="Gameplay/Enemies" unique_id=807097685 instance=ExtResource("13_shooter")]
+position = Vector2(9936, 593)
 
-[node name="Enemy_14" parent="Gameplay/Enemies" instance=ExtResource("11_flying")]
+[node name="Enemy_14" parent="Gameplay/Enemies" unique_id=1612279559 instance=ExtResource("11_flying")]
 position = Vector2(10464, 360)
 AuthoredPatrolDistance = 150.0
 
-[node name="Enemy_15" parent="Gameplay/Enemies" instance=ExtResource("10_armored")]
-position = Vector2(10624, 176)
+[node name="Enemy_15" parent="Gameplay/Enemies" unique_id=678703935 instance=ExtResource("10_armored")]
+position = Vector2(10624, 400)
 
-[node name="Dynamics" type="Node2D" parent="Gameplay"]
+[node name="Dynamics" type="Node2D" parent="Gameplay" unique_id=171283819]
 
-[node name="MovingPlatform_01" parent="Gameplay/Dynamics" instance=ExtResource("15_moving")]
+[node name="MovingPlatform_01" parent="Gameplay/Dynamics" unique_id=1051876665 instance=ExtResource("15_moving")]
 position = Vector2(960, 448)
 WidthTiles = 6
 PatrolDistance = 64.0
 MoveSpeed = 76.0
 
-[node name="MovingPlatform_02" parent="Gameplay/Dynamics" instance=ExtResource("15_moving")]
+[node name="MovingPlatform_02" parent="Gameplay/Dynamics" unique_id=1305550157 instance=ExtResource("15_moving")]
 position = Vector2(1728, 400)
 WidthTiles = 6
 PatrolDistance = 64.0
 MoveSpeed = 76.0
 
-[node name="FallingBlock_01_01" parent="Gameplay/Dynamics" instance=ExtResource("16_falling")]
-position = Vector2(2024, 304)
-TriggerDelaySeconds = 0.5
+[node name="FallingBlock_01_01" parent="Gameplay/Dynamics" unique_id=990107470 instance=ExtResource("16_falling")]
+position = Vector2(2024, 384)
 FallGravity = 1500.0
 
-[node name="FallingBlock_01_02" parent="Gameplay/Dynamics" instance=ExtResource("16_falling")]
-position = Vector2(2104, 304)
-TriggerDelaySeconds = 0.5
+[node name="FallingBlock_01_02" parent="Gameplay/Dynamics" unique_id=310744121 instance=ExtResource("16_falling")]
+position = Vector2(2104, 384)
 FallGravity = 1500.0
 
-[node name="FallingBlock_01_03" parent="Gameplay/Dynamics" instance=ExtResource("16_falling")]
-position = Vector2(2184, 304)
-TriggerDelaySeconds = 0.5
+[node name="FallingBlock_01_03" parent="Gameplay/Dynamics" unique_id=895858575 instance=ExtResource("16_falling")]
+position = Vector2(2184, 384)
 FallGravity = 1500.0
 
-[node name="FallingBlock_01_04" parent="Gameplay/Dynamics" instance=ExtResource("16_falling")]
-position = Vector2(2264, 304)
-TriggerDelaySeconds = 0.5
+[node name="FallingBlock_01_04" parent="Gameplay/Dynamics" unique_id=1697813821 instance=ExtResource("16_falling")]
+position = Vector2(2264, 384)
 FallGravity = 1500.0
 
-[node name="FallingBlock_02_01" parent="Gameplay/Dynamics" instance=ExtResource("16_falling")]
-position = Vector2(3496, 272)
-TriggerDelaySeconds = 0.5
+[node name="FallingBlock_02_01" parent="Gameplay/Dynamics" unique_id=302261285 instance=ExtResource("16_falling")]
+position = Vector2(3502, 424)
 FallGravity = 1500.0
 
-[node name="FallingBlock_02_02" parent="Gameplay/Dynamics" instance=ExtResource("16_falling")]
-position = Vector2(3576, 272)
-TriggerDelaySeconds = 0.5
+[node name="FallingBlock_02_02" parent="Gameplay/Dynamics" unique_id=118094783 instance=ExtResource("16_falling")]
+position = Vector2(3582, 424)
 FallGravity = 1500.0
 
-[node name="FallingBlock_02_03" parent="Gameplay/Dynamics" instance=ExtResource("16_falling")]
-position = Vector2(3656, 272)
-TriggerDelaySeconds = 0.5
+[node name="FallingBlock_02_03" parent="Gameplay/Dynamics" unique_id=142600538 instance=ExtResource("16_falling")]
+position = Vector2(3662, 424)
 FallGravity = 1500.0
 
-[node name="FallingBlock_02_04" parent="Gameplay/Dynamics" instance=ExtResource("16_falling")]
-position = Vector2(3736, 272)
-TriggerDelaySeconds = 0.5
+[node name="FallingBlock_02_04" parent="Gameplay/Dynamics" unique_id=2076500499 instance=ExtResource("16_falling")]
+position = Vector2(3742, 424)
 FallGravity = 1500.0
 
-[node name="MovingPlatform_03" parent="Gameplay/Dynamics" instance=ExtResource("15_moving")]
+[node name="MovingPlatform_03" parent="Gameplay/Dynamics" unique_id=439730311 instance=ExtResource("15_moving")]
 position = Vector2(8640, 480)
 WidthTiles = 6
 PatrolDistance = 48.0
 MoveSpeed = 72.0
 
-[node name="FallingBlock_03_01" parent="Gameplay/Dynamics" instance=ExtResource("16_falling")]
-position = Vector2(9256, 288)
-TriggerDelaySeconds = 0.5
+[node name="FallingBlock_03_01" parent="Gameplay/Dynamics" unique_id=1765233458 instance=ExtResource("16_falling")]
+position = Vector2(9256, 379)
 FallGravity = 1500.0
 
-[node name="FallingBlock_03_02" parent="Gameplay/Dynamics" instance=ExtResource("16_falling")]
-position = Vector2(9336, 288)
-TriggerDelaySeconds = 0.5
+[node name="FallingBlock_03_02" parent="Gameplay/Dynamics" unique_id=674874062 instance=ExtResource("16_falling")]
+position = Vector2(9336, 379)
 FallGravity = 1500.0
 
-[node name="FallingBlock_03_03" parent="Gameplay/Dynamics" instance=ExtResource("16_falling")]
-position = Vector2(9416, 288)
-TriggerDelaySeconds = 0.5
+[node name="FallingBlock_03_03" parent="Gameplay/Dynamics" unique_id=2124062456 instance=ExtResource("16_falling")]
+position = Vector2(9416, 379)
 FallGravity = 1500.0
 
-[node name="FallingBlock_03_04" parent="Gameplay/Dynamics" instance=ExtResource("16_falling")]
-position = Vector2(9496, 288)
-TriggerDelaySeconds = 0.5
+[node name="FallingBlock_03_04" parent="Gameplay/Dynamics" unique_id=1079428117 instance=ExtResource("16_falling")]
+position = Vector2(9496, 379)
 FallGravity = 1500.0
 
-[node name="MovingPlatform_04" parent="Gameplay/Dynamics" instance=ExtResource("15_moving")]
+[node name="MovingPlatform_04" parent="Gameplay/Dynamics" unique_id=834883335 instance=ExtResource("15_moving")]
 position = Vector2(9664, 432)
 WidthTiles = 6
 PatrolDistance = 60.0
 MoveSpeed = 76.0
 
-[node name="FallingBlock_04_01" parent="Gameplay/Dynamics" instance=ExtResource("16_falling")]
-position = Vector2(10016, 256)
-TriggerDelaySeconds = 0.5
+[node name="FallingBlock_04_01" parent="Gameplay/Dynamics" unique_id=14096947 instance=ExtResource("16_falling")]
+position = Vector2(10028, 368)
 FallGravity = 1500.0
 
-[node name="FallingBlock_04_02" parent="Gameplay/Dynamics" instance=ExtResource("16_falling")]
-position = Vector2(10096, 256)
-TriggerDelaySeconds = 0.5
+[node name="FallingBlock_04_02" parent="Gameplay/Dynamics" unique_id=2120468841 instance=ExtResource("16_falling")]
+position = Vector2(10108, 368)
 FallGravity = 1500.0
 
-[node name="FallingBlock_04_03" parent="Gameplay/Dynamics" instance=ExtResource("16_falling")]
-position = Vector2(10176, 256)
-TriggerDelaySeconds = 0.5
+[node name="FallingBlock_04_03" parent="Gameplay/Dynamics" unique_id=261912500 instance=ExtResource("16_falling")]
+position = Vector2(10188, 368)
 FallGravity = 1500.0
 
-[node name="FallingBlock_04_04" parent="Gameplay/Dynamics" instance=ExtResource("16_falling")]
-position = Vector2(10256, 256)
-TriggerDelaySeconds = 0.5
+[node name="FallingBlock_04_04" parent="Gameplay/Dynamics" unique_id=1124473422 instance=ExtResource("16_falling")]
+position = Vector2(10268, 368)
 FallGravity = 1500.0
 
-[node name="FallingBlock_04_05" parent="Gameplay/Dynamics" instance=ExtResource("16_falling")]
-position = Vector2(10336, 256)
-TriggerDelaySeconds = 0.5
+[node name="FallingBlock_04_05" parent="Gameplay/Dynamics" unique_id=540767649 instance=ExtResource("16_falling")]
+position = Vector2(10348, 368)
 FallGravity = 1500.0
 
-[node name="MovingPlatform_05" parent="Gameplay/Dynamics" instance=ExtResource("15_moving")]
+[node name="MovingPlatform_05" parent="Gameplay/Dynamics" unique_id=551861299 instance=ExtResource("15_moving")]
 position = Vector2(10816, 400)
 WidthTiles = 6
 PatrolDistance = 60.0
 MoveSpeed = 76.0
 
-[node name="Hazards" type="Node2D" parent="Gameplay"]
+[node name="Hazards" type="Node2D" parent="Gameplay" unique_id=1850362790]
 
-[node name="Cactus_01" parent="Gameplay/Hazards" instance=ExtResource("14_cactus")]
+[node name="Cactus_01" parent="Gameplay/Hazards" unique_id=1794010634 instance=ExtResource("14_cactus")]
 position = Vector2(512, 560)
 
-[node name="Cactus_02" parent="Gameplay/Hazards" instance=ExtResource("14_cactus")]
+[node name="Cactus_02" parent="Gameplay/Hazards" unique_id=2082119769 instance=ExtResource("14_cactus")]
 position = Vector2(2464, 500)
 
-[node name="Cactus_03" parent="Gameplay/Hazards" instance=ExtResource("14_cactus")]
-position = Vector2(4160, 560)
-
-[node name="Cactus_04" parent="Gameplay/Hazards" instance=ExtResource("14_cactus")]
+[node name="Cactus_04" parent="Gameplay/Hazards" unique_id=169694098 instance=ExtResource("14_cactus")]
 position = Vector2(4416, 560)
 
-[node name="Cactus_05" parent="Gameplay/Hazards" instance=ExtResource("14_cactus")]
-position = Vector2(6048, 500)
-
-[node name="Cactus_06" parent="Gameplay/Hazards" instance=ExtResource("14_cactus")]
+[node name="Cactus_06" parent="Gameplay/Hazards" unique_id=1721590640 instance=ExtResource("14_cactus")]
 position = Vector2(7216, 500)
 
-[node name="Goal" type="Node2D" parent="Gameplay"]
-script = ExtResource("3")
+[node name="Goal" type="Node2D" parent="Gameplay" unique_id=195656034]
 position = Vector2(11024, 512)
-
+script = ExtResource("3")
