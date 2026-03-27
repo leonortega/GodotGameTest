@@ -16,7 +16,7 @@
 - **Extra life threshold**: Coin total required to award one additional life; baseline threshold is 100 collected coins.
 - **Blocking pause**: Pause state in which player movement, enemy motion, timer countdown, and hazard animation are suspended.
 - **World progression**: Ordered advancement from stage `1-1` to `1-4` in the MVP.
-- **Title-selected stage**: The stage chosen from the title screen as the starting point for a new run in the current MVP build.
+- **Starting stage**: The first stage loaded for a new run, which is `1-1` in the current MVP build.
 - **Hidden route**: Optional path or room not required for completion but containing bonus rewards.
 - **Environmental obstacle**: Non-enemy stage object that threatens or blocks the player, such as a cactus hazard.
 - **Terrain profile**: The overall height variation of a stage path, including flats, rises, drops, and uneven segments.

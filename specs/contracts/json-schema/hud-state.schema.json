@@ -9,6 +9,7 @@
     "coins",
     "lives",
     "timeRemaining",
+    "difficulty",
     "paused"
   ],
   "properties": {
@@ -31,6 +32,14 @@
     "timeRemaining": {
       "type": "integer",
       "minimum": 0
+    },
+    "difficulty": {
+      "type": "string",
+      "enum": [
+        "Easy",
+        "Normal",
+        "Hard"
+      ]
     },
     "paused": {
       "type": "boolean"

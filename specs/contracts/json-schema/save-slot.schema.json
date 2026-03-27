@@ -31,7 +31,7 @@
           "required": [
             "musicVolumeDb",
             "sfxVolumeDb",
-            "language"
+            "difficulty"
           ],
           "properties": {
             "musicVolumeDb": {
@@ -40,8 +40,13 @@
             "sfxVolumeDb": {
               "type": "number"
             },
-            "language": {
-              "type": "string"
+            "difficulty": {
+              "type": "string",
+              "enum": [
+                "Easy",
+                "Normal",
+                "Hard"
+              ]
             }
           },
           "additionalProperties": false

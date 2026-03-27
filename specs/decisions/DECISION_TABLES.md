@@ -34,7 +34,7 @@
 |---|---|---|
 | Starting lives | `3` | New session baseline |
 | Stage order | `1-1` -> `1-2` -> `1-3` -> `1-4` | MVP world only |
-| Title-selected starting stage | Allowed before run start | Progression continues forward from selected stage |
+| Starting stage | `1-1` for every new run | Progression continues forward through the authored stage order |
 | Title branding | Use dedicated game logo in title layout | Must remain readable over animation |
 | Title-screen attract motion | Player runs right to left while fleeing an enemy | Keeps title screen lively without entering gameplay |
 | Title-screen chaser | Choose from readable enemy variants | Current build rotates among a small curated set |
@@ -126,5 +126,5 @@
 | Save slot count | One local slot minimum | Expandable later |
 | Save format | Simple Godot-compatible serialized file | Human-inspectable when feasible |
 | Persisted progression | Highest cleared stage and best score | Current world scope only |
-| Persisted settings | Audio and presentation preferences | Restored on next launch |
+| Persisted settings | Audio volume and selected difficulty | Restored on next launch |
 | Corrupt save handling | Fall back to defaults | Never block startup |

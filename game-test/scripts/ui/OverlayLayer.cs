@@ -36,6 +36,7 @@ public partial class OverlayLayer : CanvasLayer
     private readonly Button _titleStartButton = new();
     private readonly Button _titleControlsButton = new();
     private readonly Button _titleEnemiesButton = new();
+    private readonly Button _titleConfigButton = new();
     private readonly Button _titleDifficultyButton = new();
 
     private readonly CenterContainer _menuCenter = new();
@@ -63,10 +64,28 @@ public partial class OverlayLayer : CanvasLayer
     private readonly VBoxContainer _enemyGuideList = new();
     private readonly Button _enemyGuideBackButton = new();
 
+    private readonly CenterContainer _settingsCenter = new();
+    private readonly PanelContainer _settingsPanel = new();
+    private readonly Label _settingsKicker = new();
+    private readonly Label _settingsTitle = new();
+    private readonly Label _musicValue = new();
+    private readonly Label _sfxValue = new();
+    private readonly Button _musicDownButton = new();
+    private readonly Button _musicUpButton = new();
+    private readonly Button _sfxDownButton = new();
+    private readonly Button _sfxUpButton = new();
+    private readonly Button _settingsBackButton = new();
+
     private Action? _primaryAction;
     private Action? _secondaryAction;
     private Action? _tertiaryAction;
     private Action? _quaternaryAction;
+    private Action? _quinaryAction;
+    private Action? _musicDownAction;
+    private Action? _musicUpAction;
+    private Action? _sfxDownAction;
+    private Action? _sfxUpAction;
+    private Action? _settingsBackAction;
     private Button? _lastHighlightedButton;
     private float _titleAnimationTime;
     private EnemyKind _titleEnemyKind = EnemyKind.ProtectedHead;
@@ -88,6 +107,7 @@ public partial class OverlayLayer : CanvasLayer
         BuildGenericOverlay();
         BuildTimedCard();
         BuildEnemyGuide();
+        BuildSettingsMenu();
 
         if (GetViewport() is { } viewport)
         {
@@ -118,7 +138,7 @@ public partial class OverlayLayer : CanvasLayer
         UpdateTitleAnimation();
     }
 
-    public void ShowTitleScreen(string body, string difficultyText, Action startAction, Action controlsAction, Action enemiesAction, Action difficultyAction)
+    public void ShowTitleScreen(string body, string difficultyText, Action startAction, Action controlsAction, Action enemiesAction, Action configAction, Action difficultyAction)
     {
         RefreshResponsiveLayout();
         _backdrop.Color = new Color(0.03f, 0.04f, 0.08f, 0.98f);
@@ -129,7 +149,13 @@ public partial class OverlayLayer : CanvasLayer
         _primaryAction = startAction;
         _secondaryAction = controlsAction;
         _tertiaryAction = enemiesAction;
-        _quaternaryAction = difficultyAction;
+        _quaternaryAction = configAction;
+        _quinaryAction = difficultyAction;
+        _musicDownAction = null;
+        _musicUpAction = null;
+        _sfxDownAction = null;
+        _sfxUpAction = null;
+        _settingsBackAction = null;
         _lastHighlightedButton = null;
         AllowsPauseResume = false;
         _titleAnimationTime = 0f;
@@ -141,6 +167,7 @@ public partial class OverlayLayer : CanvasLayer
         _menuCenter.Visible = false;
         _timedCenter.Visible = false;
         _enemyGuideCenter.Visible = false;
+        _settingsCenter.Visible = false;
         Visible = true;
         UpdateTitleAnimation();
     }
@@ -174,6 +201,7 @@ public partial class OverlayLayer : CanvasLayer
         _primaryAction = primaryAction;
         _secondaryAction = secondaryAction;
         _tertiaryAction = null;
+        _quinaryAction = null;
         _lastHighlightedButton = null;
         AllowsPauseResume = allowPauseResume;
 
@@ -181,6 +209,7 @@ public partial class OverlayLayer : CanvasLayer
         _menuCenter.Visible = true;
         _timedCenter.Visible = false;
         _enemyGuideCenter.Visible = false;
+        _settingsCenter.Visible = false;
         Visible = true;
     }
 
@@ -192,6 +221,7 @@ public partial class OverlayLayer : CanvasLayer
         _secondaryAction = null;
         _tertiaryAction = null;
         _quaternaryAction = null;
+        _quinaryAction = null;
         _lastHighlightedButton = null;
         AllowsPauseResume = false;
 
@@ -199,6 +229,36 @@ public partial class OverlayLayer : CanvasLayer
         _menuCenter.Visible = false;
         _timedCenter.Visible = false;
         _enemyGuideCenter.Visible = true;
+        _settingsCenter.Visible = false;
+        Visible = true;
+    }
+
+    public void ShowSettings(
+        string musicValue,
+        string sfxValue,
+        Action musicDownAction,
+        Action musicUpAction,
+        Action sfxDownAction,
+        Action sfxUpAction,
+        Action backAction)
+    {
+        RefreshResponsiveLayout();
+        _backdrop.Color = new Color(0.03f, 0.04f, 0.08f, 0.98f);
+        _musicValue.Text = musicValue;
+        _sfxValue.Text = sfxValue;
+        _musicDownAction = musicDownAction;
+        _musicUpAction = musicUpAction;
+        _sfxDownAction = sfxDownAction;
+        _sfxUpAction = sfxUpAction;
+        _settingsBackAction = backAction;
+        _lastHighlightedButton = null;
+        AllowsPauseResume = false;
+
+        _titleCenter.Visible = false;
+        _menuCenter.Visible = false;
+        _timedCenter.Visible = false;
+        _enemyGuideCenter.Visible = false;
+        _settingsCenter.Visible = true;
         Visible = true;
     }
 
@@ -224,10 +284,17 @@ public partial class OverlayLayer : CanvasLayer
         _secondaryAction = null;
         _tertiaryAction = null;
         _quaternaryAction = null;
+        _quinaryAction = null;
+        _musicDownAction = null;
+        _musicUpAction = null;
+        _sfxDownAction = null;
+        _sfxUpAction = null;
+        _settingsBackAction = null;
         _titleCenter.Visible = false;
         _menuCenter.Visible = false;
         _timedCenter.Visible = false;
         _enemyGuideCenter.Visible = false;
+        _settingsCenter.Visible = false;
     }
 
     private void BuildTitleScreen()
@@ -270,34 +337,54 @@ public partial class OverlayLayer : CanvasLayer
         _titleBody.CustomMinimumSize = new Vector2(780, 0);
         GameUi.StyleBody(_titleBody);
 
-        var actions = new HBoxContainer
+        var actions = new VBoxContainer
+        {
+            SizeFlagsHorizontal = Control.SizeFlags.ShrinkCenter
+        };
+        actions.AddThemeConstantOverride("separation", 12);
+
+        var primaryRow = new HBoxContainer
         {
             Alignment = BoxContainer.AlignmentMode.Center,
             SizeFlagsHorizontal = Control.SizeFlags.ShrinkCenter
         };
-        actions.AddThemeConstantOverride("separation", 14);
+        primaryRow.AddThemeConstantOverride("separation", 14);
+
+        var secondaryRow = new HBoxContainer
+        {
+            Alignment = BoxContainer.AlignmentMode.Center,
+            SizeFlagsHorizontal = Control.SizeFlags.ShrinkCenter
+        };
+        secondaryRow.AddThemeConstantOverride("separation", 14);
 
         GameUi.StyleButton(_titleStartButton);
         GameUi.StyleButton(_titleControlsButton);
         GameUi.StyleButton(_titleEnemiesButton);
+        GameUi.StyleButton(_titleConfigButton);
         GameUi.StyleButton(_titleDifficultyButton);
         RegisterMenuButton(_titleStartButton);
         RegisterMenuButton(_titleControlsButton);
         RegisterMenuButton(_titleEnemiesButton);
+        RegisterMenuButton(_titleConfigButton);
         RegisterMenuButton(_titleDifficultyButton);
         _titleStartButton.Text = "Start Game";
         _titleControlsButton.Text = "Controls";
         _titleEnemiesButton.Text = "Enemies";
+        _titleConfigButton.Text = "Config";
 
         _titleStartButton.Pressed += () => InvokeMenuAction(_primaryAction);
         _titleControlsButton.Pressed += () => InvokeMenuAction(_secondaryAction);
         _titleEnemiesButton.Pressed += () => InvokeMenuAction(_tertiaryAction);
-        _titleDifficultyButton.Pressed += () => InvokeMenuAction(_quaternaryAction);
+        _titleConfigButton.Pressed += () => InvokeMenuAction(_quaternaryAction);
+        _titleDifficultyButton.Pressed += () => InvokeMenuAction(_quinaryAction);
 
-        actions.AddChild(_titleStartButton);
-        actions.AddChild(_titleControlsButton);
-        actions.AddChild(_titleEnemiesButton);
-        actions.AddChild(_titleDifficultyButton);
+        primaryRow.AddChild(_titleStartButton);
+        primaryRow.AddChild(_titleControlsButton);
+        primaryRow.AddChild(_titleEnemiesButton);
+        secondaryRow.AddChild(_titleConfigButton);
+        secondaryRow.AddChild(_titleDifficultyButton);
+        actions.AddChild(primaryRow);
+        actions.AddChild(secondaryRow);
 
         card.AddChild(_titleLogoStage);
         card.AddChild(_titleAnimationArea);
@@ -446,6 +533,89 @@ public partial class OverlayLayer : CanvasLayer
         AddChild(_enemyGuideCenter);
     }
 
+    private void BuildSettingsMenu()
+    {
+        _settingsCenter.AnchorRight = 1;
+        _settingsCenter.AnchorBottom = 1;
+
+        _settingsPanel.CustomMinimumSize = new Vector2(560, 0);
+        GameUi.StyleOverlayPanel(_settingsPanel);
+
+        var card = new VBoxContainer();
+        card.AddThemeConstantOverride("separation", 14);
+
+        _settingsKicker.HorizontalAlignment = HorizontalAlignment.Center;
+        _settingsKicker.Text = "Configuration";
+        GameUi.StyleAccent(_settingsKicker);
+
+        _settingsTitle.HorizontalAlignment = HorizontalAlignment.Center;
+        _settingsTitle.Text = "Audio Mix";
+        GameUi.StyleHeader(_settingsTitle);
+
+        card.AddChild(_settingsKicker);
+        card.AddChild(_settingsTitle);
+        card.AddChild(BuildSettingsRow("Music", _musicValue, _musicDownButton, _musicUpButton));
+        card.AddChild(BuildSettingsRow("SFX", _sfxValue, _sfxDownButton, _sfxUpButton));
+
+        GameUi.StyleButton(_settingsBackButton);
+        RegisterMenuButton(_settingsBackButton);
+        _settingsBackButton.Text = "Back";
+        _settingsBackButton.Pressed += () => InvokeMenuAction(_settingsBackAction);
+        card.AddChild(_settingsBackButton);
+
+        _settingsPanel.AddChild(card);
+        _settingsCenter.AddChild(_settingsPanel);
+        AddChild(_settingsCenter);
+
+        _musicDownButton.Pressed += () => InvokeMenuAction(_musicDownAction);
+        _musicUpButton.Pressed += () => InvokeMenuAction(_musicUpAction);
+        _sfxDownButton.Pressed += () => InvokeMenuAction(_sfxDownAction);
+        _sfxUpButton.Pressed += () => InvokeMenuAction(_sfxUpAction);
+    }
+
+    private Control BuildSettingsRow(string labelText, Label valueLabel, Button downButton, Button upButton)
+    {
+        var panel = new PanelContainer();
+        GameUi.StyleOverlayPanel(panel);
+
+        var row = new HBoxContainer
+        {
+            Alignment = BoxContainer.AlignmentMode.Center,
+            SizeFlagsHorizontal = Control.SizeFlags.ExpandFill
+        };
+        row.AddThemeConstantOverride("separation", 12);
+
+        var label = new Label
+        {
+            Text = labelText.ToUpperInvariant(),
+            CustomMinimumSize = new Vector2(96, 0),
+            HorizontalAlignment = HorizontalAlignment.Left
+        };
+        GameUi.StylePixelCaption(label);
+
+        GameUi.StyleButton(downButton);
+        RegisterMenuButton(downButton);
+        downButton.Text = "-";
+        downButton.CustomMinimumSize = new Vector2(56, 44);
+
+        valueLabel.Text = "---";
+        valueLabel.CustomMinimumSize = new Vector2(128, 0);
+        valueLabel.HorizontalAlignment = HorizontalAlignment.Center;
+        GameUi.StyleHudValue(valueLabel);
+
+        GameUi.StyleButton(upButton);
+        RegisterMenuButton(upButton);
+        upButton.Text = "+";
+        upButton.CustomMinimumSize = new Vector2(56, 44);
+
+        row.AddChild(label);
+        row.AddChild(downButton);
+        row.AddChild(valueLabel);
+        row.AddChild(upButton);
+        panel.AddChild(row);
+        return panel;
+    }
+
     private Control CreateEnemyGuideCard(EnemyKind kind)
     {
         var cardPanel = new PanelContainer();
@@ -542,11 +712,13 @@ public partial class OverlayLayer : CanvasLayer
         _titleLogo.Size = titleLogoSize;
         _titleAnimationArea.CustomMinimumSize = new Vector2(titleAnimationWidth, titleAnimationHeight);
         _titleBody.CustomMinimumSize = new Vector2(titleBodyWidth, 0f);
-        var titleButtonWidth = Mathf.Clamp((titlePanelWidth - 56f) / 4f, 148f, 220f);
-        _titleStartButton.CustomMinimumSize = new Vector2(titleButtonWidth, 50f);
-        _titleControlsButton.CustomMinimumSize = new Vector2(titleButtonWidth, 50f);
-        _titleEnemiesButton.CustomMinimumSize = new Vector2(titleButtonWidth, 50f);
-        _titleDifficultyButton.CustomMinimumSize = new Vector2(Mathf.Clamp(titlePanelWidth * 0.24f, titleButtonWidth, 260f), 50f);
+        var titlePrimaryWidth = Mathf.Clamp((titlePanelWidth - 84f) / 3f, 148f, 220f);
+        var titleSecondaryWidth = Mathf.Clamp((titlePanelWidth - 70f) / 2f, 168f, 260f);
+        _titleStartButton.CustomMinimumSize = new Vector2(titlePrimaryWidth, 50f);
+        _titleControlsButton.CustomMinimumSize = new Vector2(titlePrimaryWidth, 50f);
+        _titleEnemiesButton.CustomMinimumSize = new Vector2(titlePrimaryWidth, 50f);
+        _titleConfigButton.CustomMinimumSize = new Vector2(titleSecondaryWidth, 50f);
+        _titleDifficultyButton.CustomMinimumSize = new Vector2(titleSecondaryWidth, 50f);
 
         var menuPanelWidth = Mathf.Clamp(viewportSize.X * 0.52f, 420f, 700f);
         var menuLogoSize = _useCompactMenuLogo
@@ -571,6 +743,11 @@ public partial class OverlayLayer : CanvasLayer
         var enemyGuidePanelWidth = Mathf.Clamp(viewportSize.X * 0.78f, 620f, 980f);
         _enemyGuidePanel.CustomMinimumSize = new Vector2(enemyGuidePanelWidth, 0f);
         _enemyGuideScroll.CustomMinimumSize = new Vector2(enemyGuidePanelWidth - 64f, Mathf.Clamp(viewportSize.Y * 0.52f, 300f, 440f));
+
+        var settingsPanelWidth = Mathf.Clamp(viewportSize.X * 0.44f, 420f, 640f);
+        _settingsPanel.CustomMinimumSize = new Vector2(settingsPanelWidth, 0f);
+        _musicValue.CustomMinimumSize = new Vector2(Mathf.Clamp(settingsPanelWidth * 0.26f, 120f, 168f), 0f);
+        _sfxValue.CustomMinimumSize = new Vector2(Mathf.Clamp(settingsPanelWidth * 0.26f, 120f, 168f), 0f);
     }
 
     private static Vector2 GetScaledLogoSize(float maxWidth, float maxHeight)
@@ -669,11 +846,15 @@ public partial class OverlayLayer : CanvasLayer
         _primaryAction = null;
         _secondaryAction = null;
         _tertiaryAction = null;
+        _quaternaryAction = null;
+        _quinaryAction = null;
         _lastHighlightedButton = null;
         AllowsPauseResume = false;
         _titleCenter.Visible = false;
         _menuCenter.Visible = false;
         _timedCenter.Visible = true;
+        _enemyGuideCenter.Visible = false;
+        _settingsCenter.Visible = false;
         Visible = true;
     }
 

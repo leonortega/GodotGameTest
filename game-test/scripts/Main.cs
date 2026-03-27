@@ -63,6 +63,7 @@ public partial class Main : Node
 			StartNewGame,
 			ShowControlsOverlay,
 			ShowEnemyGuideOverlay,
+			ShowSettingsOverlay,
 			CycleDifficulty);
 	}
 
@@ -86,6 +87,46 @@ public partial class Main : Node
 	private void ShowEnemyGuideOverlay()
 	{
 		_overlay.ShowEnemyGuide(ShowTitleOverlay);
+	}
+
+	private void ShowSettingsOverlay()
+	{
+		_overlay.ShowSettings(
+			GameSession.Instance.GetMusicVolumeLabel(),
+			GameSession.Instance.GetSfxVolumeLabel(),
+			DecreaseMusicVolume,
+			IncreaseMusicVolume,
+			DecreaseSfxVolume,
+			IncreaseSfxVolume,
+			ShowTitleOverlay);
+	}
+
+	private void DecreaseMusicVolume()
+	{
+		GameSession.Instance.AdjustMusicVolume(-1);
+		AudioDirector.Instance.ApplySavedMix();
+		ShowSettingsOverlay();
+	}
+
+	private void IncreaseMusicVolume()
+	{
+		GameSession.Instance.AdjustMusicVolume(1);
+		AudioDirector.Instance.ApplySavedMix();
+		ShowSettingsOverlay();
+	}
+
+	private void DecreaseSfxVolume()
+	{
+		GameSession.Instance.AdjustSfxVolume(-1);
+		AudioDirector.Instance.ApplySavedMix();
+		ShowSettingsOverlay();
+	}
+
+	private void IncreaseSfxVolume()
+	{
+		GameSession.Instance.AdjustSfxVolume(1);
+		AudioDirector.Instance.ApplySavedMix();
+		ShowSettingsOverlay();
 	}
 
 	private void StartNewGame()

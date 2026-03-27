@@ -2,7 +2,6 @@
 
 ## Metadata
 - **Title**: Enemy Behaviors and Player Interaction Rules
-- **Version**: `v1.1`
 - **Version**: `v1.2`
 - **Status**: Approved
 - **Context/View**: Core Gameplay

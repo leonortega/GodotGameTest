@@ -17,7 +17,7 @@ Define the minimum HUD information required for readable play-state awareness.
 - Stage render or any state change affecting score, coins, lives, world, or timer.
 
 ## Requirements
-- `HUD.STATUS.001-R1`: During active gameplay, the HUD shall display score, coins, world or stage identifier, remaining lives, remaining time, and current player form.
+- `HUD.STATUS.001-R1`: During active gameplay, the HUD shall display score, coins, world or stage identifier, remaining lives, remaining time, and current difficulty.
 - `HUD.STATUS.001-R2`: HUD values shall update when the underlying gameplay state changes.
 - `HUD.STATUS.001-R3`: The active stage identifier shall be shown using the world-stage format, such as `1-2`.
 - `HUD.STATUS.001-R4`: The HUD shall remain readable against all MVP stage backgrounds.
@@ -40,7 +40,7 @@ Scenario: HUD displays the active stage identifier
   Then the HUD shall display 1-3 as the active stage
 
 Scenario: HUD remains visually aligned across text fields
-  Given the HUD renders score, coin, stage, life, time, and form fields
+  Given the HUD renders score, coin, stage, life, time, and difficulty fields
   When the stats bar is shown during gameplay
   Then the visible label row and value row shall remain consistently aligned
 
@@ -56,7 +56,7 @@ Scenario: Timer display freezes after pause
 ```
 
 ## Example Inputs/Outputs
-- Example input: Active stage `1-2`, score `004500`, coins `37`, lives `2`, time `251`, form `Powered`.
+- Example input: Active stage `1-2`, score `004500`, coins `37`, lives `2`, time `251`, difficulty `Hard`.
 - Expected output: HUD renders a readable text-first in-game overlay with all values inside a dark top panel.
 
 ## Edge Cases
@@ -64,7 +64,7 @@ Scenario: Timer display freezes after pause
 - Large score values shall remain legible without overlapping other HUD fields.
 - The HUD backing shall not be so transparent that top-row readability is lost against sky or cloud backgrounds.
 - Stage clear bonus counting shall not resume normal timer countdown.
-- Form labels shall not collide with adjacent stat fields when the player changes state.
+- Difficulty labels shall not collide with adjacent stat fields when the player changes setting.
 
 ## Non-Functional Constraints
 - HUD updates should not flicker during rapid score or coin changes.

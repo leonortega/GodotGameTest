@@ -58,11 +58,21 @@ public enum ProjectileHitResult
 
 public sealed record EnemySpawn(EnemyKind Kind, Vector2 Position, float PatrolDistance = 0f);
 
-public sealed class SaveSlotData
+public sealed class SaveSettingsData
 {
-    public string? HighestClearedStage { get; set; }
-    public int BestScore { get; set; }
     public float MusicVolumeDb { get; set; } = -4f;
     public float SfxVolumeDb { get; set; } = -2f;
     public string Difficulty { get; set; } = DifficultyLevel.Normal.ToString();
+}
+
+public sealed class SaveSlotContent
+{
+    public string? HighestClearedStage { get; set; }
+    public int BestScore { get; set; }
+    public SaveSettingsData Settings { get; set; } = new();
+}
+
+public sealed class SaveSlotData
+{
+    public SaveSlotContent Slot { get; set; } = new();
 }

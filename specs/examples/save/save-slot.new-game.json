@@ -6,7 +6,7 @@
     "settings": {
       "musicVolumeDb": -4,
       "sfxVolumeDb": -2,
-      "language": "en"
+      "difficulty": "Normal"
     }
   }
 }

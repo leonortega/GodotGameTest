@@ -11,6 +11,10 @@ public partial class GameSession : Node
     public const int StartingLives = 3;
     public const int ExtraLifeCoinThreshold = 100;
 
+    private const float MinimumVolumeDb = -20f;
+    private const float MaximumVolumeDb = 0f;
+    private const float VolumeStepDb = 2f;
+
     private readonly string[] _stageOrder = ["1-1", "1-2", "1-3", "1-4"];
     private SaveSlotData _saveData = new();
 
@@ -23,9 +27,9 @@ public partial class GameSession : Node
     public int TimeRemaining { get; private set; }
     public PlayerForm CurrentForm { get; private set; } = PlayerForm.Small;
     public int HighestClearedStageIndex { get; private set; } = -1;
-    public int BestScore => _saveData.BestScore;
-    public float MusicVolumeDb => _saveData.MusicVolumeDb;
-    public float SfxVolumeDb => _saveData.SfxVolumeDb;
+    public int BestScore => _saveData.Slot.BestScore;
+    public float MusicVolumeDb => _saveData.Slot.Settings.MusicVolumeDb;
+    public float SfxVolumeDb => _saveData.Slot.Settings.SfxVolumeDb;
     public DifficultyLevel CurrentDifficulty { get; private set; } = DifficultyLevel.Normal;
 
     public override void _Ready()
@@ -67,9 +71,41 @@ public partial class GameSession : Node
             _ => DifficultyLevel.Easy
         };
 
-        _saveData.Difficulty = CurrentDifficulty.ToString();
+        _saveData.Slot.Settings.Difficulty = CurrentDifficulty.ToString();
         SaveProgress();
     }
+
+    public void AdjustMusicVolume(int direction)
+    {
+        if (direction == 0)
+        {
+            return;
+        }
+
+        _saveData.Slot.Settings.MusicVolumeDb = Mathf.Clamp(
+            _saveData.Slot.Settings.MusicVolumeDb + direction * VolumeStepDb,
+            MinimumVolumeDb,
+            MaximumVolumeDb);
+        SaveProgress();
+    }
+
+    public void AdjustSfxVolume(int direction)
+    {
+        if (direction == 0)
+        {
+            return;
+        }
+
+        _saveData.Slot.Settings.SfxVolumeDb = Mathf.Clamp(
+            _saveData.Slot.Settings.SfxVolumeDb + direction * VolumeStepDb,
+            MinimumVolumeDb,
+            MaximumVolumeDb);
+        SaveProgress();
+    }
+
+    public string GetMusicVolumeLabel() => FormatVolumeDb(MusicVolumeDb);
+
+    public string GetSfxVolumeLabel() => FormatVolumeDb(SfxVolumeDb);
 
     public int GetMaxActiveEnemiesOnScreen() => CurrentDifficulty switch
     {
@@ -145,8 +181,8 @@ public partial class GameSession : Node
     public void MarkStageCleared()
     {
         HighestClearedStageIndex = Mathf.Max(HighestClearedStageIndex, CurrentStageIndex);
-        _saveData.HighestClearedStage = _stageOrder[HighestClearedStageIndex];
-        _saveData.BestScore = Mathf.Max(_saveData.BestScore, Score);
+        _saveData.Slot.HighestClearedStage = _stageOrder[HighestClearedStageIndex];
+        _saveData.Slot.BestScore = Mathf.Max(_saveData.Slot.BestScore, Score);
         SaveProgress();
     }
 
@@ -160,6 +196,7 @@ public partial class GameSession : Node
         {
             HighestClearedStageIndex = -1;
             _saveData = new SaveSlotData();
+            NormalizeSaveData();
             return;
         }
 
@@ -167,15 +204,41 @@ public partial class GameSession : Node
         {
             using var file = FileAccess.Open("user://super_pixel_quest_save.json", FileAccess.ModeFlags.Read);
             var json = file.GetAsText();
-            _saveData = JsonSerializer.Deserialize<SaveSlotData>(json) ?? new SaveSlotData();
-            if (!Enum.TryParse<DifficultyLevel>(_saveData.Difficulty, true, out var parsedDifficulty))
+            using var document = JsonDocument.Parse(json);
+
+            if (document.RootElement.TryGetProperty("slot", out _))
+            {
+                _saveData = JsonSerializer.Deserialize<SaveSlotData>(json) ?? new SaveSlotData();
+            }
+            else
+            {
+                var legacy = JsonSerializer.Deserialize<LegacySaveData>(json) ?? new LegacySaveData();
+                _saveData = new SaveSlotData
+                {
+                    Slot = new SaveSlotContent
+                    {
+                        HighestClearedStage = legacy.HighestClearedStage,
+                        BestScore = legacy.BestScore,
+                        Settings = new SaveSettingsData
+                        {
+                            MusicVolumeDb = legacy.MusicVolumeDb,
+                            SfxVolumeDb = legacy.SfxVolumeDb,
+                            Difficulty = legacy.Difficulty
+                        }
+                    }
+                };
+            }
+
+            NormalizeSaveData();
+
+            if (!Enum.TryParse<DifficultyLevel>(_saveData.Slot.Settings.Difficulty, true, out var parsedDifficulty))
             {
                 parsedDifficulty = DifficultyLevel.Normal;
             }
 
             CurrentDifficulty = parsedDifficulty;
 
-            HighestClearedStageIndex = Array.IndexOf(_stageOrder, _saveData.HighestClearedStage);
+            HighestClearedStageIndex = Array.IndexOf(_stageOrder, _saveData.Slot.HighestClearedStage);
             if (HighestClearedStageIndex < 0)
             {
                 HighestClearedStageIndex = -1;
@@ -184,6 +247,7 @@ public partial class GameSession : Node
         catch (Exception)
         {
             _saveData = new SaveSlotData();
+            NormalizeSaveData();
             HighestClearedStageIndex = -1;
             CurrentDifficulty = DifficultyLevel.Normal;
         }
@@ -210,5 +274,31 @@ public partial class GameSession : Node
         {
             GD.PrintErr($"Failed to save progress: {exception.Message}");
         }
+    }
+
+    private void NormalizeSaveData()
+    {
+        _saveData ??= new SaveSlotData();
+        _saveData.Slot ??= new SaveSlotContent();
+        _saveData.Slot.Settings ??= new SaveSettingsData();
+        _saveData.Slot.Settings.MusicVolumeDb = Mathf.Clamp(_saveData.Slot.Settings.MusicVolumeDb, MinimumVolumeDb, MaximumVolumeDb);
+        _saveData.Slot.Settings.SfxVolumeDb = Mathf.Clamp(_saveData.Slot.Settings.SfxVolumeDb, MinimumVolumeDb, MaximumVolumeDb);
+        _saveData.Slot.Settings.Difficulty = string.IsNullOrWhiteSpace(_saveData.Slot.Settings.Difficulty)
+            ? DifficultyLevel.Normal.ToString()
+            : _saveData.Slot.Settings.Difficulty;
+    }
+
+    private static string FormatVolumeDb(float volumeDb)
+    {
+        return $"{volumeDb:0;-0;0} dB";
+    }
+
+    private sealed class LegacySaveData
+    {
+        public string? HighestClearedStage { get; set; }
+        public int BestScore { get; set; }
+        public float MusicVolumeDb { get; set; } = -4f;
+        public float SfxVolumeDb { get; set; } = -2f;
+        public string Difficulty { get; set; } = DifficultyLevel.Normal.ToString();
     }
 }

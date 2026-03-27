@@ -46,7 +46,7 @@ Scenario: Reusable scenes are instanced instead of duplicated
 
 ## Example Inputs/Outputs
 - Example input: Main scene loads title, applies the selected starting stage, and then instantiates the chosen gameplay stage.
-- Expected output: Session state persists without duplicating gameplay logic across scenes, regardless of which valid title-selected stage starts the run.
+- Expected output: Session state persists without duplicating gameplay logic across scenes as the run starts at stage `1-1` and advances through the authored stage order.
 
 ## Edge Cases
 - Reloading a stage after death shall not duplicate Autoload singletons.
