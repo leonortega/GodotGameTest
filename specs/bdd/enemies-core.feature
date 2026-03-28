@@ -51,3 +51,8 @@ Feature: Core enemy interactions
     When the projectile hits an armored enemy
     Then the armored enemy remains active
     And the projectile returns as a hostile threat
+
+  Scenario: Enemy classes stay visually distinct
+    Given Ground, Armored, Flying, ProtectedHead, and Shooter enemies appear in gameplay
+    When the player encounters them at normal play scale
+    Then each enemy class remains visually distinct from the others

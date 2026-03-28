@@ -14,6 +14,11 @@
       "Powered",
       "Small"
     ],
-    "lifeLost": false
+    "lifeLost": false,
+    "formVisualsAfterEvents": [
+      "powered-form-art",
+      "powered-form-art",
+      "small-form-art"
+    ]
   }
 }

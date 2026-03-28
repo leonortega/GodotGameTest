@@ -14,7 +14,7 @@ Feature: In-game HUD
     Then the HUD shows 1-3 as the stage identifier
 
   Scenario: HUD fields remain aligned across text-only stats
-    Given the HUD renders score, coins, stage, lives, time, and form fields
+    Given the HUD renders score, coins, stage, lives, time, and difficulty fields
     When the header row is displayed
     Then the labels and values remain consistently aligned
 
@@ -22,6 +22,12 @@ Feature: In-game HUD
     Given the stage background behind the HUD is bright
     When the top stats row is rendered
     Then a dark or black backing keeps the HUD readable
+
+  Scenario: HUD chrome remains decorative and consistent
+    Given the HUD renders score, coins, stage, lives, time, and difficulty fields
+    When themed pixel panel chrome is applied
+    Then the stat values remain text-first and aligned
+    And the chrome remains visually consistent with the shell menus
 
   Scenario: Pause freezes the visible timer
     Given the player is in an active stage

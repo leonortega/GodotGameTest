@@ -18,6 +18,21 @@ Feature: Godot audio system
     When both events resolve
     Then distinct jump and coin sounds play on the SFX bus
 
+  Scenario: Double jump chain uses distinct traversal sounds
+    Given the player performs a grounded jump and then a double jump
+    When the player lands on terrain after the double jump
+    Then distinct jump, double-jump, and landing sounds play
+
+  Scenario: Power-down and death remain distinct
+    Given the player loses a form and later loses a life
+    When both outcomes resolve
+    Then the power-down cue is distinct from the death cue
+
+  Scenario: Shell states use authored music assets
+    Given the title screen is visible
+    When the player remains on title or reaches game over or world clear
+    Then the shell uses the authored music asset mapped to that state
+
   Scenario: Pause applies consistent audio behavior
     Given stage music is active
     When the player pauses the game

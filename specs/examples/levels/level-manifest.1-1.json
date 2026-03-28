@@ -16,5 +16,19 @@
     "Hazards",
     "DecorationBack",
     "DecorationFront"
-  ]
+  ],
+  "presentation": {
+    "backgroundLayers": [
+      "Sky",
+      "Clouds",
+      "Mountains",
+      "Hills"
+    ],
+    "terrainArt": {
+      "groundTop": "terrain-ground-top",
+      "groundFill": "terrain-ground-fill",
+      "hazardBlock": "terrain-hazard-block",
+      "cactusHazard": "hazard-cactus"
+    }
+  }
 }

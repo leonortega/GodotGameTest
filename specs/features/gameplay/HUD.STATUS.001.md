@@ -2,7 +2,7 @@
 
 ## Metadata
 - **Title**: In-Game HUD for Score, Coins, Lives, World, and Timer
-- **Version**: `v1.3`
+- **Version**: `v1.4`
 - **Status**: Approved
 - **Context/View**: Heads-Up Display
 - **Priority**: Medium
@@ -24,6 +24,8 @@ Define the minimum HUD information required for readable play-state awareness.
 - `HUD.STATUS.001-R4A`: The HUD shall use a text-first presentation with consistent label and value alignment rather than depending on per-field sprite icons.
 - `HUD.STATUS.001-R4B`: The top-of-screen stats area shall include a dark or black backing treatment sufficient to separate the HUD from the stage background.
 - `HUD.STATUS.001-R4C`: The HUD labels and values shall use retro-styled typography consistent with the title and overlay presentation.
+- `HUD.STATUS.001-R4D`: The HUD shell and related overlay chrome may use decorative pixel-art panel assets, provided the stat fields remain text-first and clearly aligned.
+- `HUD.STATUS.001-R4E`: The HUD visual treatment shall match the shell menu chrome as one cohesive retro pixel-art UI family.
 - `HUD.STATUS.001-R5`: When the game is paused, the HUD shall remain visible unless a pause overlay intentionally replaces the same information.
 - `HUD.STATUS.001-R6`: When a stage clear begins, the HUD shall stop decrementing the visible timer and may present score tally behavior.
 
@@ -49,6 +51,12 @@ Scenario: HUD remains readable over bright backgrounds
   When the HUD is rendered at the top of the screen
   Then the stats area shall remain readable using a dark backing panel or equivalent contrast treatment
 
+Scenario: HUD chrome uses themed pixel panels without replacing text fields
+  Given the HUD renders score, coin, stage, life, time, and difficulty fields
+  When a decorative HUD frame or panel treatment is applied
+  Then the visible stats shall remain text-first and aligned
+  And the panel treatment shall remain visually consistent with the shell menus
+
 Scenario: Timer display freezes after pause
   Given the player is in an active stage
   When the player pauses the game
@@ -57,12 +65,13 @@ Scenario: Timer display freezes after pause
 
 ## Example Inputs/Outputs
 - Example input: Active stage `1-2`, score `004500`, coins `37`, lives `2`, time `251`, difficulty `Hard`.
-- Expected output: HUD renders a readable text-first in-game overlay with all values inside a dark top panel.
+- Expected output: HUD renders a readable text-first in-game overlay with all values inside a dark top panel, optionally framed by themed pixel-art HUD chrome that does not replace the text labels or values.
 
 ## Edge Cases
 - HUD values shall not show negative time or lives.
 - Large score values shall remain legible without overlapping other HUD fields.
 - The HUD backing shall not be so transparent that top-row readability is lost against sky or cloud backgrounds.
+- Decorative HUD chrome shall not crowd or clip long stat values.
 - Stage clear bonus counting shall not resume normal timer countdown.
 - Difficulty labels shall not collide with adjacent stat fields when the player changes setting.
 

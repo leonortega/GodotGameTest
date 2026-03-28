@@ -10,5 +10,25 @@
     "grassland": "res://audio/music/stage_grassland_loop.ogg",
     "cave": "res://audio/music/stage_cave_loop.ogg",
     "fortress": "res://audio/music/stage_fortress_loop.ogg"
+  },
+  "shellThemes": {
+    "title": "res://audio/music/title_theme_loop.ogg",
+    "gameOver": "res://audio/music/game_over_theme.ogg",
+    "worldClear": "res://audio/music/world_clear_theme.ogg"
+  },
+  "eventClips": {
+    "jump": "res://audio/sfx/jump.wav",
+    "doubleJump": "res://audio/sfx/double_jump.wav",
+    "doubleJumpLand": "res://audio/sfx/land.wav",
+    "coin": "res://audio/sfx/coin.wav",
+    "powerup": "res://audio/sfx/powerup.wav",
+    "powerDown": "res://audio/sfx/power_down.wav",
+    "damage": "res://audio/sfx/damage.wav",
+    "death": "res://audio/sfx/death.wav",
+    "pause": "res://audio/sfx/pause.wav",
+    "stageClear": "res://audio/sfx/stage_clear.wav",
+    "uiConfirm": "res://audio/ui/confirm.ogg",
+    "uiHover": "res://audio/ui/hover.ogg",
+    "uiBack": "res://audio/ui/back.wav"
   }
 }

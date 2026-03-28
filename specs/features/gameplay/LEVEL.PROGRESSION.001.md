@@ -2,7 +2,7 @@
 
 ## Metadata
 - **Title**: Stage Completion, Lives, Timer, and World Advancement
-- **Version**: `v1.2`
+- **Version**: `v1.3`
 - **Status**: Approved
 - **Context/View**: Level Flow
 - **Priority**: High
@@ -27,6 +27,7 @@ Define how the player clears stages, loses lives, and advances through the MVP w
 - `LEVEL.PROGRESSION.001-R6`: Completing a stage shall advance the player to the next stage in sequence.
 - `LEVEL.PROGRESSION.001-R6A`: On non-final stage clear, the game shall show a centered stage summary overlay containing the player's current run statistics before automatically advancing.
 - `LEVEL.PROGRESSION.001-R6B`: The stage summary overlay shall remain visible for approximately 3 seconds and shall not require a manual `Continue` action.
+- `LEVEL.PROGRESSION.001-R6C`: The non-final stage summary overlay shall surface at minimum the current score, coin total, remaining lives, remaining stage time, and current player form.
 - `LEVEL.PROGRESSION.001-R7`: Clearing the final MVP stage shall end the session in a world-clear state.
 - `LEVEL.PROGRESSION.001-R8`: Collecting coins shall increase a running coin total and score.
 - `LEVEL.PROGRESSION.001-R9`: Reaching the extra life threshold shall award one additional life.
@@ -40,6 +41,7 @@ Scenario: Goal marker clears a stage
   When the player touches the goal marker
   Then stage 1-1 shall be marked complete
   And a centered stage summary shall be shown
+  And the summary shall show score, coins, lives, remaining time, and current player form
   And after approximately 3 seconds stage 1-2 shall load next
 
 Scenario: A new run starts at stage 1-1
@@ -66,7 +68,7 @@ Scenario: Final stage clear ends the MVP world
 
 ## Example Inputs/Outputs
 - Example input: Player touches a ground-level goal marker in stage `1-3` with `87` seconds remaining.
-- Expected output: Stage clears, a centered run-summary overlay is shown for about `3` seconds, timer converts to score bonus, and next stage is `1-4`.
+- Expected output: Stage clears, a centered run-summary overlay is shown for about `3` seconds, the overlay includes score, coins, lives, remaining time, and current form, timer converts to score bonus, and next stage is `1-4`.
 - Example input: The player starts a new run from the title screen.
 - Expected output: The run opens on stage `1-1`, and later stage clear progression continues to `1-2`, `1-3`, and `1-4` in order.
 
@@ -76,6 +78,7 @@ Scenario: Final stage clear ends the MVP world
 - Goal marker presentation shall remain readable without obscuring nearby terrain at the stage endpoint.
 - The timer shall not continue counting down after stage clear begins.
 - The automatic stage-advance summary shall not wait for player confirmation or leave the run stalled between non-final stages.
+- The automatic stage-advance summary shall reflect the run state at the moment of clear and shall not show stale form, coin, or life values from a prior stage.
 - Starting a new run shall always reset stage progression to `1-1` without corrupting saved highest-cleared-stage tracking.
 
 ## Non-Functional Constraints

@@ -2,7 +2,7 @@
 
 ## Metadata
 - **Title**: Camera2D Follow, Limits, and Readability Rules
-- **Version**: `v1.0`
+- **Version**: `v1.1`
 - **Status**: Approved
 - **Context/View**: Presentation
 - **Priority**: High
@@ -22,6 +22,7 @@ Define a Godot Camera2D behavior that supports forward-looking platforming witho
 - `CAMERA.FOLLOW.001-R3`: The camera shall not reveal space outside authored world bounds.
 - `CAMERA.FOLLOW.001-R4`: The camera shall bias readability toward forward movement so upcoming hazards can be seen in time.
 - `CAMERA.FOLLOW.001-R5`: Vertical camera movement shall avoid jitter from short jumps and minor landing corrections.
+- `CAMERA.FOLLOW.001-R5A`: Heavy movement impacts such as hard landings or stomp rebounds may trigger a brief camera shake, provided the effect decays quickly and does not reduce platforming readability.
 - `CAMERA.FOLLOW.001-R6`: Camera settings shall be consistent across stages unless a stage-specific override is intentional and documented.
 
 ## Acceptance Criteria (BDD)
@@ -40,6 +41,12 @@ Scenario: Minor jumps do not cause distracting vertical shake
   Given the player performs repeated short jumps on flat terrain
   When the camera follows the player
   Then the view shall remain readable without excessive vertical jitter
+
+Scenario: Heavy impact feedback shakes briefly without obscuring play
+  Given the player lands from a heavy fall or rebounds from a stomp
+  When the camera applies impact feedback
+  Then any shake shall be brief
+  And the gameplay view shall remain readable
 ```
 
 ## Example Inputs/Outputs
@@ -50,6 +57,7 @@ Scenario: Minor jumps do not cause distracting vertical shake
 - Entering a hidden route shall still use valid stage bounds or a documented sub-area override.
 - Camera smoothing shall not lag so far behind that platforming becomes unreadable.
 - Respawn after death shall restore camera position cleanly near the spawn point.
+- Impact shake shall not persist continuously after the triggering event resolves.
 
 ## Non-Functional Constraints
 - Camera behavior should preserve readable reaction time for hazards and enemies.

@@ -2,7 +2,7 @@
 
 ## Metadata
 - **Title**: Godot Level Scene Authoring with TileSet, TileMap Layers, and Scene Tiles
-- **Version**: `v1.3`
+- **Version**: `v1.5`
 - **Status**: Approved
 - **Context/View**: Level Authoring
 - **Priority**: High
@@ -20,6 +20,8 @@ Define how stages are authored in Godot so that collision, decoration, hazards, 
 - `LEVEL.AUTHORING.001-R1`: Each stage shall be represented by its own Godot level scene.
 - `LEVEL.AUTHORING.001-R2`: Stages shall use reusable terrain authoring primitives, including shared TileSet-based solids and reusable packed terrain scenes where appropriate.
 - `LEVEL.AUTHORING.001-R3`: Level scenes shall separate at least solid terrain, decoration, and hazard or gameplay layers to keep editing responsibilities clear.
+- `LEVEL.AUTHORING.001-R3A`: Stage presentation shall support reusable background art layering, such as sky, clouds, mountains, hills, and comparable scenic elements, without baking those visuals into the collision layer.
+- `LEVEL.AUTHORING.001-R3B`: Terrain, platforms, and hazard structures shall support reusable tile or sprite art for ground tops, fills, and special blocks so that stage presentation does not rely on debug rectangles or flat-color placeholders.
 - `LEVEL.AUTHORING.001-R4`: Coins, power-ups, goal markers, and enemy spawns shall be placeable as scene instances or scene tiles rather than hard-coded coordinates in player scripts.
 - `LEVEL.AUTHORING.001-R4A`: Blocks intended to be struck from below shall preserve a minimum vertical clearance beneath them of at least the standing player height, whether by direct authoring validation or runtime normalization.
 - `LEVEL.AUTHORING.001-R4B`: Environmental obstacles such as cactus hazards shall be authorable as scene instances or hazard tiles without custom one-off code per stage.
@@ -31,6 +33,7 @@ Define how stages are authored in Godot so that collision, decoration, hazards, 
 - `LEVEL.AUTHORING.001-R6`: World bounds authored in the level scene shall be usable by the camera system to prevent scrolling outside the playable area.
 - `LEVEL.AUTHORING.001-R7`: Hidden routes and bonus areas shall remain authorable through scene composition without requiring separate code forks per level.
 - `LEVEL.AUTHORING.001-R7A`: Stages shall support varied terrain profiles, including rises, drops, uneven ground segments, floating platforms, and reusable hill clusters, rather than requiring long flat runs as the dominant layout pattern.
+- `LEVEL.AUTHORING.001-R7B`: Stages shall support authored slope segments and connected ramp or plateau terrain definitions that the runtime can convert into valid collision and readable terrain presentation without bespoke stage code.
 
 ## Acceptance Criteria (BDD)
 ```gherkin
@@ -38,6 +41,12 @@ Scenario: A stage uses layered tile authoring
   Given a level scene is opened in Godot
   When the scene tree and tile data are reviewed
   Then solid terrain and non-solid decoration shall not be authored on the same logical layer
+
+Scenario: Background art and terrain art remain authorable
+  Given a designer wants to add scenic background layers and stylized terrain tiles to a stage
+  When the level is edited
+  Then those visuals shall be authorable through reusable background and terrain assets
+  And collision behavior shall remain separate from decorative presentation layers
 
 Scenario: Interactive objects are placeable by scene composition
   Given a designer wants to add a coin or power-up to stage 1-2
@@ -55,6 +64,12 @@ Scenario: Hazards and uneven terrain are authorable
   When the level is edited
   Then those hazards and terrain changes shall be authorable through normal level-scene composition
   And no stage-specific gameplay script fork shall be required
+
+Scenario: Slope terrain is authorable
+  Given a designer wants to add an uphill run or a paired slope plateau section
+  When the level is edited
+  Then the slope terrain shall be authorable through reusable stage data or scene composition
+  And runtime collision and terrain presentation shall remain valid without bespoke per-stage code
 
 Scenario: Authored placements can be normalized at load time
   Given an enemy or hazard is authored slightly above or below valid terrain support
@@ -82,7 +97,9 @@ Scenario: Level metadata provides camera and timer context
 
 ## Example Inputs/Outputs
 - Example input: A `1-1` level scene containing TileMap-based ground, reusable hill scenes, floating moving platforms, repeated falling block scene instances, a player spawn marker, enemy packed scenes, cactus hazard scenes, and a goal scene.
-- Expected output: The runtime can load the stage, normalize minor placement offsets, and present reusable authored content without stage-specific logic embedded in the player controller.
+- Expected output: The runtime can load the stage, normalize minor placement offsets, and present reusable authored content with layered background art and terrain tiles without stage-specific logic embedded in the player controller.
+- Example input: A stage scene containing paired authored slope definitions for a raised plateau.
+- Expected output: The runtime builds readable sloped terrain presentation and walkable support without a stage-specific slope script.
 
 ## Edge Cases
 - Decorative tiles shall not accidentally inherit solid collision when authored on non-solid layers.
@@ -91,6 +108,8 @@ Scenario: Level metadata provides camera and timer context
 - Hidden routes shall still obey camera and collision boundaries.
 - Uneven terrain shall remain readable enough that jumps, hazards, and enemy placement are still telegraphed to the player.
 - Runtime support snapping shall not drag content across large gaps or move hazards into unfair hidden placements.
+- Background art density shall not reduce foreground readability for the player, enemies, or pickups.
+- Slope definitions shall not generate broken collision seams that trap the player or enemies at slope transitions.
 
 ## Non-Functional Constraints
 - Level editing should remain fast for designer iteration in the Godot editor.
@@ -101,3 +120,4 @@ Scenario: Level metadata provides camera and timer context
 - `PLAYER.MOVEMENT.001`
 - `LEVEL.PROGRESSION.001`
 - `CAMERA.FOLLOW.001`
+- `LEVEL.DYNAMICS.003`

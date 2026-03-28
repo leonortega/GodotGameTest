@@ -9,6 +9,7 @@ Feature: Stage progression and scoring flow
     When the player touches the goal marker
     Then stage 1-1 is marked complete
     And a centered stage summary is shown
+    And the summary shows score, coins, lives, remaining time, and current player form
     And after approximately 3 seconds stage 1-2 loads next
 
   Scenario: A new run starts at stage 1-1

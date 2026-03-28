@@ -1,0 +1,20 @@
+{
+  "specId": "LEVEL.DYNAMICS.003",
+  "stageId": "1-1",
+  "hazards": [
+    {
+      "type": "cactus",
+      "x": 1460,
+      "y": 470,
+      "stationary": true,
+      "resolvesAs": "contact-damage"
+    },
+    {
+      "type": "cactus",
+      "x": 2790,
+      "y": 470,
+      "stationary": true,
+      "resolvesAs": "contact-damage"
+    }
+  ]
+}

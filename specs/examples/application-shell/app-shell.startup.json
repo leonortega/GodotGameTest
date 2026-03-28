@@ -10,6 +10,17 @@
     "lives": 3,
     "coins": 0,
     "score": 0,
-    "playerForm": "Small"
+    "playerForm": "Small",
+    "titlePresentation": {
+      "usesGameAssets": true,
+      "includesLogo": true,
+      "includesRetroUiChrome": true,
+      "previewLayers": [
+        "background",
+        "terrain",
+        "player",
+        "enemyVariants"
+      ]
+    }
   }
 }

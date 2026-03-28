@@ -2,7 +2,7 @@
 
 ## Metadata
 - **Title**: Enemy Behaviors and Player Interaction Rules
-- **Version**: `v1.2`
+- **Version**: `v1.3`
 - **Status**: Approved
 - **Context/View**: Core Gameplay
 - **Priority**: High
@@ -19,6 +19,7 @@ Define baseline enemy classes and the rules for defeating or being damaged by th
 
 ## Requirements
 - `ENEMIES.CORE.001-R1`: The system shall support at least `Ground`, `Armored`, `Flying`, `ProtectedHead`, and `Shooter` enemy classes in the MVP or immediate post-MVP baseline.
+- `ENEMIES.CORE.001-R1A`: Each enemy class shall have a distinct readable visual presentation using enemy art assets appropriate to its behavior, rather than relying on same-shape placeholders with only color changes.
 - `ENEMIES.CORE.001-R2`: Ground enemies shall patrol horizontally and reverse direction when blocked by level geometry.
 - `ENEMIES.CORE.001-R2A`: Ground enemies shall detect a missing floor tile or gap ahead and reverse direction before walking into the gap.
 - `ENEMIES.CORE.001-R3`: Flying enemies shall follow a readable repeating movement pattern.
@@ -88,6 +89,11 @@ Scenario: Armored enemy reflects a player projectile
   When the collision resolves
   Then the armored enemy shall remain active
   And the projectile shall return as a hostile threat
+
+Scenario: Enemy classes remain visually distinct
+  Given Ground, Armored, Flying, ProtectedHead, and Shooter enemies are present across the MVP stages
+  When the player encounters them during gameplay
+  Then each class shall remain visually distinguishable from the others at gameplay scale
 ```
 
 ## Example Inputs/Outputs
@@ -99,6 +105,8 @@ Scenario: Armored enemy reflects a player projectile
 - Expected output: The enemy remains active because the top surface is protected.
 - Example input: Enhanced player fires at an armored enemy.
 - Expected output: The armored enemy remains active and the projectile is reflected back.
+- Example input: The player encounters Ground, Flying, and Shooter enemies in successive traversal sections.
+- Expected output: Each enemy class remains visually readable enough that the player can anticipate different threat behavior from presentation as well as motion.
 
 ## Edge Cases
 - Simultaneous stomp and hazard overlap shall prioritize the first resolved collision according to engine tick order.
@@ -106,6 +114,7 @@ Scenario: Armored enemy reflects a player projectile
 - Off-screen enemies may be culled for performance, but they shall not produce visible respawn artifacts when re-entering active play.
 - Gap detection shall not cause visible oscillation at flat ledge transitions.
 - Shooter projectile cadence shall not become unreadable spam when multiple shooter enemies share the screen.
+- Enemy art shall remain readable against the active stage backgrounds and terrain.
 
 ## Non-Functional Constraints
 - Enemy patterns should remain readable enough for skill-based play.

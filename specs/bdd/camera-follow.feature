@@ -17,3 +17,9 @@ Feature: Camera2D follow behavior
     Given the player performs repeated short jumps on flat terrain
     When the camera updates
     Then the view remains readable without excessive vertical jitter
+
+  Scenario: Heavy impact feedback shakes briefly without obscuring play
+    Given the player lands from a heavy fall or rebounds from a stomp
+    When the camera applies impact feedback
+    Then any shake is brief
+    And the gameplay view remains readable

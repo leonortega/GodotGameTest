@@ -19,6 +19,12 @@
       "difficulty"
     ],
     "stageIdFormat": "1-2",
-    "readable": true
+    "readable": true,
+    "presentation": {
+      "textFirst": true,
+      "darkBacking": true,
+      "decorativePixelChrome": true,
+      "chromeMatchesShellUi": true
+    }
   }
 }

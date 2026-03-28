@@ -27,3 +27,28 @@ Feature: Player movement and platforming
     When the player presses the jump input again
     Then the player performs a second jump
     And the player cannot perform a third jump before landing
+
+  Scenario: Jump grace window forgives a late ledge input
+    Given the player runs off the edge of a platform
+    When the jump input is pressed immediately after leaving the ledge
+    Then the system still resolves a grounded-style jump
+
+  Scenario: Jump buffer preserves an early landing input
+    Given the player is descending toward safe ground
+    When the player presses jump shortly before touching down
+    Then the next valid grounded frame triggers a jump
+
+  Scenario: Early jump release creates a shorter hop
+    Given the player starts a normal jump from flat ground
+    When the player releases the jump input before the ascent completes
+    Then the jump apex is lower than a held jump from the same starting state
+
+  Scenario: Movement state changes remain visually readable
+    Given the player moves through idle, running, jumping, and falling states
+    When the movement state changes
+    Then the visible player sprite or pose changes to match the current traversal state
+
+  Scenario: Grounded down input shows a duck pose
+    Given the player is standing on stable ground
+    When the player holds the down input without meaningful horizontal movement
+    Then the visible player sprite or pose changes to a duck or crouch presentation

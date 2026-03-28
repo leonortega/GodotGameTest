@@ -5,8 +5,14 @@ Feature: Player power-up progression and damage handling
 
   Scenario: Growth power-up upgrades the player
     Given the player is in Small Form
-    When the player collects a growth power-up
+    When the player collects a mushroom growth power-up
     Then the player enters Powered Form
+    And the visible player presentation updates to the Powered form art
+
+  Scenario: Flower power-up upgrades the powered player
+    Given the player is in Powered Form
+    When the player collects a flower attack power-up
+    Then the player enters Enhanced Form
 
   Scenario: Powered player shrinks after damage
     Given the player is in Powered Form
@@ -17,7 +23,7 @@ Feature: Player power-up progression and damage handling
   Scenario: Enhanced player can attack at range
     Given the player is in Enhanced Form
     When the player presses the attack control
-    Then a ranged attack projectile is spawned
+    Then a fire ranged attack projectile is spawned
     And the projectile resolves against enemies according to their vulnerability rules
 
   Scenario: Projectile count is capped

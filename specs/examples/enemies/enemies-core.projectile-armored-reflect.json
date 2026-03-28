@@ -15,7 +15,8 @@
         "projectileOutcome": "reflect",
         "hostileThreatGenerated": true,
         "playerBounce": false,
-        "playerDamageResolution": null
+        "playerDamageResolution": null,
+        "enemyVisualClass": "armored-distinct"
       }
     ]
   }

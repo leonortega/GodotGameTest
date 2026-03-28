@@ -55,6 +55,36 @@
       "items": {
         "type": "string"
       }
+    },
+    "presentation": {
+      "type": "object",
+      "properties": {
+        "backgroundLayers": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "terrainArt": {
+          "type": "object",
+          "properties": {
+            "groundTop": {
+              "type": "string"
+            },
+            "groundFill": {
+              "type": "string"
+            },
+            "hazardBlock": {
+              "type": "string"
+            },
+            "cactusHazard": {
+              "type": "string"
+            }
+          },
+          "additionalProperties": false
+        }
+      },
+      "additionalProperties": false
     }
   },
   "additionalProperties": false

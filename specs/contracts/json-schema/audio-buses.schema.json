@@ -19,6 +19,18 @@
       "additionalProperties": {
         "type": "string"
       }
+    },
+    "shellThemes": {
+      "type": "object",
+      "additionalProperties": {
+        "type": "string"
+      }
+    },
+    "eventClips": {
+      "type": "object",
+      "additionalProperties": {
+        "type": "string"
+      }
     }
   },
   "additionalProperties": false

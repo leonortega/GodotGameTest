@@ -13,6 +13,11 @@
   "expected": {
     "result": "gap-cleared",
     "landingSurface": "next-platform",
-    "lifeLost": false
+    "lifeLost": false,
+    "visualStates": [
+      "run",
+      "jump",
+      "fall"
+    ]
   }
 }

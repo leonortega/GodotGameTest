@@ -2,7 +2,7 @@
 
 ## Metadata
 - **Title**: Save Slot, Settings Persistence, and World Progress Tracking
-- **Version**: `v1.1`
+- **Version**: `v1.2`
 - **Status**: Approved
 - **Context/View**: System Persistence
 - **Priority**: Medium
@@ -24,6 +24,7 @@ Define what progression and settings data persist across launches in the Godot i
 - `SAVE.PROGRESSION.001-R4`: Starting a new run shall not require existing save data.
 - `SAVE.PROGRESSION.001-R5`: Save data shall be written as JSON compatible with Godot file I/O.
 - `SAVE.PROGRESSION.001-R6`: Corrupted or missing save data shall fall back to default values without blocking launch.
+- `SAVE.PROGRESSION.001-R6A`: When a prior local save uses an older flat JSON shape, the runtime shall migrate or map that data into the current save structure without blocking launch.
 
 ## Acceptance Criteria (BDD)
 ```gherkin
@@ -47,17 +48,26 @@ Scenario: Missing save data falls back safely
   Given no prior save file exists
   When the game launches
   Then the game shall start with default settings and progression
+
+Scenario: Legacy save data migrates forward
+  Given a prior local save exists using an older flat JSON structure
+  When the game launches on the current build
+  Then the stored progression and settings shall be mapped into the current save structure
+  And launch shall continue without a blocking migration error
 ```
 
 ## Example Inputs/Outputs
 - Example input: New save JSON after first launch with no cleared stages.
 - Expected output: Default difficulty and audio settings plus zero progression recorded.
+- Example input: An older save JSON containing top-level `highestClearedStage`, `bestScore`, `musicVolumeDb`, `sfxVolumeDb`, and `difficulty`.
+- Expected output: The current build reads those values and persists them back using the current nested save shape.
 
 ## Edge Cases
 - Save load failure shall not trap the player on a blocking error screen.
 - Clearing a later stage shall not regress previously stored best score or highest cleared stage.
 - Settings-only changes shall not require a completed gameplay run before being saved.
 - Configuration changes shall apply immediately to active audio buses and persist without restarting the application.
+- Legacy migration shall not silently drop supported settings such as difficulty or audio levels when equivalent current fields exist.
 
 ## Non-Functional Constraints
 - Save handling should remain simple enough for debugging with plain-text inspection when feasible.
