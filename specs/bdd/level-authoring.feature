@@ -20,6 +20,12 @@ Feature: Godot level authoring
     Then the coin exists through scene placement or scene tiles
     And no player-controller coordinates are modified
 
+  Scenario: Interactive strike blocks remain reachable from below
+    Given a designer places a mystery block above valid floor support
+    When the stage is saved
+    Then the player can jump under the block and hit it using supported movement
+    And the block keeps enough standing clearance beneath it
+
   Scenario: Hazards and uneven terrain are authorable
     Given a designer adds cactus hazards and height variation to a stage
     When the stage is saved
@@ -31,6 +37,17 @@ Feature: Godot level authoring
     When the stage is saved
     Then that slope terrain exists through reusable stage data or scene composition
     And runtime collision and terrain presentation remain valid without bespoke per-stage code
+
+  Scenario: Intended platforms stay within traversal reach
+    Given a designer authors a required route across elevated platforms
+    When the stage is saved
+    Then each required landing surface stays reachable with at most the supported double jump
+
+  Scenario: Gameplay pieces do not overlap invalidly
+    Given a designer authors coins, blocks, platforms, and hazards in one section
+    When the stage is saved
+    Then those gameplay pieces do not intersect in invalid ways
+    And terrain and interactive blocks remain proportionate to the player and enemies
 
   Scenario: Minor placement offsets can be normalized at load time
     Given an enemy or hazard is authored slightly off the supporting terrain

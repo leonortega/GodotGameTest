@@ -1,4 +1,10 @@
-import { type Difficulty, type EnemyDef, type RectDef, type StageDefinition } from '../core/types';
+import {
+  type Difficulty,
+  type EnemyDef,
+  type RectDef,
+  type StageDefinition,
+} from '../core/types';
+import { PLAYER_MOVEMENT } from './player';
 
 export const STAGE_ORDER = ['1-1', '1-2', '1-3', '1-4'] as const;
 
@@ -7,6 +13,47 @@ const DIFFICULTY_RANK: Record<Difficulty, number> = {
   Normal: 1,
   Hard: 2,
 };
+
+const PLAYER_STANDING_HEIGHT = 72;
+const BLOCK_SIZE = 48;
+const COIN_SIZE = 22;
+const PICKUP_PADDING = 8;
+const ELEVATED_TERRAIN_THRESHOLD = 480;
+const MIN_ELEVATED_PLATFORM_WIDTH = 96;
+const MIN_ELEVATED_PLATFORM_HEIGHT = 20;
+const MAX_ELEVATED_PLATFORM_HEIGHT = 72;
+const MIN_MOVING_PLATFORM_WIDTH = 120;
+const MAX_MOVING_PLATFORM_WIDTH = 220;
+const MIN_MOVING_PLATFORM_HEIGHT = 18;
+const MAX_MOVING_PLATFORM_HEIGHT = 28;
+const MIN_FALLING_BLOCK_WIDTH = 40;
+const MAX_FALLING_BLOCK_WIDTH = 64;
+const MIN_FALLING_BLOCK_HEIGHT = 20;
+const MAX_FALLING_BLOCK_HEIGHT = 32;
+const MAX_DOUBLE_JUMP_RISE =
+  Math.ceil(
+    (Math.abs(PLAYER_MOVEMENT.groundJumpVelocity) ** 2 +
+      Math.abs(PLAYER_MOVEMENT.doubleJumpVelocity) ** 2) /
+      (2 * 1180),
+  ) + 8;
+const MAX_DOUBLE_JUMP_GAP = 320;
+const MIN_BLOCK_CLEARANCE = PLAYER_STANDING_HEIGHT;
+const MAX_BLOCK_CLEARANCE =
+  PLAYER_STANDING_HEIGHT +
+  Math.ceil((Math.abs(PLAYER_MOVEMENT.groundJumpVelocity) ** 2) / (2 * 1180)) +
+  8;
+
+type SurfaceKind = 'terrain' | 'moving' | 'falling';
+
+interface SurfaceRef {
+  kind: SurfaceKind;
+  index: number;
+  xMin: number;
+  xMax: number;
+  topY: number;
+  width: number;
+  height: number;
+}
 
 function shouldSpawnAtDifficulty(
   currentDifficulty: Difficulty,
@@ -29,6 +76,300 @@ function normalizeRect(rect: RectDef): RectDef {
     width: Math.max(8, Math.round(rect.width)),
     height: Math.max(8, Math.round(rect.height)),
   };
+}
+
+function clamp(value: number, min: number, max: number): number {
+  return Math.max(min, Math.min(max, value));
+}
+
+function centeredRect(x: number, y: number, width: number, height: number): RectDef {
+  return {
+    x: Math.round(x - width / 2),
+    y: Math.round(y - height / 2),
+    width: Math.round(width),
+    height: Math.round(height),
+  };
+}
+
+function rectsOverlap(a: RectDef, b: RectDef, padding = 0): boolean {
+  return !(
+    a.x + a.width + padding <= b.x ||
+    b.x + b.width + padding <= a.x ||
+    a.y + a.height + padding <= b.y ||
+    b.y + b.height + padding <= a.y
+  );
+}
+
+function horizontalGap(a: SurfaceRef, b: SurfaceRef): number {
+  if (a.xMin > b.xMax) {
+    return a.xMin - b.xMax;
+  }
+
+  if (b.xMin > a.xMax) {
+    return b.xMin - a.xMax;
+  }
+
+  return 0;
+}
+
+function cloneStage(stage: StageDefinition): StageDefinition {
+  return {
+    ...stage,
+    cameraBounds: { ...stage.cameraBounds },
+    spawn: { ...stage.spawn },
+    goal: { ...stage.goal },
+    terrain: stage.terrain.map((rect) => ({ ...rect })),
+    slopes: stage.slopes?.map((slope) => ({ ...slope })),
+    blocks: stage.blocks.map((block) => ({ ...block })),
+    coins: stage.coins.map((coin) => ({ ...coin })),
+    cactusHazards: stage.cactusHazards.map((hazard) => ({ ...hazard })),
+    movingPlatforms: stage.movingPlatforms.map((platform) => ({ ...platform })),
+    fallingBlocks: stage.fallingBlocks.map((block) => ({ ...block })),
+    enemies: stage.enemies.map((enemy) => ({ ...enemy })),
+  };
+}
+
+function normalizeTerrainSizing(stage: StageDefinition): void {
+  stage.terrain = stage.terrain.map((rect) => {
+    const normalized = normalizeRect(rect);
+
+    if (normalized.y < ELEVATED_TERRAIN_THRESHOLD) {
+      normalized.width = Math.max(MIN_ELEVATED_PLATFORM_WIDTH, normalized.width);
+      normalized.height = clamp(
+        normalized.height,
+        MIN_ELEVATED_PLATFORM_HEIGHT,
+        MAX_ELEVATED_PLATFORM_HEIGHT,
+      );
+    }
+
+    return normalized;
+  });
+
+  stage.movingPlatforms = stage.movingPlatforms.map((platform) => ({
+    ...platform,
+    width: clamp(Math.round(platform.width), MIN_MOVING_PLATFORM_WIDTH, MAX_MOVING_PLATFORM_WIDTH),
+    height: clamp(
+      Math.round(platform.height),
+      MIN_MOVING_PLATFORM_HEIGHT,
+      MAX_MOVING_PLATFORM_HEIGHT,
+    ),
+    x: Math.round(platform.x),
+    y: Math.round(platform.y),
+    minX: Math.round(platform.minX),
+    maxX: Math.round(platform.maxX),
+  }));
+
+  stage.fallingBlocks = stage.fallingBlocks.map((block) => ({
+    ...block,
+    width: clamp(Math.round(block.width), MIN_FALLING_BLOCK_WIDTH, MAX_FALLING_BLOCK_WIDTH),
+    height: clamp(
+      Math.round(block.height),
+      MIN_FALLING_BLOCK_HEIGHT,
+      MAX_FALLING_BLOCK_HEIGHT,
+    ),
+    x: Math.round(block.x),
+    y: Math.round(block.y),
+  }));
+}
+
+function buildTraversalSurfaces(stage: StageDefinition): SurfaceRef[] {
+  const terrainSurfaces = stage.terrain.map((rect, index) => ({
+    kind: 'terrain' as const,
+    index,
+    xMin: rect.x,
+    xMax: rect.x + rect.width,
+    topY: rect.y,
+    width: rect.width,
+    height: rect.height,
+  }));
+  const movingSurfaces = stage.movingPlatforms.map((platform, index) => {
+    const rect = centeredRect(platform.x, platform.y, platform.width, platform.height);
+
+    return {
+      kind: 'moving' as const,
+      index,
+      xMin: rect.x,
+      xMax: rect.x + rect.width,
+      topY: rect.y,
+      width: rect.width,
+      height: rect.height,
+    };
+  });
+  const fallingSurfaces = stage.fallingBlocks.map((block, index) => {
+    const rect = centeredRect(block.x, block.y, block.width, block.height);
+
+    return {
+      kind: 'falling' as const,
+      index,
+      xMin: rect.x,
+      xMax: rect.x + rect.width,
+      topY: rect.y,
+      width: rect.width,
+      height: rect.height,
+    };
+  });
+
+  return [...terrainSurfaces, ...movingSurfaces, ...fallingSurfaces];
+}
+
+function applySurfaceTop(stage: StageDefinition, surface: SurfaceRef, nextTopY: number): void {
+  const roundedTop = Math.round(nextTopY);
+
+  if (surface.kind === 'terrain') {
+    stage.terrain[surface.index].y = roundedTop;
+    return;
+  }
+
+  if (surface.kind === 'moving') {
+    stage.movingPlatforms[surface.index].y = Math.round(
+      roundedTop + stage.movingPlatforms[surface.index].height / 2,
+    );
+    return;
+  }
+
+  stage.fallingBlocks[surface.index].y = Math.round(
+    roundedTop + stage.fallingBlocks[surface.index].height / 2,
+  );
+}
+
+function normalizeReachableSurfaces(stage: StageDefinition): void {
+  const surfaces = buildTraversalSurfaces(stage).sort((a, b) => b.topY - a.topY);
+
+  surfaces.forEach((surface) => {
+    if (surface.topY >= ELEVATED_TERRAIN_THRESHOLD) {
+      return;
+    }
+
+    const supports = surfaces.filter((candidate) => {
+      if (candidate.kind === surface.kind && candidate.index === surface.index) {
+        return false;
+      }
+
+      if (candidate.topY <= surface.topY) {
+        return false;
+      }
+
+      return horizontalGap(surface, candidate) <= MAX_DOUBLE_JUMP_GAP;
+    });
+
+    const reachable = supports.some(
+      (support) => support.topY - surface.topY <= MAX_DOUBLE_JUMP_RISE,
+    );
+
+    if (reachable || supports.length === 0) {
+      return;
+    }
+
+    const nearestSupport = supports.reduce((best, candidate) =>
+      candidate.topY < best.topY ? candidate : best,
+    );
+    const nextTopY = nearestSupport.topY - MAX_DOUBLE_JUMP_RISE;
+
+    applySurfaceTop(stage, surface, nextTopY);
+    surface.topY = nextTopY;
+  });
+}
+
+function findSupportTopForBlock(stage: StageDefinition, blockX: number, blockY: number): number | null {
+  const supports = buildTraversalSurfaces(stage);
+  let nearestTop: number | null = null;
+
+  supports.forEach((surface) => {
+    const insideX = blockX >= surface.xMin + 8 && blockX <= surface.xMax - 8;
+    const reachableY = surface.topY >= blockY && surface.topY <= blockY + 220;
+
+    if (!insideX || !reachableY) {
+      return;
+    }
+
+    if (nearestTop === null || surface.topY < nearestTop) {
+      nearestTop = surface.topY;
+    }
+  });
+
+  return nearestTop;
+}
+
+function normalizeBlocks(stage: StageDefinition): void {
+  stage.blocks = stage.blocks.map((block) => {
+    const supportTop = findSupportTopForBlock(stage, block.x, block.y);
+
+    if (supportTop === null) {
+      return {
+        ...block,
+        x: Math.round(block.x),
+        y: Math.round(block.y),
+      };
+    }
+
+    const currentBottom = block.y + BLOCK_SIZE / 2;
+    const currentClearance = supportTop - currentBottom;
+    const targetClearance = clamp(currentClearance, MIN_BLOCK_CLEARANCE, MAX_BLOCK_CLEARANCE);
+
+    return {
+      ...block,
+      x: Math.round(block.x),
+      y: Math.round(supportTop - targetClearance - BLOCK_SIZE / 2),
+    };
+  });
+}
+
+function buildOccupiedRects(stage: StageDefinition): RectDef[] {
+  const terrain = getStageCollisionRects(stage);
+  const moving = stage.movingPlatforms.map((platform) =>
+    centeredRect(platform.x, platform.y, platform.width, platform.height),
+  );
+  const falling = stage.fallingBlocks.map((block) =>
+    centeredRect(block.x, block.y, block.width, block.height),
+  );
+  const blocks = stage.blocks.map((block) => centeredRect(block.x, block.y, BLOCK_SIZE, BLOCK_SIZE));
+  const cacti = stage.cactusHazards.map((hazard) =>
+    centeredRect(hazard.x, hazard.y - 34, 48, 68),
+  );
+
+  return [...terrain, ...moving, ...falling, ...blocks, ...cacti];
+}
+
+function normalizeCoins(stage: StageDefinition): void {
+  const occupiedRects = buildOccupiedRects(stage);
+  const placedCoins: RectDef[] = [];
+
+  stage.coins = stage.coins.map((coin, index) => {
+    let nextCoin = {
+      x: Math.round(coin.x),
+      y: Math.round(coin.y),
+    };
+    let coinRect = centeredRect(nextCoin.x, nextCoin.y, COIN_SIZE, COIN_SIZE);
+    let guard = 0;
+
+    while (
+      [...occupiedRects, ...placedCoins.slice(0, index)].some((rect) =>
+        rectsOverlap(coinRect, rect, PICKUP_PADDING),
+      ) &&
+      guard < 8
+    ) {
+      nextCoin = {
+        x: nextCoin.x,
+        y: nextCoin.y - (COIN_SIZE + 10),
+      };
+      coinRect = centeredRect(nextCoin.x, nextCoin.y, COIN_SIZE, COIN_SIZE);
+      guard += 1;
+    }
+
+    placedCoins.push(coinRect);
+    return nextCoin;
+  });
+}
+
+function normalizeStageLayout(stage: StageDefinition): StageDefinition {
+  const normalized = cloneStage(stage);
+
+  normalizeTerrainSizing(normalized);
+  normalizeReachableSurfaces(normalized);
+  normalizeBlocks(normalized);
+  normalizeCoins(normalized);
+
+  return normalized;
 }
 
 function resolveSlopeRects(stage: StageDefinition): RectDef[] {
@@ -464,7 +805,7 @@ export function getStageDefinition(stageId: string): StageDefinition {
     throw new Error(`Unknown stage id: ${stageId}`);
   }
 
-  return stage;
+  return normalizeStageLayout(stage);
 }
 
 export function getSpawnableEnemies(stage: StageDefinition, difficulty: Difficulty) {
