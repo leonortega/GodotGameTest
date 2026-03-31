@@ -1,12 +1,9 @@
 {
   "specId": "SAVE.PROGRESSION.001",
   "slot": {
-    "highestClearedStage": null,
-    "bestScore": 0,
     "settings": {
       "musicVolumeDb": -4,
-      "sfxVolumeDb": -2,
-      "difficulty": "Normal"
+      "sfxVolumeDb": -2
     }
   }
 }

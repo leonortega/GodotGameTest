@@ -7,10 +7,13 @@
   "expected": {
     "nextScreen": "stage",
     "stageId": "1-1",
+    "stageCardWorldLabel": "1-1",
+    "stageCardLayout": "world-above-life-marker",
     "lives": 3,
     "coins": 0,
     "score": 0,
     "playerForm": "Small",
+    "invincibilityMode": "none",
     "titlePresentation": {
       "usesGameAssets": true,
       "includesLogo": true,

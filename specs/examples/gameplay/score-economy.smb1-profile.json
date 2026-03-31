@@ -1,0 +1,19 @@
+{
+  "specId": "SCORE.ECONOMY.001",
+  "profileId": "smb1_baseline",
+  "coinPoints": 200,
+  "brickBreakPoints": 50,
+  "standardPowerupPoints": 1000,
+  "duplicatePowerupPoints": 1000,
+  "coinExtraLifeThreshold": 100,
+  "timeBonusPerSecond": 50,
+  "stompChain": {
+    "points": [100, 200, 400, 500, 800, 1000, 2000, 4000, 5000, 8000],
+    "oneUpFromIndex": 11
+  },
+  "shellChain": {
+    "points": [500, 800, 1000, 2000, 4000, 5000, 8000],
+    "oneUpFromIndex": 8
+  },
+  "visibleLivesCap": 99
+}

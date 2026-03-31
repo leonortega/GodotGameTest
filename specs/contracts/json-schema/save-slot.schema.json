@@ -10,28 +10,14 @@
     "slot": {
       "type": "object",
       "required": [
-        "highestClearedStage",
-        "bestScore",
         "settings"
       ],
       "properties": {
-        "highestClearedStage": {
-          "type": [
-            "string",
-            "null"
-          ],
-          "pattern": "^[1-9]-[1-9]$"
-        },
-        "bestScore": {
-          "type": "integer",
-          "minimum": 0
-        },
         "settings": {
           "type": "object",
           "required": [
             "musicVolumeDb",
-            "sfxVolumeDb",
-            "difficulty"
+            "sfxVolumeDb"
           ],
           "properties": {
             "musicVolumeDb": {
@@ -39,14 +25,6 @@
             },
             "sfxVolumeDb": {
               "type": "number"
-            },
-            "difficulty": {
-              "type": "string",
-              "enum": [
-                "Easy",
-                "Normal",
-                "Hard"
-              ]
             }
           },
           "additionalProperties": false

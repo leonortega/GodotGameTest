@@ -1,0 +1,94 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "score-profile.schema.json",
+  "title": "Score Profile",
+  "type": "object",
+  "required": [
+    "profileId",
+    "coinPoints",
+    "brickBreakPoints",
+    "standardPowerupPoints",
+    "duplicatePowerupPoints",
+    "coinExtraLifeThreshold",
+    "timeBonusPerSecond",
+    "stompChain",
+    "shellChain",
+    "visibleLivesCap"
+  ],
+  "properties": {
+    "profileId": {
+      "type": "string"
+    },
+    "coinPoints": {
+      "type": "integer",
+      "minimum": 0
+    },
+    "brickBreakPoints": {
+      "type": "integer",
+      "minimum": 0
+    },
+    "standardPowerupPoints": {
+      "type": "integer",
+      "minimum": 0
+    },
+    "duplicatePowerupPoints": {
+      "type": "integer",
+      "minimum": 0
+    },
+    "coinExtraLifeThreshold": {
+      "type": "integer",
+      "minimum": 1
+    },
+    "timeBonusPerSecond": {
+      "type": "integer",
+      "minimum": 0
+    },
+    "stompChain": {
+      "type": "object",
+      "required": [
+        "points",
+        "oneUpFromIndex"
+      ],
+      "properties": {
+        "points": {
+          "type": "array",
+          "items": {
+            "type": "integer",
+            "minimum": 0
+          }
+        },
+        "oneUpFromIndex": {
+          "type": "integer",
+          "minimum": 1
+        }
+      },
+      "additionalProperties": false
+    },
+    "shellChain": {
+      "type": "object",
+      "required": [
+        "points",
+        "oneUpFromIndex"
+      ],
+      "properties": {
+        "points": {
+          "type": "array",
+          "items": {
+            "type": "integer",
+            "minimum": 0
+          }
+        },
+        "oneUpFromIndex": {
+          "type": "integer",
+          "minimum": 1
+        }
+      },
+      "additionalProperties": false
+    },
+    "visibleLivesCap": {
+      "type": "integer",
+      "minimum": 1
+    }
+  },
+  "additionalProperties": false
+}

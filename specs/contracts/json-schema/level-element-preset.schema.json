@@ -1,0 +1,158 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "level-element-preset.schema.json",
+  "title": "Level Element Preset",
+  "type": "object",
+  "required": [
+    "presetId",
+    "theme",
+    "status",
+    "blockRules",
+    "motifs",
+    "layoutAllowances"
+  ],
+  "properties": {
+    "presetId": {
+      "type": "string"
+    },
+    "theme": {
+      "type": "string",
+      "enum": [
+        "overworld",
+        "underground",
+        "athletic_sky",
+        "castle",
+        "water"
+      ]
+    },
+    "status": {
+      "type": "string",
+      "enum": [
+        "active",
+        "planned"
+      ]
+    },
+    "blockRules": {
+      "type": "object",
+      "required": [
+        "supportsQuestionBlocks",
+        "supportsBrickBlocks",
+        "supportsHiddenBlocks",
+        "supportsUsedBlocks",
+        "allowBreakableBricks",
+        "breakableBrickForms",
+        "allowMultiCoinBlocks",
+        "multiCoinMaxPayouts",
+        "supportedRewardContents",
+        "bumpAffectsActorsAbove"
+      ],
+      "properties": {
+        "supportsQuestionBlocks": {
+          "type": "boolean"
+        },
+        "supportsBrickBlocks": {
+          "type": "boolean"
+        },
+        "supportsHiddenBlocks": {
+          "type": "boolean"
+        },
+        "supportsUsedBlocks": {
+          "type": "boolean"
+        },
+        "allowBreakableBricks": {
+          "type": "boolean"
+        },
+        "breakableBrickForms": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "enum": [
+              "Small",
+              "Super",
+              "Fire"
+            ]
+          }
+        },
+        "allowMultiCoinBlocks": {
+          "type": "boolean"
+        },
+        "multiCoinMaxPayouts": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "supportedRewardContents": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "enum": [
+              "Coin",
+              "Mushroom",
+              "FireFlower",
+              "SuperStar",
+              "OneUpMushroom"
+            ]
+          }
+        },
+        "bumpAffectsActorsAbove": {
+          "type": "boolean"
+        }
+      },
+      "additionalProperties": false
+    },
+    "motifs": {
+      "type": "object",
+      "required": [
+        "backgroundLayers",
+        "structuralCues"
+      ],
+      "properties": {
+        "backgroundLayers": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "foregroundAccents": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "structuralCues": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
+      },
+      "additionalProperties": false
+    },
+    "layoutAllowances": {
+      "type": "object",
+      "required": [
+        "allowCeilingCorridors"
+      ],
+      "properties": {
+        "allowCeilingCorridors": {
+          "type": "boolean"
+        },
+        "ceilingCorridorMinClearHeightTiles": {
+          "type": [
+            "integer",
+            "null"
+          ],
+          "minimum": 1
+        },
+        "ceilingCorridorMaxLengthTiles": {
+          "type": [
+            "integer",
+            "null"
+          ],
+          "minimum": 1
+        }
+      },
+      "additionalProperties": false
+    }
+  },
+  "additionalProperties": false
+}

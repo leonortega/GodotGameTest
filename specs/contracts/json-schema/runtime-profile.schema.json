@@ -1,0 +1,68 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "runtime-profile.schema.json",
+  "title": "Runtime Profile",
+  "type": "object",
+  "required": [
+    "profileId",
+    "tileSizePx",
+    "fixedSimulationHz",
+    "activationWindow",
+    "activeCaps"
+  ],
+  "properties": {
+    "profileId": {
+      "type": "string"
+    },
+    "tileSizePx": {
+      "type": "integer",
+      "minimum": 1
+    },
+    "fixedSimulationHz": {
+      "type": "integer",
+      "minimum": 1
+    },
+    "activationWindow": {
+      "type": "object",
+      "required": [
+        "forwardMarginScreens",
+        "rearMarginScreens"
+      ],
+      "properties": {
+        "forwardMarginScreens": {
+          "type": "number",
+          "minimum": 0
+        },
+        "rearMarginScreens": {
+          "type": "number",
+          "minimum": 0
+        }
+      },
+      "additionalProperties": false
+    },
+    "activeCaps": {
+      "type": "object",
+      "required": [
+        "hostileActors",
+        "playerProjectiles",
+        "dynamicInteractables"
+      ],
+      "properties": {
+        "hostileActors": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "playerProjectiles": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "dynamicInteractables": {
+          "type": "integer",
+          "minimum": 0
+        }
+      },
+      "additionalProperties": false
+    }
+  },
+  "additionalProperties": false
+}

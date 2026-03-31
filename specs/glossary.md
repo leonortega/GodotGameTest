@@ -1,10 +1,12 @@
 # Glossary
 
 - **Small Form**: Default player state with no damage buffer; one hit causes a lost life.
-- **Powered Form**: Upgraded player state that can absorb one hit before shrinking to Small Form.
-- **Enhanced Form**: Upgraded player state that retains Powered Form survivability and grants a ranged attack.
+- **Super Form**: Upgraded player state that can absorb one hit before shrinking to Small Form.
+- **Fire Form**: Upgraded player state that retains Super Form survivability and grants a ranged attack.
 - **Invulnerability window**: Short period after damage during which the player cannot take another hit.
+- **Star invincibility**: Temporary pickup-driven state in which valid enemy contact defeats enemies instead of damaging the player.
 - **Run state**: Player movement mode with higher horizontal speed and longer jump distance.
+- **Skid turn**: Brief turnaround state that occurs when the player reverses direction while carrying significant run speed.
 - **Stomp**: Defeating an eligible enemy by landing on it from above.
 - **Armored enemy**: Enemy that does not lose its threat state from a standard stomp while the player lacks a special attack state.
 - **Reflected projectile**: A player projectile that is returned by a special enemy interaction and continues as a hostile threat.
@@ -17,7 +19,24 @@
 - **Blocking pause**: Pause state in which player movement, enemy motion, timer countdown, and hazard animation are suspended.
 - **World progression**: Ordered advancement from stage `1-1` to `1-4` in the MVP.
 - **Starting stage**: The first stage loaded for a new run, which is `1-1` in the current MVP build.
+- **Generation profile**: Tunable procedural-generation limits that define traversal guarantees, terrain budgets, and layout safety rules for a stage theme.
+- **Element preset**: SMB-style block, biome, and structural vocabulary bundle consumed by authoring and generation for a stage theme.
+- **Main route**: The required path from spawn to goal that must remain completable without using optional branch content.
+- **Question Block**: Reward block that can dispense authored contents and later become a used block.
+- **Brick Block**: Solid strikeable block that may be breakable from below by eligible non-small player forms.
+- **Hidden Block**: Invisible reward block that reveals itself only after being hit from below.
+- **Used Block**: Exhausted block state that remains visible after a reward block has finished dispensing contents.
+- **Multi-Coin Block**: Question block variant that dispenses several coins across repeated valid hits before exhausting.
+- **Mushroom**: Growth pickup that upgrades `Small Form` to `Super Form`.
+- **Fire Flower**: Attack pickup that upgrades `Super Form` to `Fire Form`.
+- **Super Star**: Temporary invincibility pickup that overrides normal contact damage resolution.
+- **1-Up Mushroom**: Extra-life pickup that adds one life without changing player form.
 - **Hidden route**: Optional path or room not required for completion but containing bonus rewards.
+- **Ceiling corridor**: Constrained passage with a low overhead ceiling used most often in underground stage sections.
+- **Biome motif**: Decorative background or structural art cue that communicates a stage theme while preserving gameplay readability.
+- **Recovery landing**: Stable ground or platform space placed after a required gap, drop, or moving-platform challenge so the player can safely regain rhythm.
+- **Dead-air span**: A horizontal region with no usable ground, no readable platform support, or no meaningful traversal beat, making the stage feel empty or unreadable.
+- **Boarding zone**: Stable surface immediately before a required moving-platform challenge where the player can prepare and jump on predictably.
 - **Environmental obstacle**: Non-enemy stage object that threatens or blocks the player, such as a cactus hazard.
 - **Terrain profile**: The overall height variation of a stage path, including flats, rises, drops, and uneven segments.
 - **Floating moving platform**: An airborne platform with no direct support beneath it that patrols horizontally and can carry the player.
@@ -32,6 +51,9 @@
 - **Autoload**: Godot singleton registered at project level and available across scenes for shared services such as game session state or audio control.
 - **Input Map**: Godot action configuration that maps keyboard, gamepad, or touch input to named gameplay actions.
 - **Camera2D limits**: Camera boundaries used to prevent scrolling beyond the authored level bounds.
+- **Hurry state**: Urgent low-time audio behavior triggered when the stage timer crosses the authored threshold.
+- **Activation window**: Region around the camera in which dynamic actors remain active and may simulate, move, or attack.
+- **Runtime profile**: Fixed-step and object-budget configuration that keeps movement, timers, and actor activation consistent.
 - **PackedScene**: Godot resource type used to instantiate reusable scenes such as player, enemy, or HUD prefabs.
 - **Save slot**: Serialized progression payload written to disk for persistent unlocks or best-run data.
 - **Signal bus**: Event-driven communication pattern often used in Godot to decouple gameplay scenes and UI reactions.

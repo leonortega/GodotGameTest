@@ -7,9 +7,7 @@
     "stageId",
     "score",
     "coins",
-    "lives",
     "timeRemaining",
-    "difficulty",
     "paused"
   ],
   "properties": {
@@ -25,21 +23,9 @@
       "type": "integer",
       "minimum": 0
     },
-    "lives": {
-      "type": "integer",
-      "minimum": 0
-    },
     "timeRemaining": {
       "type": "integer",
       "minimum": 0
-    },
-    "difficulty": {
-      "type": "string",
-      "enum": [
-        "Easy",
-        "Normal",
-        "Hard"
-      ]
     },
     "paused": {
       "type": "boolean"

@@ -9,11 +9,6 @@ Feature: Floating moving platforms
     When the stage simulation advances
     Then the platform moves left and right along its authored path
 
-  Scenario: Floating platform stays unsupported across its full sweep
-    Given a floating moving platform has authored left and right patrol extents
-    When the full patrol envelope is reviewed
-    Then there is no grounded support directly beneath the midpoint, left extent, or right extent
-
   Scenario: Player is carried by the moving platform
     Given the player is standing on a floating moving platform
     When the platform moves horizontally

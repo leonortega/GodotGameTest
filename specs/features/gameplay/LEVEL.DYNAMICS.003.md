@@ -47,7 +47,7 @@ Scenario: Cactus hazard stays fixed in place
 ## Example Inputs/Outputs
 - Example input: Small-form player runs into a cactus obstacle.
 - Expected output: The player loses a life according to normal damage rules.
-- Example input: Powered player lands on a cactus obstacle from above.
+- Example input: Super player lands on a cactus obstacle from above.
 - Expected output: The cactus remains active and the player downgrades according to damage rules.
 
 ## Edge Cases

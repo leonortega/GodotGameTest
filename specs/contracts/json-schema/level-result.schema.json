@@ -9,7 +9,9 @@
     "lives",
     "coins",
     "score",
-    "timeRemaining"
+    "timeRemaining",
+    "timeBonusScore",
+    "extraLivesAwarded"
   ],
   "properties": {
     "stageId": {
@@ -32,6 +34,14 @@
       "minimum": 0
     },
     "timeRemaining": {
+      "type": "integer",
+      "minimum": 0
+    },
+    "timeBonusScore": {
+      "type": "integer",
+      "minimum": 0
+    },
+    "extraLivesAwarded": {
       "type": "integer",
       "minimum": 0
     },

@@ -8,7 +8,8 @@
     "lives",
     "coins",
     "score",
-    "playerForm"
+    "playerForm",
+    "invincibilityMode"
   ],
   "properties": {
     "stageId": {
@@ -31,8 +32,16 @@
       "type": "string",
       "enum": [
         "Small",
-        "Powered",
-        "Enhanced"
+        "Super",
+        "Fire"
+      ]
+    },
+    "invincibilityMode": {
+      "type": "string",
+      "enum": [
+        "none",
+        "damage",
+        "star"
       ]
     }
   },

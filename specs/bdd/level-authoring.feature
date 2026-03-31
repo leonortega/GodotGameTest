@@ -26,22 +26,22 @@ Feature: Godot level authoring
     Then the player can jump under the block and hit it using supported movement
     And the block keeps enough standing clearance beneath it
 
-  Scenario: Hazards and uneven terrain are authorable
-    Given a designer adds cactus hazards and height variation to a stage
+  Scenario: Terrain and hazard vocabulary are authorable
+    Given a designer adds cactus hazards, hills, height variation, and platform sections to a stage
     When the stage is saved
-    Then those changes exist through level-scene authoring
+    Then those stage elements exist through level-scene authoring
     And no stage-specific controller logic is modified
+
+  Scenario: Layout validation defers to generation rules
+    Given a designer authors spawn, goal, gaps, elevated surfaces, and moving-platform sections in one stage
+    When the stage is saved
+    Then route continuity, jump reach, start safety, goal safety, and recovery landings are checked through LEVEL.GENERATION.001
 
   Scenario: Slope terrain is authorable
     Given a designer adds an uphill run or a paired slope plateau section to a stage
     When the stage is saved
     Then that slope terrain exists through reusable stage data or scene composition
     And runtime collision and terrain presentation remain valid without bespoke per-stage code
-
-  Scenario: Intended platforms stay within traversal reach
-    Given a designer authors a required route across elevated platforms
-    When the stage is saved
-    Then each required landing surface stays reachable with at most the supported double jump
 
   Scenario: Gameplay pieces do not overlap invalidly
     Given a designer authors coins, blocks, platforms, and hazards in one section

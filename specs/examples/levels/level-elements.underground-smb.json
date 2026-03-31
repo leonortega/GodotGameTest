@@ -1,0 +1,48 @@
+{
+  "specId": "LEVEL.ELEMENTS.001",
+  "presetId": "underground_smb_classic",
+  "theme": "underground",
+  "status": "active",
+  "blockRules": {
+    "supportsQuestionBlocks": true,
+    "supportsBrickBlocks": true,
+    "supportsHiddenBlocks": true,
+    "supportsUsedBlocks": true,
+    "allowBreakableBricks": true,
+    "breakableBrickForms": [
+      "Super",
+      "Fire"
+    ],
+    "allowMultiCoinBlocks": true,
+    "multiCoinMaxPayouts": 10,
+    "supportedRewardContents": [
+      "Coin",
+      "Mushroom",
+      "FireFlower",
+      "SuperStar",
+      "OneUpMushroom"
+    ],
+    "bumpAffectsActorsAbove": true
+  },
+  "motifs": {
+    "backgroundLayers": [
+      "RockWall",
+      "DarkRecess",
+      "SupportPillars"
+    ],
+    "foregroundAccents": [
+      "LanternGlow",
+      "StoneArchShadow"
+    ],
+    "structuralCues": [
+      "LowCeilingBrickRuns",
+      "TightCorridorSilhouettes",
+      "InsetBrickPlatforms"
+    ]
+  },
+  "layoutAllowances": {
+    "allowCeilingCorridors": true,
+    "ceilingCorridorMinClearHeightTiles": 3,
+    "ceilingCorridorMaxLengthTiles": 24
+  }
+}

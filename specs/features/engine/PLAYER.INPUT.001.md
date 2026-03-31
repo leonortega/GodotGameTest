@@ -2,7 +2,7 @@
 
 ## Metadata
 - **Title**: Godot Input Map for Keyboard-First Gameplay and Menus
-- **Version**: `v1.1`
+- **Version**: `v1.2`
 - **Status**: Approved
 - **Context/View**: Input
 - **Priority**: High
@@ -22,7 +22,7 @@ Define the stable Godot Input Map used by the current keyboard-first build witho
 - `PLAYER.INPUT.001-R3`: The default desktop bindings shall support keyboard play using `A` or Left Arrow for `move_left`, `D` or Right Arrow for `move_right`, and `S` or Down Arrow for `move_down`.
 - `PLAYER.INPUT.001-R4`: The default jump binding shall support `W`, Up Arrow, `Space`, and the secondary keyboard fallback key used by the current build.
 - `PLAYER.INPUT.001-R5`: The default action binding shall support `Shift` and the secondary keyboard fallback key used by the current build.
-- `PLAYER.INPUT.001-R6`: The default pause binding shall support `Escape` and a keyboard fallback pause key.
+- `PLAYER.INPUT.001-R6`: The default pause binding shall support `Escape` as the primary desktop pause key and a keyboard fallback pause key.
 - `PLAYER.INPUT.001-R7`: The `pause` action shall be available from active gameplay and ignored during non-gameplay states when pause behavior is not meaningful.
 - `PLAYER.INPUT.001-R8`: Menu interactions shall remain consistent with the same keyboard-focused input abstraction used by gameplay.
 
@@ -42,10 +42,15 @@ Scenario: Pause uses a dedicated action
   Given the player is in an active stage
   When the player presses the mapped pause control
   Then the game shall enter pause state
+
+Scenario: Escape resolves to the pause action
+  Given Escape is mapped to the pause input
+  When the player presses Escape during active gameplay
+  Then gameplay shall resolve the named `pause` action
 ```
 
 ## Example Inputs/Outputs
-- Example input: `Space`, `W`, Up Arrow, and `K` mapped to `jump`, with `Shift` and `J` mapped to `action`.
+- Example input: `Space`, `W`, Up Arrow, and `K` mapped to `jump`, with `Shift` and `J` mapped to `action`, and `Escape` plus `P` mapped to `pause`.
 - Expected output: Player movement and attack code read named actions, not raw key codes.
 
 ## Edge Cases

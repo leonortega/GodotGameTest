@@ -1,12 +1,7 @@
-Feature: Save slot and progression persistence
+Feature: Settings persistence
   As a returning player
-  I want my progress and settings to persist
-  So that I do not restart from scratch every launch
-
-  Scenario: Stage clear updates highest cleared stage
-    Given the player clears stage 1-2
-    When progression is saved
-    Then highest cleared stage is persisted
+  I want my audio settings to persist
+  So that my preferred presentation returns on every launch
 
   Scenario: Saved settings restore on relaunch
     Given the player previously changed audio settings
@@ -16,10 +11,10 @@ Feature: Save slot and progression persistence
   Scenario: Legacy save data migrates forward
     Given a prior local save exists using an older flat JSON structure
     When the game launches on the current build
-    Then the stored progression and settings are mapped into the current save structure
+    Then the stored supported settings are mapped into the current save structure
     And launch continues without a blocking migration error
 
   Scenario: Missing save data falls back safely
     Given no prior save file exists
     When the game launches
-    Then default settings and zero progression are used
+    Then default settings are used

@@ -17,3 +17,8 @@ Feature: Godot input map and shared control actions
     Given the player is in an active stage
     When the player presses the mapped pause control
     Then the game enters pause state
+
+  Scenario: Escape triggers the pause action
+    Given Escape is mapped to the pause input
+    When the player presses Escape during active gameplay
+    Then gameplay responds to the same named pause action

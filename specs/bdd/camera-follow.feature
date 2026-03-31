@@ -13,6 +13,11 @@ Feature: Camera2D follow behavior
     When the camera updates
     Then the view does not expose outside-of-level space
 
+  Scenario: Camera does not freely backtrack after advancing
+    Given the player has advanced the camera through the stage
+    When the player moves left
+    Then the camera is not required to scroll freely backward to earlier stage space
+
   Scenario: Small jumps do not create distracting vertical shake
     Given the player performs repeated short jumps on flat terrain
     When the camera updates

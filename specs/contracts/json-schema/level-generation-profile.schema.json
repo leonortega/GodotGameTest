@@ -1,0 +1,165 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "level-generation-profile.schema.json",
+  "title": "Level Generation Profile",
+  "type": "object",
+  "required": [
+    "profileId",
+    "theme",
+    "elementPresetId",
+    "guaranteedTraversal",
+    "optionalTraversal",
+    "safeStartTiles",
+    "safeGoalTiles",
+    "mainRouteMinGroundCoveragePercent",
+    "maxMandatoryGapTiles",
+    "maxConsecutiveMandatoryGaps",
+    "recoveryGroundTiles",
+    "maxElevationStepTiles",
+    "maxBlindDropTiles",
+    "maxFlatSpanWithoutBeatTiles",
+    "maxDeadAirSpanTiles",
+    "platformRules",
+    "branchRules"
+  ],
+  "properties": {
+    "profileId": {
+      "type": "string"
+    },
+    "theme": {
+      "type": "string",
+      "enum": [
+        "overworld",
+        "underground",
+        "athletic_sky",
+        "castle",
+        "water"
+      ]
+    },
+    "elementPresetId": {
+      "type": "string"
+    },
+    "guaranteedTraversal": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "string",
+        "enum": [
+          "walk_jump",
+          "run_jump",
+          "duck",
+          "block_bump",
+          "moving_platform"
+        ]
+      }
+    },
+    "optionalTraversal": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "enum": [
+          "walk_jump",
+          "run_jump",
+          "duck",
+          "block_bump",
+          "moving_platform",
+          "double_jump"
+        ]
+      }
+    },
+    "safeStartTiles": {
+      "type": "integer",
+      "minimum": 1
+    },
+    "safeGoalTiles": {
+      "type": "integer",
+      "minimum": 1
+    },
+    "mainRouteMinGroundCoveragePercent": {
+      "type": "integer",
+      "minimum": 1,
+      "maximum": 100
+    },
+    "maxMandatoryGapTiles": {
+      "type": "integer",
+      "minimum": 0
+    },
+    "maxConsecutiveMandatoryGaps": {
+      "type": "integer",
+      "minimum": 0
+    },
+    "recoveryGroundTiles": {
+      "type": "integer",
+      "minimum": 1
+    },
+    "maxElevationStepTiles": {
+      "type": "integer",
+      "minimum": 0
+    },
+    "maxBlindDropTiles": {
+      "type": "integer",
+      "minimum": 0
+    },
+    "maxFlatSpanWithoutBeatTiles": {
+      "type": "integer",
+      "minimum": 1
+    },
+    "maxDeadAirSpanTiles": {
+      "type": "integer",
+      "minimum": 1
+    },
+    "platformRules": {
+      "type": "object",
+      "required": [
+        "maxFloatingPlatformsPerBeat",
+        "maxRequiredMovingPlatformChain",
+        "minBoardingTiles",
+        "minExitTiles",
+        "allowMovingPlatformsOverBottomlessGaps"
+      ],
+      "properties": {
+        "maxFloatingPlatformsPerBeat": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "maxRequiredMovingPlatformChain": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "minBoardingTiles": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "minExitTiles": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "allowMovingPlatformsOverBottomlessGaps": {
+          "type": "boolean"
+        }
+      },
+      "additionalProperties": false
+    },
+    "branchRules": {
+      "type": "object",
+      "required": [
+        "allowOptionalBranches",
+        "requireMainRouteContinuous",
+        "requireBranchReconnectOrReward"
+      ],
+      "properties": {
+        "allowOptionalBranches": {
+          "type": "boolean"
+        },
+        "requireMainRouteContinuous": {
+          "type": "boolean"
+        },
+        "requireBranchReconnectOrReward": {
+          "type": "boolean"
+        }
+      },
+      "additionalProperties": false
+    }
+  },
+  "additionalProperties": false
+}

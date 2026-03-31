@@ -97,13 +97,13 @@ Scenario: Enemy classes remain visually distinct
 ```
 
 ## Example Inputs/Outputs
-- Example input: Powered player stomps a basic ground enemy.
+- Example input: Super player stomps a basic ground enemy.
 - Expected output: Enemy enters an inverted falling death animation, score increases, player rebounds.
 - Example input: Small player side-collides with a flying enemy.
 - Expected output: Player loses a life.
 - Example input: Player lands on a helmeted enemy's head.
 - Expected output: The enemy remains active because the top surface is protected.
-- Example input: Enhanced player fires at an armored enemy.
+- Example input: Fire player fires at an armored enemy.
 - Expected output: The armored enemy remains active and the projectile is reflected back.
 - Example input: The player encounters Ground, Flying, and Shooter enemies in successive traversal sections.
 - Expected output: Each enemy class remains visually readable enough that the player can anticipate different threat behavior from presentation as well as motion.

@@ -1,7 +1,7 @@
 {
   "specId": "PLAYER.POWERUPS.001",
   "input": {
-    "initialForm": "Enhanced",
+    "initialForm": "Fire",
     "events": [
       "contact-damage",
       "contact-damage-during-invulnerability",
@@ -10,14 +10,14 @@
   },
   "expected": {
     "formsAfterEvents": [
-      "Powered",
-      "Powered",
+      "Super",
+      "Super",
       "Small"
     ],
     "lifeLost": false,
     "formVisualsAfterEvents": [
-      "powered-form-art",
-      "powered-form-art",
+      "super-form-art",
+      "super-form-art",
       "small-form-art"
     ]
   }

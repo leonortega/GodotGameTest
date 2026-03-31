@@ -10,7 +10,8 @@
   "expected": {
     "stageCleared": true,
     "nextStageId": "1-4",
-    "bonusScoreFromTime": 91,
+    "timeBonusScore": 4550,
+    "extraLivesAwarded": 0,
     "sessionState": "continue"
   }
 }

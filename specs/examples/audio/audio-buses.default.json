@@ -7,9 +7,12 @@
     "UI"
   ],
   "stageThemes": {
-    "grassland": "res://audio/music/stage_grassland_loop.ogg",
-    "cave": "res://audio/music/stage_cave_loop.ogg",
-    "fortress": "res://audio/music/stage_fortress_loop.ogg"
+    "overworld": "res://audio/music/stage_overworld_loop.ogg",
+    "underground": "res://audio/music/stage_underground_loop.ogg",
+    "athletic_sky": "res://audio/music/stage_athletic_sky_loop.ogg",
+    "castle": "res://audio/music/stage_castle_loop.ogg",
+    "invincibility": "res://audio/music/stage_invincibility_loop.ogg",
+    "hurry": "res://audio/music/stage_hurry_loop.ogg"
   },
   "shellThemes": {
     "title": "res://audio/music/title_theme_loop.ogg",
@@ -18,13 +21,17 @@
   },
   "eventClips": {
     "jump": "res://audio/sfx/jump.wav",
-    "doubleJump": "res://audio/sfx/double_jump.wav",
-    "doubleJumpLand": "res://audio/sfx/land.wav",
+    "land": "res://audio/sfx/land.wav",
+    "stomp": "res://audio/sfx/stomp.wav",
+    "blockBump": "res://audio/sfx/block_bump.wav",
+    "brickBreak": "res://audio/sfx/brick_break.wav",
     "coin": "res://audio/sfx/coin.wav",
     "powerup": "res://audio/sfx/powerup.wav",
     "powerDown": "res://audio/sfx/power_down.wav",
+    "fireAttack": "res://audio/sfx/fire_attack.wav",
     "damage": "res://audio/sfx/damage.wav",
     "death": "res://audio/sfx/death.wav",
+    "extraLife": "res://audio/sfx/extra_life.wav",
     "pause": "res://audio/sfx/pause.wav",
     "stageClear": "res://audio/sfx/stage_clear.wav",
     "uiConfirm": "res://audio/ui/confirm.ogg",

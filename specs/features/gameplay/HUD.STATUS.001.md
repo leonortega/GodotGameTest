@@ -1,25 +1,29 @@
 # Spec: `HUD.STATUS.001`
 
 ## Metadata
-- **Title**: In-Game HUD for Score, Coins, Lives, World, and Timer
+- **Title**: In-Game HUD for Score, Coins, World, and Timer
 - **Version**: `v1.4`
 - **Status**: Approved
 - **Context/View**: Heads-Up Display
 - **Priority**: Medium
 
 ## Purpose
-Define the minimum HUD information required for readable play-state awareness.
+Define an SMB1-style in-stage HUD with only the information that should remain visible during active play.
 
 ## Preconditions
 - A stage or shell state is active.
 
 ## Trigger
-- Stage render or any state change affecting score, coins, lives, world, or timer.
+- Stage render or any state change affecting score, coins, world-stage, or timer.
 
 ## Requirements
-- `HUD.STATUS.001-R1`: During active gameplay, the HUD shall display score, coins, world or stage identifier, remaining lives, remaining time, and current difficulty.
+- `HUD.STATUS.001-R1`: During active gameplay, the HUD shall display score, coins, world or stage identifier, and remaining time.
+- `HUD.STATUS.001-R1A`: The in-stage HUD shall keep a fixed left-to-right field order of score, coins, world-stage, and time.
+- `HUD.STATUS.001-R1B`: The in-stage HUD shall use short stable uppercase labels for those fields so the player can parse them at a glance.
 - `HUD.STATUS.001-R2`: HUD values shall update when the underlying gameplay state changes.
+- `HUD.STATUS.001-R2A`: Score and timer fields shall preserve stable width through zero-padding or equivalent fixed-width alignment during active play.
 - `HUD.STATUS.001-R3`: The active stage identifier shall be shown using the world-stage format, such as `1-2`.
+- `HUD.STATUS.001-R3A`: Remaining lives shall not be required as a permanent in-stage HUD field and may instead be surfaced through stage-entry, death-restart, or game-over screens.
 - `HUD.STATUS.001-R4`: The HUD shall remain readable against all MVP stage backgrounds.
 - `HUD.STATUS.001-R4A`: The HUD shall use a text-first presentation with consistent label and value alignment rather than depending on per-field sprite icons.
 - `HUD.STATUS.001-R4B`: The top-of-screen stats area shall include a dark or black backing treatment sufficient to separate the HUD from the stage background.
@@ -41,8 +45,13 @@ Scenario: HUD displays the active stage identifier
   When gameplay begins
   Then the HUD shall display 1-3 as the active stage
 
+Scenario: HUD field order stays fixed
+  Given the HUD renders score, coins, world-stage, and time
+  When the player transitions between stages with different values
+  Then the left-to-right HUD field order shall remain unchanged
+
 Scenario: HUD remains visually aligned across text fields
-  Given the HUD renders score, coin, stage, life, time, and difficulty fields
+  Given the HUD renders score, coin, stage, and time fields
   When the stats bar is shown during gameplay
   Then the visible label row and value row shall remain consistently aligned
 
@@ -52,7 +61,7 @@ Scenario: HUD remains readable over bright backgrounds
   Then the stats area shall remain readable using a dark backing panel or equivalent contrast treatment
 
 Scenario: HUD chrome uses themed pixel panels without replacing text fields
-  Given the HUD renders score, coin, stage, life, time, and difficulty fields
+  Given the HUD renders score, coin, stage, and time fields
   When a decorative HUD frame or panel treatment is applied
   Then the visible stats shall remain text-first and aligned
   And the panel treatment shall remain visually consistent with the shell menus
@@ -64,16 +73,15 @@ Scenario: Timer display freezes after pause
 ```
 
 ## Example Inputs/Outputs
-- Example input: Active stage `1-2`, score `004500`, coins `37`, lives `2`, time `251`, difficulty `Hard`.
-- Expected output: HUD renders a readable text-first in-game overlay with all values inside a dark top panel, optionally framed by themed pixel-art HUD chrome that does not replace the text labels or values.
+- Example input: Active stage `1-2`, score `004500`, coins `37`, time `251`.
+- Expected output: HUD renders a readable text-first in-game overlay with score, coin count, world-stage identifier, and time inside a dark top panel, optionally framed by themed pixel-art HUD chrome that does not replace the text labels or values.
 
 ## Edge Cases
-- HUD values shall not show negative time or lives.
+- HUD values shall not show negative time.
 - Large score values shall remain legible without overlapping other HUD fields.
 - The HUD backing shall not be so transparent that top-row readability is lost against sky or cloud backgrounds.
 - Decorative HUD chrome shall not crowd or clip long stat values.
 - Stage clear bonus counting shall not resume normal timer countdown.
-- Difficulty labels shall not collide with adjacent stat fields when the player changes setting.
 
 ## Non-Functional Constraints
 - HUD updates should not flicker during rapid score or coin changes.

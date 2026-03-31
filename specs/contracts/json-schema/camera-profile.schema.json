@@ -17,6 +17,9 @@
       "required": [
         "smoothingEnabled",
         "horizontalBias",
+        "allowBackwardScroll",
+        "forwardReadMarginTiles",
+        "lockDuringTransitions",
         "limits"
       ],
       "properties": {
@@ -29,6 +32,16 @@
             "centered",
             "forward"
           ]
+        },
+        "allowBackwardScroll": {
+          "type": "boolean"
+        },
+        "forwardReadMarginTiles": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "lockDuringTransitions": {
+          "type": "boolean"
         },
         "limits": {
           "type": "object",

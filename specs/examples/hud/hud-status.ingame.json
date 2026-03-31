@@ -4,9 +4,7 @@
     "stageId": "1-2",
     "score": 4500,
     "coins": 37,
-    "lives": 2,
     "timeRemaining": 251,
-    "difficulty": "Hard",
     "paused": false
   },
   "expected": {
@@ -14,9 +12,7 @@
       "score",
       "coins",
       "stageId",
-      "lives",
-      "timeRemaining",
-      "difficulty"
+      "timeRemaining"
     ],
     "stageIdFormat": "1-2",
     "readable": true,

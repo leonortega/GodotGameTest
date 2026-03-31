@@ -1,14 +1,14 @@
 # Spec: `SAVE.PROGRESSION.001`
 
 ## Metadata
-- **Title**: Save Slot, Settings Persistence, and World Progress Tracking
+- **Title**: Settings Persistence for an SMB1-Style Run Flow
 - **Version**: `v1.2`
 - **Status**: Approved
 - **Context/View**: System Persistence
 - **Priority**: Medium
 
 ## Purpose
-Define what progression and settings data persist across launches in the Godot implementation.
+Define the limited settings persistence needed by the SMB1-style shell flow without requiring persistent run progression, best-score surfacing, or difficulty selection in the core menu flow.
 
 ## Preconditions
 - The player starts, clears, or exits a run.
@@ -17,29 +17,23 @@ Define what progression and settings data persist across launches in the Godot i
 - New game start, stage clear, settings change, or application shutdown.
 
 ## Requirements
-- `SAVE.PROGRESSION.001-R1`: The project shall support at least one save slot for local persistence.
-- `SAVE.PROGRESSION.001-R2`: The save slot shall preserve player settings needed for subsequent launches, including music volume, SFX volume, and the selected difficulty.
-- `SAVE.PROGRESSION.001-R2A`: The shell shall expose a configuration menu that allows the player to adjust persisted audio settings without starting a gameplay run.
-- `SAVE.PROGRESSION.001-R3`: The save slot shall preserve progression data at minimum for highest cleared stage and best recorded score for the current world scope.
-- `SAVE.PROGRESSION.001-R4`: Starting a new run shall not require existing save data.
-- `SAVE.PROGRESSION.001-R5`: Save data shall be written as JSON compatible with Godot file I/O.
-- `SAVE.PROGRESSION.001-R6`: Corrupted or missing save data shall fall back to default values without blocking launch.
-- `SAVE.PROGRESSION.001-R6A`: When a prior local save uses an older flat JSON shape, the runtime shall migrate or map that data into the current save structure without blocking launch.
+- `SAVE.PROGRESSION.001-R1`: The project shall support at least one local settings save payload for persistence across launches.
+- `SAVE.PROGRESSION.001-R2`: The save payload shall preserve player settings needed for subsequent launches, including music volume and SFX volume.
+- `SAVE.PROGRESSION.001-R3`: Starting a new run shall not require existing save data.
+- `SAVE.PROGRESSION.001-R4`: Save data shall be written as JSON compatible with Godot file I/O.
+- `SAVE.PROGRESSION.001-R5`: Corrupted or missing save data shall fall back to default values without blocking launch.
+- `SAVE.PROGRESSION.001-R5A`: When a prior local save uses an older JSON shape, the runtime shall migrate or map supported settings data into the current save structure without blocking launch.
+- `SAVE.PROGRESSION.001-R6`: Persistent best-score messaging, highest-cleared-stage messaging, and difficulty selection shall not be required parts of the SMB1-style shell flow.
 
 ## Acceptance Criteria (BDD)
 ```gherkin
-Scenario: Stage clear updates persistent progression
-  Given the player clears stage 1-2
-  When progression is saved
-  Then the highest cleared stage shall be persisted
-
 Scenario: Relaunch restores saved settings
   Given the player previously changed audio settings
   When the application launches again
   Then the saved settings shall be restored
 
-Scenario: Configuration changes persist immediately
-  Given the title configuration menu is open
+Scenario: Settings changes persist immediately
+  Given the settings interface is open
   When the player changes music or SFX volume
   Then the updated settings shall be saved to JSON
   And the same values shall be restored on the next launch
@@ -47,27 +41,26 @@ Scenario: Configuration changes persist immediately
 Scenario: Missing save data falls back safely
   Given no prior save file exists
   When the game launches
-  Then the game shall start with default settings and progression
+  Then the game shall start with default settings and a fresh run state
 
 Scenario: Legacy save data migrates forward
   Given a prior local save exists using an older flat JSON structure
   When the game launches on the current build
-  Then the stored progression and settings shall be mapped into the current save structure
+  Then the stored supported settings shall be mapped into the current save structure
   And launch shall continue without a blocking migration error
 ```
 
 ## Example Inputs/Outputs
-- Example input: New save JSON after first launch with no cleared stages.
-- Expected output: Default difficulty and audio settings plus zero progression recorded.
-- Example input: An older save JSON containing top-level `highestClearedStage`, `bestScore`, `musicVolumeDb`, `sfxVolumeDb`, and `difficulty`.
-- Expected output: The current build reads those values and persists them back using the current nested save shape.
+- Example input: New save JSON after first launch.
+- Expected output: Default audio settings are recorded with no requirement for saved run progression.
+- Example input: An older save JSON containing top-level `musicVolumeDb` and `sfxVolumeDb`.
+- Expected output: The current build reads those settings values and persists them back using the current save shape.
 
 ## Edge Cases
 - Save load failure shall not trap the player on a blocking error screen.
-- Clearing a later stage shall not regress previously stored best score or highest cleared stage.
 - Settings-only changes shall not require a completed gameplay run before being saved.
 - Configuration changes shall apply immediately to active audio buses and persist without restarting the application.
-- Legacy migration shall not silently drop supported settings such as difficulty or audio levels when equivalent current fields exist.
+- Legacy migration shall not silently drop supported audio settings when equivalent current fields exist.
 
 ## Non-Functional Constraints
 - Save handling should remain simple enough for debugging with plain-text inspection when feasible.
@@ -76,5 +69,4 @@ Scenario: Legacy save data migrates forward
 ## Related Specs
 - `APP.SHELL.001`
 - `ENGINE.PROJECT.001`
-- `LEVEL.PROGRESSION.001`
 - `AUDIO.SYSTEM.001`

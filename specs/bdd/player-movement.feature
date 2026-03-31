@@ -16,32 +16,48 @@ Feature: Player movement and platforming
     Then the player stops at the collision boundary
     And the player does not pass through the wall
 
+  Scenario: High-speed reversal produces a readable skid
+    Given the player is running to the right on flat ground
+    When the player presses and holds left
+    Then the player enters a brief skid or turnaround state before accelerating left
+
   Scenario: Falling into a pit loses a life
     Given the player is above a bottomless gap
     When the player falls below the stage bounds
     Then the player loses one life
 
-  Scenario: Player can double jump before landing
+  Scenario: One airborne follow-up jump is allowed
     Given the player has already jumped once
     And the player is still airborne
     When the player presses the jump input again
-    Then the player performs a second jump
-    And the player cannot perform a third jump before landing
+    Then the player performs one airborne follow-up jump
 
-  Scenario: Jump grace window forgives a late ledge input
+  Scenario: A third jump is not allowed before landing
+    Given the player has already jumped once
+    And the player has already performed the airborne follow-up jump
+    And the player is still airborne
+    When the player presses the jump input again
+    Then the player does not perform a third jump before landing
+
+  Scenario: Late ledge input does not use a grace window
     Given the player runs off the edge of a platform
     When the jump input is pressed immediately after leaving the ledge
-    Then the system still resolves a grounded-style jump
+    Then the system is not required to resolve a grounded-style jump
 
-  Scenario: Jump buffer preserves an early landing input
+  Scenario: Pre-landing jump input does not require buffering
     Given the player is descending toward safe ground
     When the player presses jump shortly before touching down
-    Then the next valid grounded frame triggers a jump
+    Then the system is not required to trigger a jump on the first grounded frame
 
   Scenario: Early jump release creates a shorter hop
     Given the player starts a normal jump from flat ground
     When the player releases the jump input before the ascent completes
     Then the jump apex is lower than a held jump from the same starting state
+
+  Scenario: Air control remains weaker than grounded control
+    Given the player jumps while moving right
+    When the player reverses direction in midair
+    Then the horizontal response remains weaker than the same reversal on the ground
 
   Scenario: Movement state changes remain visually readable
     Given the player moves through idle, running, jumping, and falling states

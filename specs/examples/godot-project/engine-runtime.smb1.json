@@ -1,0 +1,15 @@
+{
+  "specId": "ENGINE.RUNTIME.001",
+  "profileId": "smb1_runtime_baseline",
+  "tileSizePx": 16,
+  "fixedSimulationHz": 60,
+  "activationWindow": {
+    "forwardMarginScreens": 1.0,
+    "rearMarginScreens": 0.5
+  },
+  "activeCaps": {
+    "hostileActors": 8,
+    "playerProjectiles": 2,
+    "dynamicInteractables": 24
+  }
+}

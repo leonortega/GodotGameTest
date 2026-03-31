@@ -19,8 +19,11 @@ Define a Godot Camera2D behavior that supports forward-looking platforming witho
 ## Requirements
 - `CAMERA.FOLLOW.001-R1`: Gameplay camera behavior shall be implemented with Godot `Camera2D`.
 - `CAMERA.FOLLOW.001-R2`: The camera shall follow the player horizontally through the stage.
+- `CAMERA.FOLLOW.001-R2A`: The SMB1-style baseline shall use forward-biased scrolling and shall not require free backward camera scrolling once the stage camera has advanced.
 - `CAMERA.FOLLOW.001-R3`: The camera shall not reveal space outside authored world bounds.
+- `CAMERA.FOLLOW.001-R3A`: The camera and spawn presentation shall preserve a readable safe-start view in which the spawn area and first required traversal beat are visible without unfair surprise threats.
 - `CAMERA.FOLLOW.001-R4`: The camera shall bias readability toward forward movement so upcoming hazards can be seen in time.
+- `CAMERA.FOLLOW.001-R4A`: Stage-entry, death-restart, pause, and other shell-driven transition states may temporarily lock or hand off camera control, but the return to gameplay shall restore a readable baseline follow state.
 - `CAMERA.FOLLOW.001-R5`: Vertical camera movement shall avoid jitter from short jumps and minor landing corrections.
 - `CAMERA.FOLLOW.001-R5A`: Heavy movement impacts such as hard landings or stomp rebounds may trigger a brief camera shake, provided the effect decays quickly and does not reduce platforming readability.
 - `CAMERA.FOLLOW.001-R6`: Camera settings shall be consistent across stages unless a stage-specific override is intentional and documented.
@@ -37,6 +40,11 @@ Scenario: Camera remains inside stage bounds
   When the camera updates
   Then the camera view shall not expose outside-of-level space
 
+Scenario: Camera does not freely backtrack after advancing
+  Given the player has advanced the camera through the stage
+  When the player moves left
+  Then the camera shall not be required to scroll freely backward to earlier stage space
+
 Scenario: Minor jumps do not cause distracting vertical shake
   Given the player performs repeated short jumps on flat terrain
   When the camera follows the player
@@ -52,12 +60,15 @@ Scenario: Heavy impact feedback shakes briefly without obscuring play
 ## Example Inputs/Outputs
 - Example input: Stage metadata defines left and right camera limits for `1-3`.
 - Expected output: The Camera2D follows the player while staying inside those limits.
+- Example input: The player starts stage `1-1` from the stage-entry card.
+- Expected output: The spawn area and first required landing remain readable when gameplay becomes interactive.
 
 ## Edge Cases
 - Entering a hidden route shall still use valid stage bounds or a documented sub-area override.
 - Camera smoothing shall not lag so far behind that platforming becomes unreadable.
 - Respawn after death shall restore camera position cleanly near the spawn point.
 - Impact shake shall not persist continuously after the triggering event resolves.
+- Forward-only baseline scrolling shall not hide the active player or force blind jumps immediately after control is returned.
 
 ## Non-Functional Constraints
 - Camera behavior should preserve readable reaction time for hazards and enemies.
@@ -66,4 +77,5 @@ Scenario: Heavy impact feedback shakes briefly without obscuring play
 ## Related Specs
 - `PLAYER.MOVEMENT.001`
 - `LEVEL.AUTHORING.001`
+- `ENGINE.RUNTIME.001`
 - `HUD.STATUS.001`

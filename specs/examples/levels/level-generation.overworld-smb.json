@@ -1,0 +1,37 @@
+{
+  "specId": "LEVEL.GENERATION.001",
+  "profileId": "overworld_smb_safe",
+  "theme": "overworld",
+  "elementPresetId": "overworld_smb_classic",
+  "guaranteedTraversal": [
+    "walk_jump",
+    "run_jump",
+    "duck",
+    "block_bump"
+  ],
+  "optionalTraversal": [
+    "moving_platform"
+  ],
+  "safeStartTiles": 10,
+  "safeGoalTiles": 12,
+  "mainRouteMinGroundCoveragePercent": 60,
+  "maxMandatoryGapTiles": 4,
+  "maxConsecutiveMandatoryGaps": 2,
+  "recoveryGroundTiles": 6,
+  "maxElevationStepTiles": 4,
+  "maxBlindDropTiles": 6,
+  "maxFlatSpanWithoutBeatTiles": 18,
+  "maxDeadAirSpanTiles": 12,
+  "platformRules": {
+    "maxFloatingPlatformsPerBeat": 3,
+    "maxRequiredMovingPlatformChain": 2,
+    "minBoardingTiles": 3,
+    "minExitTiles": 4,
+    "allowMovingPlatformsOverBottomlessGaps": false
+  },
+  "branchRules": {
+    "allowOptionalBranches": true,
+    "requireMainRouteContinuous": true,
+    "requireBranchReconnectOrReward": true
+  }
+}

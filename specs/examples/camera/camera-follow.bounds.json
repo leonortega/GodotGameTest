@@ -4,6 +4,9 @@
   "camera2D": {
     "smoothingEnabled": true,
     "horizontalBias": "forward",
+    "allowBackwardScroll": false,
+    "forwardReadMarginTiles": 6,
+    "lockDuringTransitions": true,
     "limits": {
       "left": 0,
       "top": 0,
